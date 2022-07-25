@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+body {
+  margin: 0;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+#main {
+  background: #ccc;
+}
+
+#main>section {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+/* Create two columns/boxes that floats next to each other */
+nav:not(.topnav) {
+  float: left;
+  width: 20%;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav:not(.topnav) ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+article {
+  float: left;
+  padding: 20px;
+  width: 50%;
+  background-color: #f1f1f1;
+  /* only for demonstration, should be removed */
+  border-top: 1px dotted grey;
+}
+
+.row {
+  clear: both;
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Style the footer */
+footer {
+  float: left;
+  width: 100%;
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+aside {
+  float: right;
+  width: 20%;
+}
+
+aside img {
+  width: 100%;
+}
+
+/* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 600px) {
+  nav,
+  article,
+  aside {
+    width: 100%;
+    height: auto;
+  }
+
+  #articles {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  article {
+    width: 100%;
+    height: auto;
+  }
+}
