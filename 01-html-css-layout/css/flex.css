@@ -1,0 +1,94 @@
+body * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, Geneva, Tahoma,
+    sans-serif;
+}
+
+header {
+  padding: 60px;
+  text-align: center;
+  background: #017fb5;
+  color: white;
+}
+
+nav {
+  display: flex;
+  flex-flow: row nowrap;
+  background-color: #333;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 20px;
+}
+
+nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.row {
+  display: flex;
+  row-gap: 10px;
+}
+
+main {
+  padding: 0 20px;
+}
+
+article {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+article h1 {
+  flex: 100%;
+}
+
+article .blog-text {
+  flex: 70%;
+  padding: 0 0 0 30px;
+}
+
+article .fakeimg {
+  width: 20%;
+  height: 200px;
+}
+
+aside {
+  flex: 30%;
+  border-left: 1px dotted #999;
+  padding-left: 30px;
+}
+
+footer {
+  padding: 10px 20px;
+  background: #ddd;
+}
+
+.fakeimg {
+  background: #aaa;
+  width: 100%;
+  padding: 30px;
+  height: 200px;
+  text-align: center;
+}
+
+.fakeimg.aside-small {
+  background: #aaa;
+  width: 40%;
+  padding: 10px;
+  height: 100px;
+}
+
+aside .images {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  row-gap: 20px;
+}
