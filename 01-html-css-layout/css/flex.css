@@ -92,3 +92,7 @@ aside .images {
   justify-content: space-evenly;
   row-gap: 20px;
 }
+
+#section1 {
+    order: 1;
+}
