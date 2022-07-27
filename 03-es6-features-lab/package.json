@@ -1,0 +1,9 @@
+{
+  "name": "03-es6-features-lab",
+  "version": "1.0.0",
+  "description": "ECMAScript 6+ novelties demo",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-native-training.git",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0"
+}
