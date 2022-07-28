@@ -1,6 +1,6 @@
 async function f() {
   let promise = new Promise((resolve, reject) => {
-    setTimeout(() => reject("Task completed with error."), 2000);
+    setTimeout(() => resolve("Task completed successfully."), 2000);
   });
 
   console.log('Start.'); // "start!"

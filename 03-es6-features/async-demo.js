@@ -3,9 +3,9 @@ async function f() {
   return Promise.resolve(1);
 }
 async function g() {
-  return Promise.reject("Error!!!");
+  // return Promise.reject("Error!!!");
   // throw "Error!!!";
-  // return 2;
+  return 2;
 }
 
 // console.log(g());

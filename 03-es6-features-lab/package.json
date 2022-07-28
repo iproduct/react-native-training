@@ -5,5 +5,11 @@
   "main": "index.js",
   "repository": "https://github.com/iproduct/react-native-training.git",
   "author": "Trayan Iliev",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
 }
