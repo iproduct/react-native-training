@@ -1,4 +1,4 @@
-// var a, b, rest;
+// let a, b, rest;
 // [a, b] = [1, 2];
 // console.log('before swap', a, b); 
 // [a, b] = [b, a];
@@ -18,8 +18,8 @@
 // ES7 
 // ({c, a, ...rest} = {a:1, b:2, c:3, d:4});
 // console.log(a); // 1
-// console.log(c); // 2
-// console.log(rest); // {c: 3, d: 4}
+// console.log(c); // 3
+// console.log(rest); // {b: 2, d: 4}
 
 // const obj = {a:1, b:2, c:3, d:4};
 
@@ -33,17 +33,21 @@
 // console.log(clone2);
 // console.log(clone2 === obj);
 
-var a = [[1], [2], [3]];
-var b = [ ...a, [4]]; // shallow copy
-var b = a.concat([[4]]); // shallow copy
+const a = [[1], [2], [3]];
+// var b = [ ...a, [4]]; // shallow copy
+// const b = a.concat([[4]]); // shallow copy
 
-// var b = [ ...JSON.parse(JSON.stringify(a)), [4]]; // deep copy
+const b = JSON.parse(JSON.stringify(a)); // deep copy of a
+
 console.log('b=', b);
-var [, c] = b;
+const [, c] = b;
+console.log(c);
 console.log(c.shift());
+console.log('b =', b);
+console.log('a = ', a);
 
 // console.log(b.shift().shift());
 
-console.log('a=', a);
-console.log('b=', b);
+// console.log('a=', a);
+// console.log('b=', b);
 

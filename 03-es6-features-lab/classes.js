@@ -12,11 +12,11 @@ class Person {
         this.lName = lName;
         this.adress = adress;
     }
-    getFullName() {
+    get fullName() {
         return `${this.fName} ${this.lName}`
     }
     toString() {
-        return `ID: ${this.id}, Name: ${this.getFullName()}, Address: ${this.adress}`;
+        return `ID: ${this.id}, Name: ${this.fullName}, Address: ${this.adress}`;
     }
 }
 

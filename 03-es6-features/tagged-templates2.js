@@ -13,10 +13,12 @@ function template(strings, ...keys) {
   let t1Closure = template`${0}${1}${0}!`;
   //let t1Closure = template(["","","","!"],0,1,0);
   console.log(t1Closure('Y', 'A'));                      // "YAY!"
+  console.log(t1Closure('E', 'H'));                      // "EHE!"
   
   let t2Closure = template`Result: ${0} ${'foo'}!`;
-  //let t2Closure = template([""," ","!"],0,"foo");
+  //let t2Closure = template(["Result: "," ","!"],0,"foo");
   console.log(t2Closure('Hello', {foo: 'World'})); // "Result: Hello World!"
+  console.log(t2Closure('Hi', {foo: 'JavaScript'})); // "Result: Hi JavaScript!"
   
   let t3Closure = template`I'm ${'name'}. I'm almost ${'age'} years old: ${0} `;
   //let t3Closure = template(["I'm ", ". I'm almost ", " years old."], "name", "age");
