@@ -1,4 +1,18 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#results {
+  display: flex;
+  flex-flow: row wrap;
+}
+
 img {
-    width: auto;
-    height: 400px;
+  width: auto;
+  height: 400px;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 1.7em;
 }

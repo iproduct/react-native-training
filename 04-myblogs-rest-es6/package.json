@@ -1,0 +1,13 @@
+{
+  "name": "04-myblogs-rest-es6",
+  "version": "1.0.0",
+  "description": "REST, HTTP, json-server with ES6+ web client demo",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-native-training",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "json-server": "^0.17.0",
+    "lite-server": "^2.6.1"
+  }
+}

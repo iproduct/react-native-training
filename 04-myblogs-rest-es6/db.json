@@ -1,0 +1,37 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "title": "json-server",
+            "content": "JSON Server is easy ...",
+            "tags": ["json-server", "rest", "api"],
+            "imageUrl": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
+            "authorId": 1
+        },
+        {
+            "id": 2,
+            "title": "Classes in ES6+",
+            "content": "Class syntax in ES6+ is very neat ...",
+            "tags": ["javascript", "es6", "class"],
+            "imageUrl": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg",
+            "authorId": 1
+        }
+    ],
+    "comments": [
+        {
+            "id": 1,
+            "body": "some comment",
+            "postId": 1
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "firstName": "John",
+            "lastName": "Smith",
+            "username": "john",
+            "password": "john123",
+            "role": "ADMIN"
+        }
+    ]
+}
