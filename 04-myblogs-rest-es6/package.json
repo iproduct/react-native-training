@@ -7,8 +7,8 @@
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
   "scripts":{
-    "api": "json-server db.json --routes routes.json",
-    "start": "lite-server"
+    "api": "json-server db.json --routes routes.json --port=30000",
+    "start": "lite-server --port 30001"
   },
   "devDependencies": {
     "json-server": "^0.17.0",
