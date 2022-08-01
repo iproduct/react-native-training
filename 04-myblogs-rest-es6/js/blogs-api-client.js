@@ -12,3 +12,21 @@ export async function getAllPosts() {
         return Promise.reject(err);
     }
 }
+
+export async function addNewPost(post) {
+    try {
+        const postResp = await fetch(API_BASE_URL, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(post)
+        });
+        if(postResp.status >= 400) {
+            return Promise.reject(postResp.body);
+        }
+        return postResp.json();
+    } catch(err) {
+        return Promise.reject(err);
+    }
+}

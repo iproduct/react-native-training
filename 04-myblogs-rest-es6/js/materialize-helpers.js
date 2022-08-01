@@ -1,4 +1,5 @@
+export let chipsInstances;
 document.addEventListener('DOMContentLoaded', function () {
-    var elems = document.querySelectorAll('.chips');
-    var instances = M.Chips.init(elems);
+    const elems = document.querySelectorAll('.chips');
+    chipsInstances = M.Chips.init(elems);
 });

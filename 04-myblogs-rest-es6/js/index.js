@@ -1,8 +1,10 @@
 import { getAllPosts } from './blogs-api-client.js';
-import './materialize-helpers.js';
+import { chipsIntances } from './materialize-helpers.js';
 
 const postsSection = document.getElementById("posts");
 const erorrsDiv = document.getElementById("errors");
+const addPostForm = document.getElementById("add-post-form");
+addPostForm.addEventListener('submit', handleSubmitPost);
 
 async function init() {
     try {
@@ -41,5 +43,18 @@ export function addPost(post) {
     `;
     postsSection.insertAdjacentElement("beforeend", postElem);
 }
+
+function handleSubmitPost(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const newPost = {};
+  for(const entry of formData.entries()) {
+    newPost[entry[0]] = entry[1];
+  }
+  const tags = chipsIntances[0].chipsData.map(chips => chips.tag);
+  newPost['tags'] = tags;
+  console.log(JSON.stringify(newPost));
+}
+
 
 init()
