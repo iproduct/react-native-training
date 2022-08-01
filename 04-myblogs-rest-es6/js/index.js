@@ -1,4 +1,5 @@
-import { getAllPosts } from "./blogs-api-client.js";
+import { getAllPosts } from './blogs-api-client.js';
+import './materialize-helpers.js';
 
 const postsSection = document.getElementById("posts");
 const erorrsDiv = document.getElementById("errors");
@@ -22,7 +23,7 @@ export function showError(err){
 
 export function addPost(post) {
     const postElem = document.createElement('article');
-    postElem.className = "col s12 m4";
+    postElem.className = "col s12 m6 l4";
     postElem.innerHTML = `
     <div class="card">
     <div class="card-image waves-effect waves-block waves-light">
