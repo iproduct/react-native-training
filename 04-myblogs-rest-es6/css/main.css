@@ -15,6 +15,15 @@ body {
     text-align: center;
 }
 
+.card {
+    margin: 15px;
+}
+
+div.card-image {
+    height: 300px;
+    padding: 20px;
+}
+
 .card-image image {
     width: 90%;
 }
