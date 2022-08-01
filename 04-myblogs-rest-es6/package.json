@@ -6,6 +6,10 @@
   "repository": "https://github.com/iproduct/react-native-training",
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
+  "scripts":{
+    "api": "json-server db.json --routes routes.json",
+    "start": "lite-server"
+  },
   "devDependencies": {
     "json-server": "^0.17.0",
     "lite-server": "^2.6.1"
