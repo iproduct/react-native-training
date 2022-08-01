@@ -14,3 +14,7 @@ body {
     color: red;
     text-align: center;
 }
+
+.card-image image {
+    width: 90%;
+}

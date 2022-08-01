@@ -22,15 +22,19 @@ export function showError(err){
 
 export function addPost(post) {
     const postElem = document.createElement('article');
+    postElem.className = "card col s12 m4";
     postElem.innerHTML = `
-        <h3 class="post-title">${post.title}</h3>
-        <img class="post-img" src=${post.imageUrl}>
-        <div class="post-content">
-            <div class="post-metadata">
-                Author: ${post.authorId}, Tags: ${post.tags ? post.tags.join(', ') : 'no tags'}
-            </div>
-            <div class="post-text">${post.content}</div>
-        </div>
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="${post.imageUrl}">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4">${post.title}<i class="material-icons right">more_vert</i></span>
+      <p>Author: ${post.authorId}, Tags: ${post.tags ? post.tags.join(', ') : 'no tags'}</p>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">${post.title}<i class="material-icons right">close</i></span>
+      <p>${post.content}</p>
+    </div>
     `;
     postsSection.insertAdjacentElement("beforeend", postElem);
 }
