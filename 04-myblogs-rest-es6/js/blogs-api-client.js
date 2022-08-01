@@ -1,5 +1,5 @@
 
-const API_BASE_URL = "http://localhost:30000/api/posts";
+const API_BASE_URL = "http://localhost:3000/api/posts";
 
 export async function getAllPosts() {
     try {

@@ -1,14 +1,23 @@
-import { getAllPosts } from "./blogs-api-client";
+import { getAllPosts } from "./blogs-api-client.js";
 
 const postsSection = document.getElementById("posts");
+const erorrsDiv = document.getElementById("errors");
 
-function init() {
-    const allPosts = getAllPosts();
-    showPosts(allPosts);
+async function init() {
+    try {
+        const allPosts = await getAllPosts();
+        showPosts(allPosts);
+    } catch (err) {
+        showError(err);
+    }
 }
 
 export function showPosts(posts) {
     posts.forEach(post => addPost(post));
+}
+
+export function showError(err){
+    erorrsDiv.innerHTML = `<div>${err}</div>`;
 }
 
 export function addPost(post) {
@@ -21,7 +30,7 @@ export function addPost(post) {
             <div class="post-text">${post.content}</div>
         </div>
     `;
-    postsSection.insertAdjacentElement("beforeend", postsElem);
+    postsSection.insertAdjacentElement("beforeend", postElem);
 }
 
 init()
