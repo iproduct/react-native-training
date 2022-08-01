@@ -22,8 +22,9 @@ export function showError(err){
 
 export function addPost(post) {
     const postElem = document.createElement('article');
-    postElem.className = "card col s12 m4";
+    postElem.className = "col s12 m4";
     postElem.innerHTML = `
+    <div class="card">
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src="${post.imageUrl}">
     </div>
@@ -34,6 +35,7 @@ export function addPost(post) {
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4">${post.title}<i class="material-icons right">close</i></span>
       <p>${post.content}</p>
+    </div>
     </div>
     `;
     postsSection.insertAdjacentElement("beforeend", postElem);
