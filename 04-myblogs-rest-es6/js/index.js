@@ -26,7 +26,9 @@ export function addPost(post) {
         <h3 class="post-title">${post.title}</h3>
         <img class="post-img" src=${post.imageUrl}>
         <div class="post-content">
-            <div class="post-metadata">Author: ${post.authorId}, Tags: ${post.tags.join(', ')}</div>
+            <div class="post-metadata">
+                Author: ${post.authorId}, Tags: ${post.tags ? post.tags.join(', ') : 'no tags'}
+            </div>
             <div class="post-text">${post.content}</div>
         </div>
     `;
