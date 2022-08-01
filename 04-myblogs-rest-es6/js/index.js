@@ -1,32 +1,33 @@
-import { getAllPosts } from './blogs-api-client.js';
-import { chipsIntances } from './materialize-helpers.js';
+import { addNewPost, getAllPosts } from './blogs-api-client.js';
+import { chipsInstances } from './materialize-helpers.js';
 
 const postsSection = document.getElementById("posts");
 const erorrsDiv = document.getElementById("errors");
 const addPostForm = document.getElementById("add-post-form");
 addPostForm.addEventListener('submit', handleSubmitPost);
+addPostForm.addEventListener('reset', resetForm);
 
 async function init() {
-    try {
-        const allPosts = await getAllPosts();
-        showPosts(allPosts);
-    } catch (err) {
-        showError(err);
-    }
+  try {
+    const allPosts = await getAllPosts();
+    showPosts(allPosts);
+  } catch (err) {
+    showError(err);
+  }
 }
 
 export function showPosts(posts) {
-    posts.forEach(post => addPost(post));
+  posts.forEach(post => addPost(post));
 }
 
-export function showError(err){
-    erorrsDiv.innerHTML = `<div>${err}</div>`;
+export function showError(err) {
+  erorrsDiv.innerHTML = `<div>${err}</div>`;
 }
 
 export function addPost(post) {
-    const postElem = document.createElement('article');
-    postElem.className = "col s12 m6 l4";
-    postElem.innerHTML = `
+  const postElem = document.createElement('article');
+  postElem.className = "col s12 m6 l4";
+  postElem.innerHTML = `
     <div class="card">
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src="${post.imageUrl}">
@@ -41,20 +42,33 @@ export function addPost(post) {
     </div>
     </div>
     `;
-    postsSection.insertAdjacentElement("beforeend", postElem);
+  postsSection.insertAdjacentElement("beforeend", postElem);
 }
 
-function handleSubmitPost(event) {
-  event.preventDefault();
-  const formData = new FormData(event.target);
-  const newPost = {};
-  for(const entry of formData.entries()) {
-    newPost[entry[0]] = entry[1];
+async function handleSubmitPost(event) {
+  try {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newPost = {};
+    for (const entry of formData.entries()) {
+      newPost[entry[0]] = entry[1];
+    }
+    const tags = chipsInstances[0].chipsData.map(chips => chips.tag);
+    newPost['tags'] = tags;
+    const created = await addNewPost(newPost);
+    addPost(created);
+    resetForm();
+  } catch (err) {
+    showError(err);
   }
-  const tags = chipsIntances[0].chipsData.map(chips => chips.tag);
-  newPost['tags'] = tags;
-  console.log(JSON.stringify(newPost));
 }
 
+export function resetForm() {
+  addPostForm.reset();
+  const instance = chipsInstances[0];
+  while(instance.chipsData.length > 0) {
+    instance.deleteChip(0);
+  }
+}
 
 init()
