@@ -24,8 +24,11 @@ export function showError(err) {
   erorrsDiv.innerHTML = `<div>${err}</div>`;
 }
 
+
+
 export function addPost(post) {
   const postElem = document.createElement('article');
+  postElem.setAttribute('id', post.id);
   postElem.className = "col s12 m6 l4";
   postElem.innerHTML = `
     <div class="card">
@@ -40,9 +43,18 @@ export function addPost(post) {
       <span class="card-title grey-text text-darken-4">${post.title}<i class="material-icons right">close</i></span>
       <p>${post.content}</p>
     </div>
+    <div class="card-action">
+      <button class="btn waves-effect waves-light" type="button" id="edit">Edit
+        <i class="material-icons right">send</i>
+      </button>
+      <button class="btn waves-effect waves-light red lighten-1" type="button" id="delete">Delete
+        <i class="material-icons right">clear</i>
+      </button>
+    </div>
     </div>
     `;
   postsSection.insertAdjacentElement("beforeend", postElem);
+  postElem.querySelector('#delete').addEventListener('click', event => deletePost(post.id))
 }
 
 async function handleSubmitPost(event) {
@@ -70,5 +82,10 @@ export function resetForm() {
     instance.deleteChip(0);
   }
 }
+
+export function deletePost(postId) {
+  console.log(postId);
+}
+
 
 init()
