@@ -20,14 +20,14 @@ export class PointImpl implements Point{
     }
 }
 
-// interface Point {
-//     [key: string]: number
-// }
+interface PointDict {
+    [key: string]: number
+}
 
 // Exactly the same as the earlier example
 function printCoord(pt: Point) {
     for (const key in pt) {
-        console.log(`The coordinate's ${key} value is ${pt[key]}`);
+        console.log(`The coordinate's ${key} value is ${(pt as unknown as PointDict)[key]}`);
     }
 }
 
