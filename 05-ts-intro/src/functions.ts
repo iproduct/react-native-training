@@ -1,3 +1,5 @@
+import { PointImpl } from "./interfaces.js";
+
 type PrinterFunc = {
     (a: string): void;
     description: string;
@@ -64,13 +66,15 @@ console.log(firstElement([42, 123])!.toExponential())
 console.log(firstElement([]))
 
 
-function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
+function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] { // HOF
     return arr.map(func);
 }
 
 // Parameter 'n' is of type 'string'
 // 'parsed' is of type 'number[]'
 const parsed = map(["1", "2", "3"], (n) => parseInt(n));
-const parsed = map(["1", "2", "3"], (n) => parseInt(n));
+const results = map([new PointImpl(1, 2, 3), new PointImpl(4.5, 5, 6), new PointImpl(7, 8, 9),],
+    p => p.format());
 
 console.log(parsed)
+console.log(results)
