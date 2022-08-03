@@ -1,0 +1,239 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "content": "JSON Server is easy ...",
+      "tags": [
+        "json-server",
+        "rest",
+        "api"
+      ],
+      "imageUrl": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
+      "authorId": 1
+    },
+    {
+      "id": 2,
+      "title": "Classes in ES6+",
+      "content": "Class syntax in ES6+ is very neat ...",
+      "tags": [
+        "javascript",
+        "es6",
+        "class"
+      ],
+      "imageUrl": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg",
+      "authorId": 1
+    },
+    {
+      "id": 3,
+      "title": "REST Client Super Advanced",
+      "content": "REST Client is relatively easy ...",
+      "tags": [
+        "rest",
+        "rest-client",
+        "http",
+        "easy"
+      ],
+      "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
+      "authorId": 1
+    },
+    {
+      "title": "Promises vs. Async/Await",
+      "content": "Async and await syntax is easy to learn ...",
+      "tags": [
+        "async",
+        "await",
+        "promise",
+        "javascript"
+      ],
+      "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
+      "authorId": 1,
+      "id": 4
+    },
+    {
+      "title": "New Blog",
+      "author": "1",
+      "content": "New blog text here ...\nMore text ...",
+      "url": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
+      "tags": [
+        "new",
+        "blog",
+        "here"
+      ],
+      "id": 5
+    },
+    {
+      "title": "Anoter Blog",
+      "authorId": "1",
+      "content": "Another blog text ...",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "another",
+        "blog"
+      ],
+      "id": 6
+    },
+    {
+      "title": "sasad",
+      "authorId": "adasda",
+      "content": "asdsada",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "asadad",
+        "aassadsad"
+      ],
+      "id": 7
+    },
+    {
+      "title": "wdedew",
+      "authorId": "1",
+      "content": "dwqdw",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "saddas",
+        "asdasd"
+      ],
+      "id": 8
+    },
+    {
+      "title": "sxsa",
+      "authorId": "1",
+      "content": "qswqsq",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "aaa"
+      ],
+      "id": 9
+    },
+    {
+      "title": "ddew",
+      "authorId": "1",
+      "content": "edwwedew",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 10
+    },
+    {
+      "title": "ddew",
+      "authorId": "1",
+      "content": "edwwedew",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 11
+    },
+    {
+      "title": "ddew",
+      "authorId": "1",
+      "content": "edwwedew",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 12
+    },
+    {
+      "title": "wswqs",
+      "authorId": "1",
+      "content": "qwsdsads",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 13
+    },
+    {
+      "title": "dwqeedewq",
+      "authorId": "1",
+      "content": "sdxwsq",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 14
+    },
+    {
+      "title": "saSA",
+      "authorId": "1",
+      "content": "ASSADSA",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [],
+      "id": 15
+    },
+    {
+      "title": "",
+      "authorId": "",
+      "content": "",
+      "imageUrl": "",
+      "tags": [],
+      "id": 16
+    },
+    {
+      "title": "wdwed",
+      "authorId": "",
+      "content": "",
+      "imageUrl": "",
+      "tags": [],
+      "id": 17
+    },
+    {
+      "title": "",
+      "authorId": "",
+      "content": "",
+      "imageUrl": "",
+      "tags": [],
+      "id": 18
+    },
+    {
+      "title": "dwedwed",
+      "authorId": "",
+      "content": "",
+      "imageUrl": "",
+      "tags": [],
+      "id": 19
+    },
+    {
+      "title": "ededew",
+      "authorId": "1",
+      "content": "dewedew",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "dwedeewdew"
+      ],
+      "id": 20
+    },
+    {
+      "title": "cedwceedc",
+      "authorId": "ececece",
+      "content": "cecece",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "aa",
+        "bbb"
+      ],
+      "id": 21
+    },
+    {
+      "title": "aaaa",
+      "authorId": "1",
+      "content": "dcdscdscdscds",
+      "imageUrl": "https://assets.logitech.com/assets/64683/performance-mouse-mx.png",
+      "tags": [
+        "aaa",
+        "bbb",
+        "ccc"
+      ],
+      "id": 22
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Smith",
+      "username": "john",
+      "password": "john123",
+      "role": "ADMIN"
+    }
+  ]
+}
