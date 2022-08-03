@@ -1,7 +1,7 @@
 import { Post, PostCreateDto } from "./posts.js";
 import { IdType } from "./shared-types.js";
 
-const API_BASE_URL = "http://localhost:3000/api/posts";
+const API_BASE_URL = "http://localhost:4000/api/posts";
 
 export interface BlogsApiClient {
     getAllPosts(): Promise<Post[]>;
