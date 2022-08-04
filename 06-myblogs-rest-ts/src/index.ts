@@ -43,25 +43,43 @@ export function addPost(post: Post) {
       <p>${post.content}</p>
     </div>
     <div class="card-action">
-      <button class="btn waves-effect waves-light" type="button" id="edit">Edit
+      <button class="btn waves-effect waves-light" type="button" id="edit${post.id}">Edit
         <i class="material-icons right">send</i>
       </button>
-      <button class="btn waves-effect waves-light red lighten-1" type="button" id="delete">Delete
+      <button class="btn waves-effect waves-light red lighten-1" type="button" id="delete${post.id}">Delete
         <i class="material-icons right">clear</i>
       </button>
     </div>
     </div>
     `;
   postsSection.insertAdjacentElement("beforeend", postElem);
-  postElem.querySelector('#delete')!.addEventListener('click', event => deletePost(post.id))
+  postElem.querySelector(`#delete${post.id}`)!.addEventListener('click', event => deletePost(post.id))
+  postElem.querySelector(`#edit${post.id}`)!.addEventListener('click', event => editPost(post))
 }
+
+function editPost(post: Post) {
+  fillPostForm(post);
+  window.scrollTo(0,0);
+}
+
+function fillPostForm(post: Post) {
+  let field: keyof Post;
+  for(field in post) {
+    (document.getElementById(field) as HTMLFormElement).value = post[field];
+    const label = document.querySelector(`#add-post-form label[for=${field}]`);
+    if(label) {
+      label.className = 'active';
+    }
+  }
+}
+
 
 async function handleSubmitPost(event: SubmitEvent) {
   try {
     event.preventDefault();
     const formData = new FormData(addPostForm);
     type PostDict = {
-      [key:string]: string 
+      [key: string]: string
     };
     const np: PostDict = {};
     formData.forEach((value, key) => {
@@ -81,8 +99,13 @@ export function resetForm() {
   addPostForm.reset();
 }
 
-export function deletePost(postId: IdType) {
-  console.log(postId);
+export async function deletePost(postId: IdType) {
+  try {
+    await BlogsAPI.deletePostById(postId);
+    document.getElementById(postId.toString())?.remove();
+  } catch (err) {
+    showError(err);
+  }
 }
 
 
