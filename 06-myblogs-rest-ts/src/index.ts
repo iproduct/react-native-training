@@ -5,12 +5,24 @@ import { IdType } from './shared-types.js';
 const postsSection = document.getElementById("posts")!;
 const erorrsDiv = document.getElementById("errors")!;
 const addPostForm = document.getElementById("add-post-form")! as HTMLFormElement;
+const resetButton = document.getElementById("form-reset-button")! as HTMLButtonElement;
 addPostForm.addEventListener('submit', handleSubmitPost);
-addPostForm.addEventListener('reset', resetForm);
+resetButton.addEventListener('click', resetForm);
+
+interface AppState {
+  editedPost: Post | undefined;
+  allPosts: Post[]
+}
+
+const APP_STATE: AppState = {
+  editedPost: undefined,
+  allPosts: []
+}
 
 async function init() {
   try {
     const allPosts = await BlogsAPI.getAllPosts();
+    APP_STATE.allPosts = allPosts;
     showPosts(allPosts);
   } catch (err) {
     showError(err);
@@ -18,17 +30,27 @@ async function init() {
 }
 
 export function showPosts(posts: Post[]) {
-  posts.forEach(post => addPost(post));
+  posts.forEach(post => addPostDOM(post));
 }
 
 export function showError(err: any) {
   erorrsDiv.innerHTML = `<div>${err}</div>`;
 }
 
-export function addPost(post: Post) {
+export function addPostDOM(post: Post) {
   const postElem = document.createElement('article');
   postElem.setAttribute('id', post.id.toString());
   postElem.className = "col s12 m6 l4";
+  updateArticleInnerHtml(postElem, post);
+  postsSection.insertAdjacentElement("beforeend", postElem);
+}
+
+export function updatePostDOM(post: Post) {
+  const postElem = document.getElementById(post.id.toString())!;
+  updateArticleInnerHtml(postElem, post);
+}
+
+function updateArticleInnerHtml(postElem: HTMLElement, post: Post) {
   postElem.innerHTML = `
     <div class="card">
     <div class="card-image waves-effect waves-block waves-light">
@@ -52,22 +74,22 @@ export function addPost(post: Post) {
     </div>
     </div>
     `;
-  postsSection.insertAdjacentElement("beforeend", postElem);
   postElem.querySelector(`#delete${post.id}`)!.addEventListener('click', event => deletePost(post.id))
   postElem.querySelector(`#edit${post.id}`)!.addEventListener('click', event => editPost(post))
 }
 
 function editPost(post: Post) {
   fillPostForm(post);
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
+  APP_STATE.editedPost = post;
 }
 
 function fillPostForm(post: Post) {
   let field: keyof Post;
-  for(field in post) {
+  for (field in post) {
     (document.getElementById(field) as HTMLFormElement).value = post[field];
     const label = document.querySelector(`#add-post-form label[for=${field}]`);
-    if(label) {
+    if (label) {
       label.className = 'active';
     }
   }
@@ -86,9 +108,16 @@ async function handleSubmitPost(event: SubmitEvent) {
       np[key] = value.toString();
     })
     // const post = newPost as unknown as Post;
-    const newPost = new PostCreateDto(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1);
-    const created = await BlogsAPI.addNewPost(newPost);
-    addPost(created);
+    if (np.id) {
+      const post = new Post(parseInt(np.id), np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1);
+      const updated = await BlogsAPI.updatePost(post);
+      updatePostDOM(updated);
+      APP_STATE.editedPost = undefined;
+    } else {
+      const newPost = new PostCreateDto(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1);
+      const created = await BlogsAPI.addNewPost(newPost);
+      addPostDOM(created);
+    }
     resetForm();
   } catch (err) {
     showError(err);
@@ -96,7 +125,11 @@ async function handleSubmitPost(event: SubmitEvent) {
 }
 
 export function resetForm() {
-  addPostForm.reset();
+  if (APP_STATE.editedPost) {
+    fillPostForm(APP_STATE.editedPost);
+  } else {
+    addPostForm.reset();
+  }
 }
 
 export async function deletePost(postId: IdType) {
