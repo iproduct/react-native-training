@@ -1,4 +1,3 @@
-import { PostRepository } from './posts';
 import { NumberIdGenerator, Repository, RepositoryInMemoryImpl } from './repository.js';
 import { IdType } from "./shared-types.js";
 

@@ -105,9 +105,14 @@ class BlogsController {
       type PostDict = {
         [key: string]: string
       };
+      // type PostDict = {
+      //   [key in keyof Post]?: string
+      // };
+      // type PostDict = Optional<Post>;
+    
       const np: PostDict = {};
       formData.forEach((value, key) => {
-        np[key] = value.toString();
+        np[key as keyof Post] = value.toString();
       })
       // const post = newPost as unknown as Post;
       if (np.id) {
@@ -150,5 +155,9 @@ class NewBlogsController extends BlogsController {
     this.addPostForm
   }
 }
+
+type Optional<Type> = {
+  [Property in keyof Type]?: Type[Property];
+};
 
 blogsController.init();
