@@ -16,12 +16,12 @@ import { IdType } from './shared-types.js';
 class BlogsController {
   postsSection = document.getElementById("posts")!;
   erorrsDiv = document.getElementById("errors")!;
-  addPostForm = document.getElementById("add-post-form")! as HTMLFormElement;
+  protected addPostForm = document.getElementById("add-post-form")! as HTMLFormElement;
   resetButton = document.getElementById("form-reset-button")! as HTMLButtonElement;
 
   async init() {
-    this.addPostForm.addEventListener('submit', this.handleSubmitPost.bind(this));
-    this.resetButton.addEventListener('click', this.resetForm.bind(this));
+    this.addPostForm.addEventListener('submit', this.handleSubmitPost);
+    this.resetButton.addEventListener('click', this.resetForm);
     try {
       const allPosts = await BlogsAPI.getAllPosts();
       AppStateStore.allPosts = allPosts;
@@ -98,7 +98,7 @@ class BlogsController {
   }
   
   
-async handleSubmitPost(event: SubmitEvent) {
+  handleSubmitPost = async (event: SubmitEvent) => {
     try {
       event.preventDefault();
       const formData = new FormData(this.addPostForm);
@@ -126,7 +126,7 @@ async handleSubmitPost(event: SubmitEvent) {
     }
   }
   
- resetForm() {
+ resetForm = () => {
     if (AppStateStore.editedPost) {
       this.fillPostForm(AppStateStore.editedPost);
     } else {
@@ -145,4 +145,10 @@ async handleSubmitPost(event: SubmitEvent) {
 }
 
 const blogsController = new  BlogsController();
+class NewBlogsController extends BlogsController {
+  print() {
+    this.addPostForm
+  }
+}
+
 blogsController.init();
