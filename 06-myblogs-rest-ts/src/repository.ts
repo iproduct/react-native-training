@@ -13,6 +13,14 @@ interface IdGenerator<K> {
     getNextId(): K;
 }
 
+export class NumberIdGenerator implements IdGenerator<number> {
+    private nextId = 0;
+
+    getNextId(): number {
+        return ++ this.nextId;
+    }
+}
+
 export class RepositoryInMemoryImpl<K, V extends Identifiable<K>> implements Repository<K, V> {
     private entities = new Map<K,V>();
 
