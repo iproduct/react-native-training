@@ -15,9 +15,10 @@ body {
     text-align: center;
 }
 
-.card {
-    margin: 15px;
+.card .card-content {
+    height: 120px;
 }
+
 
 div.card-image {
     height: 300px;

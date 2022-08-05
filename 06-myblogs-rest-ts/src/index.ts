@@ -109,6 +109,7 @@ class BlogsController {
       //   [key in keyof Post]?: string
       // };
       // type PostDict = Optional<Post>;
+      // type MandatoryPost = Mandatory<PostDict>
     
       const np: PostDict = {};
       formData.forEach((value, key) => {
@@ -157,7 +158,11 @@ class NewBlogsController extends BlogsController {
 }
 
 type Optional<Type> = {
-  [Property in keyof Type]?: Type[Property];
+  readonly[Property in keyof Type]?: Type[Property];
+};
+
+type Mandatory<Type> = {
+  -readonly[Property in keyof Type]-?: Type[Property];
 };
 
 blogsController.init();
