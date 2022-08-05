@@ -41,17 +41,17 @@ class BlogsController {
 
   addPostDOM(post: Post) {
     const postElem = document.createElement('article');
-    postElem.setAttribute('id', post.id.toString());
+    postElem.setAttribute('id', post.id!.toString());
     postElem.className = "col s12 m6 l4";
     this.updateArticleInnerHtml(postElem, post);
     this.postsSection.insertAdjacentElement("beforeend", postElem);
   }
-  
+
   updatePostDOM(post: Post) {
-    const postElem = document.getElementById(post.id.toString())!;
+    const postElem = document.getElementById(post.id!.toString())!;
     this.updateArticleInnerHtml(postElem, post);
   }
-  
+
   private updateArticleInnerHtml(postElem: HTMLElement, post: Post) {
     postElem.innerHTML = `
       <div class="card">
@@ -79,14 +79,14 @@ class BlogsController {
     postElem.querySelector(`#delete${post.id}`)!.addEventListener('click', event => this.deletePost(post.id))
     postElem.querySelector(`#edit${post.id}`)!.addEventListener('click', event => this.editPost(post))
   }
-  
- editPost(post: Post) {
+
+  editPost(post: Post) {
     this.fillPostForm(post);
     window.scrollTo(0, 0);
     AppStateStore.editedPost = post;
   }
-  
- fillPostForm(post: Post) {
+
+  fillPostForm(post: Post) {
     let field: keyof Post;
     for (field in post) {
       (document.getElementById(field) as HTMLFormElement).value = post[field];
@@ -96,34 +96,19 @@ class BlogsController {
       }
     }
   }
-  
-  
+
+
   handleSubmitPost = async (event: SubmitEvent) => {
     try {
       event.preventDefault();
-      const formData = new FormData(this.addPostForm);
-      type PostDict = {
-        [key: string]: string
-      };
-      // type PostDict = {
-      //   [key in keyof Post]?: string
-      // };
-      // type PostDict = Optional<Post>;
-      // type MandatoryPost = Mandatory<PostDict>
-    
-      const np: PostDict = {};
-      formData.forEach((value, key) => {
-        np[key as keyof Post] = value.toString();
-      })
+      const post = this.getPostFormSnapshot();
       // const post = newPost as unknown as Post;
-      if (np.id) {
-        const post = new Post(parseInt(np.id), np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1);
+      if (post.id) {
         const updated = await BlogsAPI.updatePost(post);
         this.updatePostDOM(updated);
         AppStateStore.editedPost = undefined;
       } else {
-        const newPost = new PostCreateDto(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1);
-        const created = await BlogsAPI.addNewPost(newPost);
+        const created = await BlogsAPI.addNewPost(post);
         this.addPostDOM(created);
       }
       this.resetForm();
@@ -131,15 +116,27 @@ class BlogsController {
       this.showError(err);
     }
   }
-  
- resetForm = () => {
+
+  getPostFormSnapshot(): Post {
+    const formData = new FormData(this.addPostForm);
+    type PostDict = {
+      [key: string]: string
+    };
+    const np: PostDict = {};
+    formData.forEach((value, key) => {
+      np[key] = value.toString();
+    })
+    return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1, parseInt(np.id));
+  }
+
+  resetForm = () => {
     if (AppStateStore.editedPost) {
       this.fillPostForm(AppStateStore.editedPost);
     } else {
       this.addPostForm.reset();
     }
   }
-  
+
   async deletePost(postId: IdType) {
     try {
       await BlogsAPI.deletePostById(postId);
@@ -150,7 +147,7 @@ class BlogsController {
   }
 }
 
-const blogsController = new  BlogsController();
+const blogsController = new BlogsController();
 class NewBlogsController extends BlogsController {
   print() {
     this.addPostForm
@@ -158,11 +155,11 @@ class NewBlogsController extends BlogsController {
 }
 
 type Optional<Type> = {
-  readonly[Property in keyof Type]?: Type[Property];
+  readonly [Property in keyof Type]?: Type[Property];
 };
 
 type Mandatory<Type> = {
-  -readonly[Property in keyof Type]-?: Type[Property];
+  -readonly [Property in keyof Type]-?: Type[Property];
 };
 
 blogsController.init();
