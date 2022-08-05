@@ -1,7 +1,7 @@
 import { Post } from "./posts";
 
 export type ValidationConfig<T> = {
-    [P in keyof T]?: Validator | Validator[]
+    [P in keyof T]?: Validator //| Validator[]
 }
 
 export type ValidationResult<T> = {

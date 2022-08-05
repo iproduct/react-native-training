@@ -1,6 +1,7 @@
+import { ValidationConfig, ValidationResult } from './validate';
 import { AppStateStore } from './state-store.js';
 import { BlogsAPI } from './blogs-api-client.js';
-import { Post, PostCreateDto } from './posts.js';
+import { Post } from './posts.js';
 import { IdType } from './shared-types.js';
 
 
@@ -22,6 +23,8 @@ class BlogsController {
   async init() {
     this.addPostForm.addEventListener('submit', this.handleSubmitPost);
     this.resetButton.addEventListener('click', this.resetForm);
+    this.addPostForm.addEventListener('change', this.validateForm, true);
+
     try {
       const allPosts = await BlogsAPI.getAllPosts();
       AppStateStore.allPosts = allPosts;
@@ -76,7 +79,7 @@ class BlogsController {
       </div>
       </div>
       `;
-    postElem.querySelector(`#delete${post.id}`)!.addEventListener('click', event => this.deletePost(post.id))
+    postElem.querySelector(`#delete${post.id}`)!.addEventListener('click', event => this.deletePost(post.id!))
     postElem.querySelector(`#edit${post.id}`)!.addEventListener('click', event => this.editPost(post))
   }
 
@@ -140,26 +143,45 @@ class BlogsController {
   async deletePost(postId: IdType) {
     try {
       await BlogsAPI.deletePostById(postId);
-      document.getElementById(postId.toString())?.remove();
+      document.getElementById(postId!.toString())?.remove();
     } catch (err) {
       this.showError(err);
     }
   }
-}
 
-const blogsController = new BlogsController();
-class NewBlogsController extends BlogsController {
-  print() {
-    this.addPostForm
+  validateForm = (event: Event) => {
+    const validationResult: ValidationResult<Post> = {};
+    const config = AppStateStore.postFormValidationConfig;
+    const formSnapshot = this.getPostFormSnapshot();
+    let field: keyof ValidationConfig<Post>;
+    for (field in config) {
+      const validator = config[field];
+      if(validator !== undefined) {
+        try{
+          validator(formSnapshot[field]!.toString(), field);
+        } catch(err) {
+          validationResult[field] = [err as string];
+        }
+      }
+    }
+    this.showValidationErrors(validationResult);
+  }
+
+  showValidationErrors(validationResult: ValidationResult<Post>) {
+    AppStateStore.postFormErrors = [];
+    let field: keyof ValidationResult<Post>;
+    for (field in validationResult) {
+      const filedErrors = validationResult[field];
+      if (filedErrors !== undefined) {
+        for (const err of filedErrors) {
+          AppStateStore.postFormErrors.push(`${field} -> ${err}<br>`);
+        }
+      }
+    }
+    this.showError(AppStateStore.postFormErrors);
   }
 }
 
-type Optional<Type> = {
-  readonly [Property in keyof Type]?: Type[Property];
-};
-
-type Mandatory<Type> = {
-  -readonly [Property in keyof Type]-?: Type[Property];
-};
+const blogsController = new BlogsController();
 
 blogsController.init();

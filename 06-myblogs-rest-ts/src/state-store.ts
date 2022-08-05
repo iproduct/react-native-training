@@ -4,7 +4,8 @@ import { ValidationConfig, Validators } from "./validate.js";
 export interface AppState {
     editedPost: Post | undefined;
     allPosts: Post[],
-    postFormValidationConfig: ValidationConfig<Post>
+    postFormValidationConfig: ValidationConfig<Post>,
+    postFormErrors: string[]
 }
 
 export const AppStateStore: AppState = {
@@ -12,5 +13,6 @@ export const AppStateStore: AppState = {
     allPosts: [],
     postFormValidationConfig: {
         title: Validators.required()
-    }
+    },
+    postFormErrors: []
 }

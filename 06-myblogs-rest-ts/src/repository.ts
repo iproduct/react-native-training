@@ -1,4 +1,4 @@
-type Identifiable<K> = {id: K}
+type Identifiable<K> = {id: K }
 
 export interface Repository<K, V extends Identifiable<K>> {
     findAll(): V[];

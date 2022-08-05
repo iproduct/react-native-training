@@ -1,1 +1,1 @@
-export type IdType = number
+export type IdType = number | undefined
