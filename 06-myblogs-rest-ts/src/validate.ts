@@ -1,5 +1,4 @@
 import { Post } from "./posts";
-import { Optional } from "./shared-types";
 
 export type ValidationConfig<T> = {
     [P in keyof T]?: Validator //| Validator[]
