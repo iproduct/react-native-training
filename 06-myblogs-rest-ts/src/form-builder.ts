@@ -11,22 +11,43 @@ export interface FormComponent<State> {
     readonly initialValue?: State;
     reset(): void;
     validate(): string[]; // validation errors, empty [] in no errors
+    render(): string;
 }
 
-interface FormTextComponent extends FormComponent<string> {
+interface FormTextComponentType extends FormComponent<string> {
     multiline: boolean;
 }
-type FormCheckboxComponent = FormComponent<boolean>;
-interface FormNumberComponent extends FormComponent<number>{
+type FormCheckboxComponentType = FormComponent<boolean>;
+interface FormNumberComponentType extends FormComponent<number>{
     min: number;
     max: number;
 }
-interface FormUrlComponent extends FormComponent<string> {
+interface FormUrlComponentType extends FormComponent<string> {
     allowRelative: boolean;
     allowInsecure: boolean;
 }
 
 export type FormComponentType<Prop> =
-    Prop extends string ? FormTextComponent | FormUrlComponent :
-    Prop extends number ? FormNumberComponent :
-    Prop extends boolean ? FormCheckboxComponent: never;
+    Prop extends string ? FormTextComponent | FormUrlComponentType :
+    Prop extends number ? FormNumberComponentType :
+    Prop extends boolean ? FormCheckboxComponentType: never;
+
+    
+export class FormTextComponent implements FormTextComponentType {
+    multiline: boolean;
+    id: string;
+    value: string;
+    valid: ValidStatus;
+    changed: ChangedStatus;
+    initialValue?: string | undefined;
+    reset(): void {
+        throw new Error('Method not implemented.');
+    }
+    validate(): string[] {
+        throw new Error('Method not implemented.');
+    }
+    render(): string {
+        throw new Error('Method not implemented.');
+    }
+
+}
