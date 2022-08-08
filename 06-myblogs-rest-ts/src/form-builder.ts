@@ -113,4 +113,7 @@ export class FormWidget<Entity> {
     getFormSnapshot(): Entity | null { // TODO: implement me and remove null
         return null;
     }
+    render() {
+        return ``;
+    }
 }
