@@ -18,7 +18,7 @@ interface FormTextComponentType extends FormComponent<string> {
     multiline: boolean;
 }
 type FormCheckboxComponentType = FormComponent<boolean>;
-interface FormNumberComponentType extends FormComponent<number>{
+interface FormNumberComponentType extends FormComponent<number> {
     min: number;
     max: number;
 }
@@ -30,16 +30,18 @@ interface FormUrlComponentType extends FormComponent<string> {
 export type FormComponentType<Prop> =
     Prop extends string ? FormTextComponent | FormUrlComponentType :
     Prop extends number ? FormNumberComponentType :
-    Prop extends boolean ? FormCheckboxComponentType: never;
+    Prop extends boolean ? FormCheckboxComponentType : never;
 
-    
+
 export class FormTextComponent implements FormTextComponentType {
-    multiline: boolean;
-    id: string;
-    value: string;
-    valid: ValidStatus;
-    changed: ChangedStatus;
-    initialValue?: string | undefined;
+    constructor(
+        public id: string,
+        public value: string,
+        public initialValue = '',
+        public multiline: boolean = false,
+        public valid: ValidStatus = ValidStatus.INVALID,
+        public changed: ChangedStatus = ChangedStatus.PRISTINE
+    ) { }
     reset(): void {
         throw new Error('Method not implemented.');
     }
