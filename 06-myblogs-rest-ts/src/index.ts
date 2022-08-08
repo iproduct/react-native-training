@@ -1,8 +1,8 @@
-import { ValidationConfig, ValidationResult } from './validate';
+import { ValidationConfig, ValidationResult, FormFieldState, ValidStatus, ChangedStatus } from './validate';
 import { AppStateStore } from './state-store.js';
 import { BlogsAPI } from './blogs-api-client.js';
 import { Post } from './posts.js';
-import { IdType } from './shared-types.js';
+import { FormFieldDict, IdType } from './shared-types.js';
 
 
 // interface BlogControllerType {
@@ -32,6 +32,16 @@ class BlogsController {
     } catch (err) {
       this.showError(err);
     }
+
+    this.initFormState(this.addPostForm);
+  }
+
+  initFormState(formElement: HTMLFormElement) {
+    const formData = new FormData(formElement);
+    const np: FormFieldDict<FormFieldState> = {};
+    formData.forEach((value, key) => {
+      np[key] = new FormFieldState(ValidStatus.INVALID, ChangedStatus.PRISTINE);
+    })
   }
 
   showPosts(posts: Post[]) {
@@ -122,14 +132,11 @@ class BlogsController {
 
   getPostFormSnapshot(): Post {
     const formData = new FormData(this.addPostForm);
-    type PostDict = {
-      [key: string]: string
-    };
-    const np: PostDict = {};
+    const np: FormFieldDict<string> = {};
     formData.forEach((value, key) => {
       np[key] = value.toString();
     })
-    return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, parseInt(np.authorId) || 1, parseInt(np.id));
+    return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, np.authorId ? parseInt(np.authorId): undefined , parseInt(np.id));
   }
 
   resetForm = () => {
@@ -158,7 +165,8 @@ class BlogsController {
       const validator = config[field];
       if(validator !== undefined) {
         try{
-          validator(formSnapshot[field]!.toString(), field);
+          const fieldValue = formSnapshot[field]
+          validator(fieldValue? fieldValue.toString(): '', field);
         } catch(err) {
           validationResult[field] = [err as string];
         }
