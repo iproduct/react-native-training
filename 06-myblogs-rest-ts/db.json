@@ -59,6 +59,18 @@
       "imageUrl": "https://www.publicdomainpictures.net/pictures/40000/velka/robin-bird.jpg",
       "authorId": 1,
       "id": 24
+    },
+    {
+      "title": "New Post",
+      "content": "I know TypeScript!",
+      "tags": [
+        "type",
+        "script",
+        "matrix"
+      ],
+      "imageUrl": "https://cdn.mos.cms.futurecdn.net/sfgpCc8Ba2GFWVLcPmBzcM.jpg",
+      "authorId": 1,
+      "id": 25
     }
   ],
   "comments": [

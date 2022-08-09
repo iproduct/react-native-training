@@ -35,17 +35,25 @@ class BlogsController {
     this.postForm = new FormWidget<Post>(
       'add-post-form',
       {
-        id: new FormTextComponent('id', '', '', false, undefined, true),
+        id: new FormTextComponent('id', '', '', false, undefined, undefined, undefined, true),
         title: new FormTextComponent('title', '', '', false),
+        content: new FormTextComponent('content', '', '', true),
+        imageUrl: new FormTextComponent('imageUrl', '', '', false, 'Image URL'),
+        tags: new FormTextComponent('tags', '', '', false),
+        authorId: new FormTextComponent('authorId', '', '', false, 'Author ID'),
       } as FormWidgetElements<Post>,
       new Post('', '', [], '', 1, undefined),
       {}, // validator config
       (event) => {
         event.preventDefault();
-        console.log('Form submitted succssfully')
+        const post = this.postForm!.getFormSnapshot();
+        console.log('Form submitted succssfully:')
+        console.log(post);
+        this.addEditPost(post);
       }
     );
     this.addPostForm.innerHTML = this.postForm.render();
+    this.postForm.makeInteractive();
   }
 
   initFormState(formElement: HTMLFormElement) {
@@ -123,41 +131,21 @@ class BlogsController {
   }
 
 
-  // handleSubmitPost = async (event: SubmitEvent) => {
-  //   try {
-  //     event.preventDefault();
-  //     const post = this.getPostFormSnapshot();
-  //     // const post = newPost as unknown as Post;
-  //     if (post.id) {
-  //       const updated = await BlogsAPI.updatePost(post);
-  //       this.updatePostDOM(updated);
-  //       AppStateStore.editedPost = undefined;
-  //     } else {
-  //       const created = await BlogsAPI.addNewPost(post);
-  //       this.addPostDOM(created);
-  //     }
-  //     this.resetForm();
-  //   } catch (err) {
-  //     this.showError(err);
-  //   }
-  // }
-
-  // getPostFormSnapshot(): Post {
-  //   const formData = new FormData(this.addPostForm);
-  //   const np: FormFieldDict<string> = {};
-  //   formData.forEach((value, key) => {
-  //     np[key] = value.toString();
-  //   })
-  //   return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, np.authorId ? parseInt(np.authorId) : undefined, parseInt(np.id));
-  // }
-
-  // resetForm = () => {
-  //   if (AppStateStore.editedPost) {
-  //     this.fillPostForm(AppStateStore.editedPost);
-  //   } else {
-  //     this.addPostForm.reset();
-  //   }
-  // }
+  addEditPost = async (post: Post) => {
+    try {
+      if (post.id) {
+        const updated = await BlogsAPI.updatePost(post);
+        this.updatePostDOM(updated);
+        AppStateStore.editedPost = undefined;
+      } else {
+        const created = await BlogsAPI.addNewPost(post);
+        this.addPostDOM(created);
+      }
+      this.postForm?.reset();
+    } catch (err) {
+      this.showError(err);
+    }
+  }
 
   async deletePost(postId: IdType) {
     try {
