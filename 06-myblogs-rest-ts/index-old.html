@@ -33,7 +33,46 @@
             <h1 class="header center orange-text">MyBlogs ES6 Demo</h1>
 
             <!--Add/Edit blog form-->
-            <div id="post-form-container" class="row">
+            <div class="row">
+                <form id="add-post-form" class="col s12">
+                    <div class="row">
+                        <input id="id" name="id" hidden>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="title" name="title" type="text" class="validate">
+                            <label for="title">Blog Title</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="authorId" name="authorId" type="text" class="validate">
+                            <label for="authorId">Author ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="content" name="content" class="materialize-textarea"></textarea>
+                            <label for="content">Post Text</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="imageUrl" name="imageUrl" type="url" class="validate">
+                            <label for="imageUrl">Blog Image URL</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="tags" name="tags" type="text" class="tags">
+                            <label for="tags">Tags</label>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                    <button id="form-reset-button" class="btn waves-effect waves-light red lighten-1" type="button">Reset
+                        <i class="material-icons right">cached</i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>

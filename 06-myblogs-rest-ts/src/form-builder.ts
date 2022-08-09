@@ -1,4 +1,4 @@
-import { ValidStatus, ChangedStatus, Validator } from './validate';
+import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validate.js';
 export type FormComponents<Entity> = {
     [Prop in keyof Entity]?: FormComponent<Prop>
 }
@@ -46,6 +46,7 @@ export class FormTextComponent implements FormTextComponentType {
         public initialValue = '',
         public multiline: boolean = false,
         public validators?: Validator | Validator[],
+        public hidden: boolean = false,
         public valid: ValidStatus = ValidStatus.INVALID,
         public changed: ChangedStatus = ChangedStatus.PRISTINE
     ) { }
@@ -85,8 +86,13 @@ export class FormTextComponent implements FormTextComponentType {
             <span class="helper-text" data-error="${this.validate().join(', ')}"></span>
         </div>
         `
+            : this.hidden ?
+                `
+            <input id="${this.id}" name="${this.id}" hidden>
+            
+        `
             :
-            `
+        `
         <div class="input-field col s12">
             <input id="${this.id}" name="${this.id}" type="text" class="validate ${validationErrors ? 'invalid' : 'valid'}"
                 value="${this.value}">
@@ -99,21 +105,84 @@ export class FormTextComponent implements FormTextComponentType {
 
 export class FormWidget<Entity> {
     constructor(
+        public formId: string,
         public elements: FormWidgetElements<Entity>,
-        public intitialValue: Entity
+        public intitialValue: Entity,
+        public validationConfig: ValidationConfig<Entity>,
+        public handleSubmit: (event: SubmitEvent) => void,
+        public valid: ValidStatus = ValidStatus.INVALID,
+        public changed: ChangedStatus = ChangedStatus.PRISTINE
     ) { }
-    reset(){
-        for(const elemId in this.elements){
+    // init() {
+    //     for (const elemId in this.intitialValue) {
+    //         this.elements[elemId].initialValue = this.intitialValue[elemId];
+    //     }
+    // }
+
+    reset = () => {
+        for (const elemId in this.elements) {
             this.elements[elemId].reset();
         }
     }
-    validate() {
-        return;
+    validate(): ValidationResult<Entity> {
+        const result: ValidationResult<Entity> = {};
+        this.valid = ValidStatus.VALID;
+        for (const elemId in this.elements) {
+            const fieldErrors = this.elements[elemId].validate();
+            if (fieldErrors && fieldErrors.length > 0) {
+                result[elemId] = fieldErrors;
+                this.valid = ValidStatus.INVALID;
+            }
+        }
+        return result;
     }
-    getFormSnapshot(): Entity | null { // TODO: implement me and remove null
-        return null;
+
+    getFormSnapshot(): Entity {
+        const result: Entity = { ...this.intitialValue };
+        for (const elemId in result) {
+            const elemValue = this.elements[elemId].value;
+            if (elemId in this.elements) {
+                switch (typeof result[elemId]) {
+                    case 'string':
+                        result[elemId] = elemValue as unknown as Entity[Extract<keyof Entity, string>];
+                        break;
+                    case 'number':
+                        result[elemId] = parseFloat(elemValue) as unknown as Entity[Extract<keyof Entity, string>];
+                        break;
+                    case 'boolean':
+                        result[elemId] = new Boolean(elemValue) as unknown as Entity[Extract<keyof Entity, string>];
+                        break;
+                    default:
+                        throw Error("Unexpected field type when getting form snapshot")
+                }
+            }
+        }
+        return result;
     }
+
     render() {
-        return ``;
+        let fieldsMarkup = '';
+        for (const elemId in this.elements) {
+            fieldsMarkup += `<div class="row">${this.elements[elemId].render()}</div>`;
+        }
+        return ` 
+        <form id="${this.formId}" class="col s12">
+            ${fieldsMarkup}
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+            <button id="${this.formId}-reset-button" class="btn waves-effect waves-light red lighten-1" type="button">Reset
+                <i class="material-icons right">cached</i>
+            </button>
+        </form>
+        `;
+    }
+
+    makeInteractive() {
+        const formElem = document.getElementById(this.formId)! as HTMLFormElement;
+        formElem.addEventListener('submit', this.handleSubmit);
+        const resetButton = document.getElementById(`${this.formId}-reset-button`)! as HTMLButtonElement;
+        resetButton.addEventListener('click', this. reset);
+        // formElem.addEventListener('change', this.validateForm, true);
     }
 }

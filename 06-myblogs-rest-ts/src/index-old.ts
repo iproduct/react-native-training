@@ -1,9 +1,8 @@
-import { ValidationConfig, ValidationResult, FormFieldState, ValidStatus, ChangedStatus } from './validate.js';
+import { ValidationConfig, ValidationResult, FormFieldState, ValidStatus, ChangedStatus } from './validate';
 import { AppStateStore } from './state-store.js';
 import { BlogsAPI } from './blogs-api-client.js';
 import { Post } from './posts.js';
 import { FormFieldDict, IdType } from './shared-types.js';
-import { FormTextComponent, FormWidget, FormWidgetElements } from './form-builder.js';
 
 
 // interface BlogControllerType {
@@ -18,11 +17,13 @@ import { FormTextComponent, FormWidget, FormWidgetElements } from './form-builde
 class BlogsController {
   postsSection = document.getElementById("posts")!;
   erorrsDiv = document.getElementById("errors")!;
-  protected addPostForm = document.getElementById("post-form-container")!;
-  private postForm?: FormWidget<Post>;
+  protected addPostForm = document.getElementById("add-post-form")! as HTMLFormElement;
+  resetButton = document.getElementById("form-reset-button")! as HTMLButtonElement;
 
   async init() {
-    // TODO this.addPostForm.addEventListener('change', this.validateForm, true);
+    this.addPostForm.addEventListener('submit', this.handleSubmitPost);
+    this.resetButton.addEventListener('click', this.resetForm);
+    this.addPostForm.addEventListener('change', this.validateForm, true);
 
     try {
       const allPosts = await BlogsAPI.getAllPosts();
@@ -32,20 +33,7 @@ class BlogsController {
       this.showError(err);
     }
 
-    this.postForm = new FormWidget<Post>(
-      'add-post-form',
-      {
-        id: new FormTextComponent('id', '', '', false, undefined, true),
-        title: new FormTextComponent('title', '', '', false),
-      } as FormWidgetElements<Post>,
-      new Post('', '', [], '', 1, undefined),
-      {}, // validator config
-      (event) => {
-        event.preventDefault();
-        console.log('Form submitted succssfully')
-      }
-    );
-    this.addPostForm.innerHTML = this.postForm.render();
+    this.initFormState(this.addPostForm);
   }
 
   initFormState(formElement: HTMLFormElement) {
@@ -123,41 +111,41 @@ class BlogsController {
   }
 
 
-  // handleSubmitPost = async (event: SubmitEvent) => {
-  //   try {
-  //     event.preventDefault();
-  //     const post = this.getPostFormSnapshot();
-  //     // const post = newPost as unknown as Post;
-  //     if (post.id) {
-  //       const updated = await BlogsAPI.updatePost(post);
-  //       this.updatePostDOM(updated);
-  //       AppStateStore.editedPost = undefined;
-  //     } else {
-  //       const created = await BlogsAPI.addNewPost(post);
-  //       this.addPostDOM(created);
-  //     }
-  //     this.resetForm();
-  //   } catch (err) {
-  //     this.showError(err);
-  //   }
-  // }
+  handleSubmitPost = async (event: SubmitEvent) => {
+    try {
+      event.preventDefault();
+      const post = this.getPostFormSnapshot();
+      // const post = newPost as unknown as Post;
+      if (post.id) {
+        const updated = await BlogsAPI.updatePost(post);
+        this.updatePostDOM(updated);
+        AppStateStore.editedPost = undefined;
+      } else {
+        const created = await BlogsAPI.addNewPost(post);
+        this.addPostDOM(created);
+      }
+      this.resetForm();
+    } catch (err) {
+      this.showError(err);
+    }
+  }
 
-  // getPostFormSnapshot(): Post {
-  //   const formData = new FormData(this.addPostForm);
-  //   const np: FormFieldDict<string> = {};
-  //   formData.forEach((value, key) => {
-  //     np[key] = value.toString();
-  //   })
-  //   return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, np.authorId ? parseInt(np.authorId) : undefined, parseInt(np.id));
-  // }
+  getPostFormSnapshot(): Post {
+    const formData = new FormData(this.addPostForm);
+    const np: FormFieldDict<string> = {};
+    formData.forEach((value, key) => {
+      np[key] = value.toString();
+    })
+    return new Post(np.title, np.content, np.tags.split(/\W+/), np.imageUrl, np.authorId ? parseInt(np.authorId): undefined , parseInt(np.id));
+  }
 
-  // resetForm = () => {
-  //   if (AppStateStore.editedPost) {
-  //     this.fillPostForm(AppStateStore.editedPost);
-  //   } else {
-  //     this.addPostForm.reset();
-  //   }
-  // }
+  resetForm = () => {
+    if (AppStateStore.editedPost) {
+      this.fillPostForm(AppStateStore.editedPost);
+    } else {
+      this.addPostForm.reset();
+    }
+  }
 
   async deletePost(postId: IdType) {
     try {
@@ -168,24 +156,24 @@ class BlogsController {
     }
   }
 
-  // validateForm = (event: Event) => {
-  //   const validationResult: ValidationResult<Post> = {};
-  //   const config = AppStateStore.postFormValidationConfig;
-  //   const formSnapshot = this.getPostFormSnapshot();
-  //   let field: keyof ValidationConfig<Post>;
-  //   for (field in config) {
-  //     const validator = config[field];
-  //     if (validator !== undefined) {
-  //       try {
-  //         const fieldValue = formSnapshot[field]
-  //         validator(fieldValue ? fieldValue.toString() : '', field);
-  //       } catch (err) {
-  //         validationResult[field] = [err as string];
-  //       }
-  //     }
-  //   }
-  //   this.showValidationErrors(validationResult);
-  // }
+  validateForm = (event: Event) => {
+    const validationResult: ValidationResult<Post> = {};
+    const config = AppStateStore.postFormValidationConfig;
+    const formSnapshot = this.getPostFormSnapshot();
+    let field: keyof ValidationConfig<Post>;
+    for (field in config) {
+      const validator = config[field];
+      if(validator !== undefined) {
+        try{
+          const fieldValue = formSnapshot[field]
+          validator(fieldValue? fieldValue.toString(): '', field);
+        } catch(err) {
+          validationResult[field] = [err as string];
+        }
+      }
+    }
+    this.showValidationErrors(validationResult);
+  }
 
   showValidationErrors(validationResult: ValidationResult<Post>) {
     AppStateStore.postFormErrors = [];

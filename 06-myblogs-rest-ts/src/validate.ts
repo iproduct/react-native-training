@@ -1,4 +1,4 @@
-import { Post } from "./posts";
+import { Post } from "./posts.js";
 
 export type ValidationConfig<T> = {
     [P in keyof T]?: Validator //| Validator[]
