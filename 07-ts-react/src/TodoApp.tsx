@@ -4,6 +4,7 @@ import './App.css';
 import { Todo, TodoStatus } from './todo.model';
 import MOCK_TODOS from './mock-todos';
 import TodoList from './TodoList';
+import TodoInput from './TodoInput';
 
 
 export type FilterType = TodoStatus | undefined;
@@ -50,6 +51,7 @@ class TodoApp extends Component<{}, TodoAppState> {
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
+          <TodoInput onCreateTodo={this.handleCreateTodo} />
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
