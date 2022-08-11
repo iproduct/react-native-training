@@ -13,6 +13,10 @@ interface TodoAppState {
   filter: FilterType;
 }
 
+export interface TodoListener {
+  (todo: Todo): void;
+}
+
 class TodoApp extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
     todos: MOCK_TODOS,
@@ -24,7 +28,13 @@ class TodoApp extends Component<{}, TodoAppState> {
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
-          <TodoList todos={this.state.todos} filter={this.state.filter} />
+          <TodoList 
+          todos={this.state.todos} 
+          filter={this.state.filter} 
+          onChangeStatus={(todo)=>{}}
+          onUpdate={(todo)=>{}}
+          onDelete={(todo)=>{}}
+          />
         </header>
       </div>
     );
