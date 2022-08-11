@@ -22,3 +22,22 @@
 .TodoItem-id {
     padding-right: 10px;
 }
+
+.TodoItem-button {
+    font-size: 18pt;
+    color: green;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.TodoItem-button:hover {
+  color: rgb(1,224,1);
+}
+
+.TodoItem-button.danger {
+  color: rgb(255, 80, 80)
+}
+
+.TodoItem-button.danger:hover {
+  color: rgb(255, 35, 21)
+}

@@ -22,18 +22,39 @@ class TodoApp extends Component<{}, TodoAppState> {
     todos: MOCK_TODOS,
     filter: undefined
   }
+  constructor(props: {}) {
+    super(props)
+    this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
+  }
+
+  handleUpdateTodo(todo: Todo) {
+    this.setState(({ todos }) => ({
+      todos: todos.map(td => td.id === todo.id ? todo : td)
+    }))
+  }
+
+  handleDeleteTodo = (todo: Todo) => {
+    this.setState(({ todos }) => ({
+      todos: todos.filter(td => td.id !== todo.id)
+    }))
+  }
+
+  handleCreateTodo = (todo: Todo) => {
+    this.setState(({ todos }) => ({
+      todos: todos.concat(todo)
+    }))
+  }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
-          <TodoList 
-          todos={this.state.todos} 
-          filter={this.state.filter} 
-          onChangeStatus={(todo)=>{}}
-          onUpdate={(todo)=>{}}
-          onDelete={(todo)=>{}}
+          <TodoList
+            todos={this.state.todos}
+            filter={this.state.filter}
+            onUpdate={this.handleUpdateTodo}
+            onDelete={this.handleDeleteTodo}
           />
         </header>
       </div>

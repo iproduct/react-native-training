@@ -6,7 +6,6 @@ import './TodoList.css'
 interface Props{
     todos: Todo[];
     filter: FilterType;
-    onChangeStatus: TodoListener
     onUpdate: TodoListener;
     onDelete: TodoListener;
 }
