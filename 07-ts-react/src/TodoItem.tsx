@@ -17,7 +17,7 @@ const TodoItem = ({ todo,onUpdate, onDelete }: TodoItemProps) => {
         <div className="TodoItem">
             <span className="TodoItem-text">
                 <span className="TodoItem-id">{todo.id}</span>
-                {todo.text}
+                {todo.text} - {todo.deadline.toDateString()}
             </span>
             <span className="TodoItem-right">
                 <span className="TodoItem-status">{TodoStatus[todo.status]}</span>

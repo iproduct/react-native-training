@@ -27,7 +27,7 @@ code {
 }
 
 
-input[type=text], select {
+input[type=text], input[type=date], select {
   font-size: 16pt;
   width: 100%;
   padding: 12px 20px;
