@@ -5,6 +5,7 @@ import { Todo, TodoStatus } from './todo.model';
 import MOCK_TODOS from './mock-todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
+import TodoFilter from './TodoFilter';
 
 
 export type FilterType = TodoStatus | undefined;
@@ -16,6 +17,10 @@ interface TodoAppState {
 
 export interface TodoListener {
   (todo: Todo): void;
+}
+
+export interface FilterChangeListener {
+  (filter: FilterType): void;
 }
 
 class TodoApp extends Component<{}, TodoAppState> {
@@ -46,12 +51,17 @@ class TodoApp extends Component<{}, TodoAppState> {
     }))
   }
 
+  handlefilterChange = (status: FilterType ) => {
+    this.setState({filter: status})
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
           <TodoInput onCreateTodo={this.handleCreateTodo} />
+          <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}

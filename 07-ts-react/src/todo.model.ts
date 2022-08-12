@@ -1,5 +1,5 @@
 export enum TodoStatus {
-    Active, Completed, Canceled
+    Active = 1, Completed, Canceled
 }
 
 export class Todo {
