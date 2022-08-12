@@ -14,6 +14,7 @@ export type FilterType = TodoStatus | undefined;
 interface TodoAppState {
   todos: Todo[];
   filter: FilterType;
+  errors: string | undefined;
 }
 
 export interface TodoListener {
@@ -27,7 +28,8 @@ export interface FilterChangeListener {
 class TodoApp extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
     todos: [],
-    filter: undefined
+    filter: undefined,
+    errors: undefined
   }
 
   constructor(props: {}) {
@@ -36,8 +38,12 @@ class TodoApp extends Component<{}, TodoAppState> {
   }
 
   async componentDidMount() {
-    const allTodos = await TodosAPI.findAll();
-    this.setState({todos: allTodos});
+    try {
+      const allTodos = await TodosAPI.findAll();
+      this.setState({ todos: allTodos, errors: undefined })
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
   }
 
   handleUpdateTodo(todo: Todo) {
@@ -58,8 +64,8 @@ class TodoApp extends Component<{}, TodoAppState> {
     }))
   }
 
-  handlefilterChange = (status: FilterType ) => {
-    this.setState({filter: status})
+  handlefilterChange = (status: FilterType) => {
+    this.setState({ filter: status })
   }
 
   render() {
@@ -67,6 +73,7 @@ class TodoApp extends Component<{}, TodoAppState> {
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
+          {this.state.errors && <div className="errors">{this.state.errors}</div>}
           <TodoInput onCreateTodo={this.handleCreateTodo} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList

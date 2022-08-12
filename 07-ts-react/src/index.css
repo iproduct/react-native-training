@@ -105,3 +105,12 @@ input[type=text], input[type=date], select {
   background-color: #555555;
   color: white;
 }
+
+.errors {
+  padding: 5px 20px;
+  border: 1px solid red;
+  border-radius: 5px;
+  background-color: rgb(252, 230, 230);
+  color: red;
+  text-align: center;
+}
