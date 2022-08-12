@@ -33,6 +33,10 @@ class TodoApp extends Component<{}, TodoAppState> {
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
   }
 
+  componentDidMount() {
+    
+  }
+
   handleUpdateTodo(todo: Todo) {
     this.setState(({ todos }) => ({
       todos: todos.map(td => td.id === todo.id ? todo : td)
