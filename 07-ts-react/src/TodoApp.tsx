@@ -6,6 +6,7 @@ import MOCK_TODOS from './mock-todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
+import { TodosAPI } from './rest-api-client';
 
 
 export type FilterType = TodoStatus | undefined;
@@ -25,16 +26,18 @@ export interface FilterChangeListener {
 
 class TodoApp extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
-    todos: MOCK_TODOS,
+    todos: [],
     filter: undefined
   }
+
   constructor(props: {}) {
     super(props)
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
   }
 
-  componentDidMount() {
-    
+  async componentDidMount() {
+    const allTodos = await TodosAPI.findAll();
+    this.setState({todos: allTodos});
   }
 
   handleUpdateTodo(todo: Todo) {

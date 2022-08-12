@@ -4,24 +4,24 @@ import { Todo } from "./todo.model.js";
 const API_BASE_URL = "http://localhost:4000/api/todos";
 
 export interface ApiClient<K, V extends Identifiable<K>>{
-    getAllPosts(): Promise<V[]>;
-    getPostById(id: K): Promise<V>;
-    addNewPost(entityWithoutId: Partial<V>): Promise<V>;
-    updatePost(entity: V): Promise<V>;
-    deletePostById(id: K): Promise<V>;
+    findAll(): Promise<V[]>;
+    findById(id: K): Promise<V>;
+    create(entityWithoutId: Partial<V>): Promise<V>;
+    update(entity: V): Promise<V>;
+    deleteById(id: K): Promise<V>;
 }
 
 export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,V> {
 
-    async getAllPosts(): Promise<V[]> {
+    async findAll(): Promise<V[]> {
         return this.handleRequest(API_BASE_URL);
     }
 
-    async getPostById(id: K): Promise<V> {
+    async findById(id: K): Promise<V> {
         return this.handleRequest(`${API_BASE_URL}/${id}`);
     }
 
-    async addNewPost(post: Partial<V>): Promise<V> {
+    async create(post: Partial<V>): Promise<V> {
         return this.handleRequest(API_BASE_URL, {
             method: 'POST',
             headers: {
@@ -31,7 +31,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         });
     }
 
-    async updatePost(post: V): Promise<V> {
+    async update(post: V): Promise<V> {
         return this.handleRequest(`${API_BASE_URL}/${post.id}`, {
             method: 'PUT',
             headers: {
@@ -41,7 +41,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         });
     }
 
-    async deletePostById(id: K): Promise<V> {
+    async deleteById(id: K): Promise<V> {
         return this.handleRequest(`${API_BASE_URL}/${id}`, {
             method: 'DELETE'
         });

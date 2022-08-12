@@ -3,13 +3,13 @@
     {
       "id":1,
       "text": "Create TODO APP using create-react-app",
-      "deadline": "2022-08-12T14:11:00",
+      "deadline": "2022-08-12",
       "status": 1
     },
     {
       "id":2,
       "text": "Connect to REST API in backend",
-      "deadline": "2022-08-12T15:11:00",
+      "deadline": "2022-08-12",
       "status": 1
     }
   ],

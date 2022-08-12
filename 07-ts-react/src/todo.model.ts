@@ -7,7 +7,7 @@ export class Todo {
     id = ++Todo.nextId;
     constructor(
         public text: string,
-        public deadline = new Date(),
+        public deadline = new Date().toDateString(),
         public status = TodoStatus.Active,
     ) {}
 }
