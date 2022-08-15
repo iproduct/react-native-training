@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import TodoApp from './TodoApp';
 import reportWebVitals from './reportWebVitals';
+import TodoAppFunction from './TodoAppFunction';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <TodoApp />
+    <TodoAppFunction />
   </React.StrictMode>
 );
 
