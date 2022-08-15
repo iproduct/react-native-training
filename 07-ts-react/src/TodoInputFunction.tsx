@@ -20,7 +20,7 @@ function TodoInputFunction({ onCreateTodo }: TodoInputProps) {
     const [todoFields, setTodoFields] = useState(innitialState);
     function handleTodoSubmit(event: React.FormEvent) {
         event.preventDefault();
-        onCreateTodo(new Todo(todoFields.text, new Date(todoFields.date).toDateString()));
+        onCreateTodo(new Todo(todoFields.text, new Date(todoFields.date).toISOString()));
         setTodoFields(innitialState);
     }
 

@@ -53,10 +53,16 @@ class TodoApp extends Component<{}, TodoAppState> {
     }))
   }
 
-  handleDeleteTodo = (todo: Todo) => {
-    this.setState(({ todos }) => ({
-      todos: todos.filter(td => td.id !== todo.id)
-    }))
+  handleDeleteTodo = async (todo: Todo) => {
+    try {
+      await TodosAPI.deleteById(todo.id);
+      this.setState(({ todos }) => ({
+        todos: todos.filter(td => td.id !== todo.id),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
   }
 
   handleCreateTodo = async (todo: Todo) => {

@@ -13,10 +13,10 @@
       "status": 1
     },
     {
-      "text": "Learn React hooks",
-      "deadline": "Tue Aug 16 2022",
+      "text": "Todo dates format change to ISO",
+      "deadline": "2022-08-16T00:00:00.000Z",
       "status": 1,
-      "id": 3
+      "id": 4
     }
   ],
   "posts": [
