@@ -1,28 +1,28 @@
 {
   "todos": [
     {
-      "id": 1,
-      "text": "Create TODO APP using create-react-app",
-      "deadline": "2022-08-12",
-      "status": 1
-    },
-    {
-      "id": 2,
-      "text": "Connect to REST API in backend",
-      "deadline": "2022-08-12",
-      "status": 1
-    },
-    {
-      "text": "Todo dates format change to ISO",
-      "deadline": "2022-08-16T00:00:00.000Z",
-      "status": 1,
-      "id": 4
-    },
-    {
-      "text": "wwqwqq",
+      "text": "Todo finally",
       "deadline": "2022-08-20T00:00:00.000Z",
       "status": 1,
       "id": 5
+    },
+    {
+      "text": "Better todo title",
+      "deadline": "2022-08-30T00:00:00.000Z",
+      "status": 1,
+      "id": 6
+    },
+    {
+      "text": "wwqwqq123",
+      "deadline": "2022-08-20T00:00:00.000Z",
+      "status": 5,
+      "id": 7
+    },
+    {
+      "text": "wqwqewqewqewq",
+      "deadline": "2022-08-16T00:00:00.000Z",
+      "status": 1,
+      "id": 8
     }
   ],
   "posts": [

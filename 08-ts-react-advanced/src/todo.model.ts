@@ -4,10 +4,10 @@ export enum TodoStatus {
 }
 
 export class Todo {
-    id: IdType;
     constructor(
         public text: string,
         public deadline = new Date().toDateString(),
         public status = TodoStatus.Active,
+        public id: IdType = undefined
     ) {}
 }

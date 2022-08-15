@@ -22,6 +22,7 @@ function TodoAppFunction() {
   const [todos, setTodos] = useState([] as Todo[])
   const [filter, setFilter] = useState(undefined as FilterType)
   const [errors, setErrors] = useState(undefined as Optional<string>)
+  const [editedTodo, setEditedTodo] = useState(undefined as Optional<Todo>)
 
   useEffect(() => {
     TodosAPI.findAll().then(allTodos => {
@@ -57,6 +58,10 @@ function TodoAppFunction() {
     }
   }
 
+  function handleEditTodo(todo: Todo){
+    setEditedTodo(todo);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -69,6 +74,7 @@ function TodoAppFunction() {
           filter={filter}
           onUpdate={handleUpdateTodo}
           onDelete={handleDeleteTodo}
+          onEdit={handleEditTodo}
         />
       </header>
     </div>

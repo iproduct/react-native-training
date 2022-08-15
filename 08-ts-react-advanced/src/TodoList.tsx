@@ -9,6 +9,7 @@ interface Props {
     filter: FilterType;
     onUpdate: TodoListener;
     onDelete: TodoListener;
+    onEdit: TodoListener;
 }
 
 export default function TodoList({ todos, filter, ...rest }: Props) {

@@ -8,12 +8,14 @@ import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
 import { TodosAPI } from './rest-api-client';
 import TodoInputFunction from './TodoInputFunction';
+import { Optional } from './shared-types';
 
 
 export type FilterType = TodoStatus | undefined;
 
 interface TodoAppState {
   todos: Todo[];
+  editedTodo: Optional<Todo>,
   filter: FilterType;
   errors: string | undefined;
 }
@@ -29,6 +31,7 @@ export interface FilterChangeListener {
 class TodoApp extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
     todos: [],
+    editedTodo: undefined,
     filter: undefined,
     errors: undefined
   }
@@ -67,14 +70,27 @@ class TodoApp extends Component<{}, TodoAppState> {
 
   handleCreateTodo = async (todo: Todo) => {
     try {
-      const created = await TodosAPI.create(todo);
-      this.setState(({ todos }) => ({
-        todos: todos.concat(created),
-        errors: undefined
-      }));
+      if (todo.id) { //edit todo
+        const updated = await TodosAPI.update(todo);
+        this.setState(({ todos }) => ({
+          todos: todos.map(td => td.id === updated.id ? updated : td),
+          errors: undefined,
+          editedTodo: undefined
+        }))
+      } else { // create todo
+        const created = await TodosAPI.create(todo);
+        this.setState(({ todos }) => ({
+          todos: todos.concat(created),
+          errors: undefined
+        }));
+      }
     } catch (err) {
       this.setState({ errors: err as string })
     }
+  }
+
+  handleEditTodo = (todo: Todo) => {
+    this.setState({ editedTodo: todo });
   }
 
   handlefilterChange = (status: FilterType) => {
@@ -87,13 +103,14 @@ class TodoApp extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>TODO Demo</h2>
           {this.state.errors && <div className="errors">{this.state.errors}</div>}
-          <TodoInputFunction onCreateTodo={this.handleCreateTodo} />
+          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
             onUpdate={this.handleUpdateTodo}
             onDelete={this.handleDeleteTodo}
+            onEdit={this.handleEditTodo}
           />
         </header>
       </div>

@@ -7,9 +7,10 @@ interface TodoItemProps {
     todo: Todo;
     onUpdate: TodoListener;
     onDelete: TodoListener;
+    onEdit: TodoListener;
 }
 
-const TodoItem = ({ todo,onUpdate, onDelete }: TodoItemProps) => {
+const TodoItem = ({ todo,onUpdate, onDelete, onEdit }: TodoItemProps) => {
     function handleCompletion(event: React.MouseEvent) {
         onUpdate({ ...todo, status: TodoStatus.Completed })
     }
@@ -27,6 +28,8 @@ const TodoItem = ({ todo,onUpdate, onDelete }: TodoItemProps) => {
                     <span className="TodoItem-button fas fa-times-circle danger"
                         onClick={() => onDelete(todo)}></span>
                 }
+                <span className="TodoItem-button fas fa-pen-to-square"
+                    onClick={() => onEdit(todo)}></span>
         </span>
         </div >
     )
