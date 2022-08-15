@@ -7,6 +7,7 @@ import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
 import { TodosAPI } from './rest-api-client';
+import TodoInputFunction from './TodoInputFunction';
 
 
 export type FilterType = TodoStatus | undefined;
@@ -74,7 +75,7 @@ class TodoApp extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>TODO Demo</h2>
           {this.state.errors && <div className="errors">{this.state.errors}</div>}
-          <TodoInput onCreateTodo={this.handleCreateTodo} />
+          <TodoInputFunction onCreateTodo={this.handleCreateTodo} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList
             todos={this.state.todos}
