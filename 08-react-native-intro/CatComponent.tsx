@@ -9,7 +9,7 @@ interface CatState {
   isHungry: boolean;
 }
 
-class Cat extends Component<CatProps, CatState> {
+class CatComponent extends Component<CatProps, CatState> {
   state: Readonly<CatState> = { isHungry: true };
 
   render() {
@@ -39,4 +39,4 @@ class Cat extends Component<CatProps, CatState> {
   }
 }
 
-export default Cat;
+export default CatComponent;
