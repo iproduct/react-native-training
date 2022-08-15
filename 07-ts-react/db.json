@@ -1,16 +1,22 @@
 {
   "todos": [
     {
-      "id":1,
+      "id": 1,
       "text": "Create TODO APP using create-react-app",
       "deadline": "2022-08-12",
       "status": 1
     },
     {
-      "id":2,
+      "id": 2,
       "text": "Connect to REST API in backend",
       "deadline": "2022-08-12",
       "status": 1
+    },
+    {
+      "text": "Learn React hooks",
+      "deadline": "Tue Aug 16 2022",
+      "status": 1,
+      "id": 3
     }
   ],
   "posts": [

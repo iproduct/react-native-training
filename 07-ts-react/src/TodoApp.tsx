@@ -59,10 +59,16 @@ class TodoApp extends Component<{}, TodoAppState> {
     }))
   }
 
-  handleCreateTodo = (todo: Todo) => {
-    this.setState(({ todos }) => ({
-      todos: todos.concat(todo)
-    }))
+  handleCreateTodo = async (todo: Todo) => {
+    try {
+      const created = await TodosAPI.create(todo);
+      this.setState(({ todos }) => ({
+        todos: todos.concat(created),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
   }
 
   handlefilterChange = (status: FilterType) => {
