@@ -25,7 +25,7 @@ export function UncontrolledFunctionForm() {
                 <input type="text" ref={experienceRef} />
             </label>
             <input type="submit" value="Submit" />
-            <input type="buton" onClick={(ev) => {experienceRef.current?.focus()}} value="Focuse Experience" />
+            <input type="button" onClick={(ev) => {experienceRef.current?.focus()}} value="Focuse Experience" />
         </form>
     );
 }
