@@ -22,7 +22,7 @@ class FancyForm extends React.Component {
         <h2 style={{color:this.props.color}}>Input Text (coror demo)</h2>
         <input type="text" ref={this.inputRef} />
         <FancyButton ref={this.buttonRef} onClick={this.props.onClick}>
-          Click me <ul><li>NOW</li><li>OR NEVER</li></ul>!
+          Click <b>me</b> <i>now</i>!
         </FancyButton>
       </div>
     );

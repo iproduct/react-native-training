@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { RenderProp } from './RenderProp';
 // import { RenderProp } from './RenderProp';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <RenderProp />
   </React.StrictMode>,
   document.getElementById('root')
 );
