@@ -103,7 +103,12 @@ class TodoApp extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>TODO Demo</h2>
           {this.state.errors && <div className="errors">{this.state.errors}</div>}
-          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo} />
+          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo}>
+            <label htmlFor='text'>What's to do next?</label>
+            <label htmlFor='deadline'>What's the deadline?</label>
+            This is a text
+            5
+          </TodoInput>
           <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList
             todos={this.state.todos}
