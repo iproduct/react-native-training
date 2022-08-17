@@ -11,7 +11,7 @@ const CommonComponents = () => {
           source={{
             uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
           }}
-          style={{ width: 400, height: 400 }}
+          style={{ width: 200, height: 200 }}
         />
       </View>
       <TextInput

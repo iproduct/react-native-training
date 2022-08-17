@@ -1,9 +1,9 @@
 import { Cat } from './cat-model';
 import { Component } from "react";
-import { Image, View, Text, StyleSheet } from 'react-native';
+import { Image, View, Text, StyleSheet, Button } from 'react-native';
 
 
-interface CatComponentProps {
+export interface CatComponentProps {
     cat: Cat;
 }
 
@@ -22,11 +22,20 @@ class CatComponent extends Component<CatComponentProps, CatComponentState>  {
                 <Image source={{
                     uri: this.props.cat.pictureUrl
                 }}
-                    style={{ width: '400px', height: '400px' }}
+                    style={{ width: 300, height: 300 }}
                 />
                 <Text style={styles.text}>
                     I am {this.props.cat.name} and I am {this.state.isHungry ? ' hungry ' : ' full '}!
                 </Text>
+                <Button
+                    onPress={() => {
+                        this.setState({isHungry: false})
+                    }}
+                    disabled={!this.state.isHungry}
+                    title={
+                        this.state.isHungry ? 'Pour me some milk, please!' : 'Thank you!'
+                    }
+                />
             </View>
         );
     }

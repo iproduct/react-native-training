@@ -19,7 +19,7 @@ class CatComponent extends Component<CatProps, CatState> {
           source={{
             uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
           }}
-          style={{ width: 300, height: 300 }}
+          style={{ width: 200, height: 200 }}
         />
         <Text>
           I am {this.props.name}, and I am
