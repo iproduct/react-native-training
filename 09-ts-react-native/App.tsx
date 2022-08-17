@@ -22,13 +22,13 @@ class App extends Component<{}, AppState> {
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <Text style={{ fontSize: 24 }}>Do you like cats?</Text>
-                <Image source={{
+                <Text style={styles.header}>Do you like cats?</Text>
+                {/* <Image source={{
                     uri: 'https://reactnative.dev/docs/assets/p_cat2.png'
                 }}
                     style={{ width: 400, height: 400 }}
-                />
-                <Text style={{ fontSize: 24 }}>How many cats?</Text>
+                /> */}
+                {/* <Text style={{ fontSize: 24 }}>How many cats?</Text>
                 <TextInput style={{
                     fontSize: 24,
                     padding: 5,
@@ -36,7 +36,7 @@ class App extends Component<{}, AppState> {
                     borderWidth: 1,
                 }} value={this.state.catsNumber}
                     onChangeText={this.handleCatsNumberChange}
-                />
+                /> */}
 
                 {/* <FlatList<Cat> data={CATS.filter((cat, index) => index < (this.state.catsNumber ? parseInt(this.state.catsNumber) : 0))}
                     renderItem={({ item: cat }) => <CatComponent key={cat.id} cat={cat} />}
@@ -58,12 +58,17 @@ class App extends Component<{}, AppState> {
 export default App;
 
 const styles = StyleSheet.create({
+    header : {
+        fontSize: 36,
+        padding: 20,
+        alignSelf: 'center',
+    },
     sectionHeader: {
         paddingTop: 2,
         paddingLeft: 10,
         paddingRight: 10,
         paddingBottom: 2,
-        fontSize: 14,
+        fontSize: 28,
         fontWeight: 'bold',
         backgroundColor: 'rgba(247,247,247,1.0)',
     }
