@@ -69,13 +69,13 @@ function TodoAppFunction() {
         {errors && <div className="errors">{errors}</div>}
         <TodoInputFunction onCreateTodo={handleCreateTodo} />
         <TodoFilter filter={filter} onFilterChange={filter => setFilter(filter)} />
-        <TodoList
+        {/* <TodoList
           todos={todos}
           filter={filter}
           onUpdate={handleUpdateTodo}
           onDelete={handleDeleteTodo}
           onEdit={handleEditTodo}
-        />
+        /> */}
       </header>
     </div>
   );

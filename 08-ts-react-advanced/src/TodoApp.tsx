@@ -116,6 +116,9 @@ class TodoApp extends Component<{}, TodoAppState> {
             onUpdate={this.handleUpdateTodo}
             onDelete={this.handleDeleteTodo}
             onEdit={this.handleEditTodo}
+            // render={todo => (
+            //   <div className='TodoItem'>{todo.id}: {todo.text} [{todo.deadline}] - {TodoStatus[todo.status]}</div>
+            // )}
           />
         </header>
       </div>

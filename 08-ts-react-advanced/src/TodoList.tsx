@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react";
 import { useMemo } from "react";
 import { Todo, TodoStatus } from "./todo.model";
 import { FilterType, TodoListener } from "./TodoApp";
@@ -10,6 +11,7 @@ interface Props {
     onUpdate: TodoListener;
     onDelete: TodoListener;
     onEdit: TodoListener;
+    // render: (todo: Todo) => JSX.Element
 }
 
 export default function TodoList({ todos, filter, ...rest }: Props) {
@@ -17,7 +19,7 @@ export default function TodoList({ todos, filter, ...rest }: Props) {
     const memizedVisibleTodos = useMemo(() => visibleTodos(todos, filter), [todos, filter]);
     return (<div className="TodoList">
         {
-            memizedVisibleTodos.map(todo =>
+            memizedVisibleTodos.map(todo =>  //render(todo))
                 <TodoItem todo={todo} key={todo.id} {...rest} />)
         }
     </div>)
