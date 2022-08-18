@@ -18,6 +18,7 @@
     "react-native": "0.69.4",
     "react-native-modal-datetime-picker": "^13.1.2",
     "react-native-paper": "5.0.0-rc.4",
+    "react-native-paper-dates": "^0.8.7",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {

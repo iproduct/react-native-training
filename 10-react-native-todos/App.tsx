@@ -9,7 +9,7 @@ import { Optional } from "./model/shared-types";
 import { Todo } from "./model/todo.model";
 import { FEMALE_CATS, MALE_CATS } from "./sample-cats";
 import { FilterType } from "./TodoApp";
-import { Provider as PaperProvider } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 interface AppState {
   errors: string | undefined;
@@ -84,7 +84,11 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <PaperProvider>
+      <PaperProvider theme={{...DefaultTheme, fonts:{
+        medium: {
+          padding: 0
+        }
+      }}}>
         <View style={{
           flex: 1,
           justifyContent: 'center',
