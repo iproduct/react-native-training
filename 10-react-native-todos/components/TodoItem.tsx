@@ -1,7 +1,8 @@
 import React from "react";
 import { TodoListener } from "../model/shared-types";
 import { Todo, TodoStatus } from "../model/todo.model"
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, } from "react-native";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 interface TodoItemProps {
     todo: Todo;
@@ -17,17 +18,20 @@ const TodoItem = ({ todo, onUpdate, onDelete, onEdit }: TodoItemProps) => {
     return (
         <View style={styles.todoItem}>
             <Text style={styles.todoText}>
-                <Text style={styles.todoItemId}>{todo.id}</Text>
-                {todo.text} - {new Date(todo.deadline).toDateString()}
+                {todo.id} {todo.text} - {new Date(todo.deadline).toDateString()}
             </Text>
+
             <View style={styles.todoItemRight}>
-                <Text style={styles.todoItemStatus}>{TodoStatus[todo.status]}</Text>
+                <Text style={styles.todoItemStatus}>{TodoStatus[todo.status].substring(0, 1)}</Text>
                 {todo.status === TodoStatus.Active ?
-                    <Button color="green" onPress={handleCompletion} title='Complete'/> :
-                    <Button color="red" onPress={() => onDelete(todo)} title='Delete'/>
+                    <FontAwesome.Button style={styles.button} name="check-circle" size={40} color="green" backgroundColor='transparent'
+                        onPress={handleCompletion} /> :
+                    // <Button color="green" onPress={handleCompletion} title='Complete'/> :
+                    <FontAwesome.Button style={styles.button} name="times-circle" size={40} color="red" backgroundColor='transparent'
+                        onPress={() => onDelete(todo)} />
                 }
-                <span className="TodoItem-button fas fa-pen-to-square"
-                    onClick={() => onEdit(todo)}></span>
+                <FontAwesome.Button style={styles.button} name="pencil-square" size={40} color="gray" backgroundColor='transparent'
+                    onPress={() => onEdit(todo)} />
             </View>
         </View >
     )
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
         border: 1,
     },
     todoText: {
-        width: '60%',
+        width: '65%',
         fontSize: 24,
     },
     todoItemId: {
@@ -55,16 +59,21 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     todoItemRight: {
-        width: '25%',
+        width: '35%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         gap: 15,
-        padding: 5,
+        padding: 0,
         backgroundImage: 'gray',
         border: 1
     },
     todoItemStatus: {
         fontSize: 24,
+    },
+    button: {
+        padding: 0,
+        width: 50,
+        height: 40,
     }
 });

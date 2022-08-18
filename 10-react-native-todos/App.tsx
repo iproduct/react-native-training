@@ -10,7 +10,6 @@ import { FEMALE_CATS, MALE_CATS } from "./sample-cats";
 import { FilterType } from "./TodoApp";
 
 interface AppState {
-    catsNumber: string;
     errors: string | undefined;
     todos: Todo[];
     filter: FilterType;
@@ -19,14 +18,10 @@ interface AppState {
 
 class App extends Component<{}, AppState> {
     state = {
-        catsNumber: '',
-        errors: 'I`m an error',
+        errors: '',
         todos: [],
         filter: undefined,
         editedTodo: undefined,
-    }
-    handleCatsNumberChange = (text: string) => {
-        this.setState({ catsNumber: text })
     }
 
     async componentDidMount() {
