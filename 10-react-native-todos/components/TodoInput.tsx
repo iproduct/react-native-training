@@ -1,5 +1,5 @@
 import React, { Component, ReactNode, Fragment, ReactElement, JSXElementConstructor } from 'react';
-import { Button, Text, TextInput, View, StyleSheet } from 'react-native';
+import { Button, Text, TextInput, View, StyleSheet, Platform } from 'react-native';
 import { Optional, TodoListener } from '../model/shared-types';
 import { Todo, TodoStatus } from '../model/todo.model';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -14,6 +14,7 @@ interface TodoInputState {
     id: string;
     text: string;
     deadline: string;
+    showDatepicker: boolean;
 }
 
 interface FieldToLabelMap {
@@ -24,7 +25,8 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
     state: Readonly<TodoInputState> = {
         id: this.props.todo?.id?.toString() || '',
         text: this.props.todo?.text || '',
-        deadline: this.props.todo?.deadline || new Date().toISOString()
+        deadline: this.props.todo?.deadline || new Date().toISOString(),
+        showDatepicker: false
     }
     handleTodoSubmit = () => {
         this.props.onCreateTodo(
@@ -55,12 +57,26 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
                 <TextInput style={styles.input} value={this.state.deadline}
                     onChangeText={this.handleFieldChanged.bind(this, 'deadline')}
                 />
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={new Date(this.state.deadline)}
-                    mode='date'
-                    is24Hour={true}
-                    onChange={(event, date) => this.handleFieldChanged('deadline', date ? date.toISOString().split('T')[0] : '')} />
+                {Platform.OS === 'web' ?
+                    <Text style={styles.label}>`DatePicker isn't available on your platform`</Text> :
+                    <>
+                        <Button
+                            onPress={() => this.setState({ showDatepicker: true })}
+                            title="Show picker!"
+                        />
+                        {
+                            this.state.showDatepicker && <DateTimePicker
+                                value={new Date(this.state.deadline)}
+                                mode='date'
+                                is24Hour={true}
+                                onChange={(event, date) => {
+                                    this.handleFieldChanged('deadline', date ? date.toISOString().split('T')[0] : '');
+                                    this.setState({ showDatepicker: false });
+                                }}
+                            />
+                        }
+                    </>
+                }
                 <Button color="green" onPress={this.handleTodoSubmit} title='Add TODO' />
                 <Button color="green" onPress={this.handletodoReset} title='Reset' />
             </View>
