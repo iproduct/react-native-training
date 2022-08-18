@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FlatList, Image, Text, TextInput, View, StyleSheet, SectionList } from "react-native";
 import { Cat } from "./cat-model";
 import CatComponent, { CatComponentProps } from "./CatComponent";
+import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import { TodosAPI } from "./dao/rest-api-client";
 import { Optional } from "./model/shared-types";
@@ -17,7 +18,7 @@ interface AppState {
 }
 
 class App extends Component<{}, AppState> {
-    state = {
+    state: AppState = {
         errors: '',
         todos: [],
         filter: undefined,
@@ -89,6 +90,7 @@ class App extends Component<{}, AppState> {
             }}>
                 <Text style={styles.header}>TODO Demo</Text>
                 {this.state.errors && <Text style={styles.errors}>{this.state.errors}</Text>}
+                <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo} />
                 <TodoList
                     todos={this.state.todos}
                     filter={this.state.filter}
