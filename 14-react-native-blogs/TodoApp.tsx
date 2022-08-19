@@ -8,7 +8,7 @@ import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
 import { TodosAPI } from './rest-api-client';
 import TodoInputFunction from './TodoInputFunction';
-import { Immutable, Optional } from './shared-types';
+import { Optional } from './shared-types';
 
 
 export type FilterType = TodoStatus | undefined;
@@ -20,16 +20,8 @@ interface TodoAppState {
   errors: string | undefined;
 }
 
-export interface TodoListener {
-  (todo: Todo): void;
-}
-
-export interface FilterChangeListener {
-  (filter: FilterType): void;
-}
-
 class TodoApp extends Component<{}, TodoAppState> {
-  state: Immutable<TodoAppState> = {
+  state: Readonly<TodoAppState> = {
     todos: [],
     editedTodo: undefined,
     filter: undefined,
