@@ -10,7 +10,6 @@ import { Todo } from "./model/todo.model";
 import { FEMALE_CATS, MALE_CATS } from "./sample-cats";
 import { FilterType } from "./TodoApp";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { Form } from "./components/formbuilder/Form";
 
 interface AppState {
   errors: string | undefined;
@@ -85,25 +84,17 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <Form<Todo> style={styles.form}
-        config={{
-          id: {
-            label: 'ID',
-          },
-          text: {
-            label: 'What to do next?',
-          },
-          status: {
-            label: 'Todo Status',
-          },
-          deadline: {
-            label: "What's the deadline?",
-          },
-        }}
-        initialValue={new Todo('test todo')}
-        onSubmit={(todo: Todo) => { }} />);
-
-    {/* <Text style={styles.header}>TODO Demo</Text>
+      <PaperProvider theme={{...DefaultTheme, fonts:{
+        medium: {
+          padding: 0
+        }
+      }}}>
+        <View style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Text style={styles.header}>TODO Demo</Text>
           {this.state.errors ? <Text style={styles.errors}>{this.state.errors}</Text>:<></>}
           <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo} />
           <TodoList
@@ -112,18 +103,16 @@ class App extends Component<{}, AppState> {
             onUpdate={this.handleUpdateTodo}
             onDelete={this.handleDeleteTodo}
             onEdit={this.handleEditTodo}
-          /> */}
+          />
+        </View>
+      </PaperProvider>
+    );
   }
 }
 
 export default App;
 
 const styles = StyleSheet.create({
-  form: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   header: {
     fontSize: 36,
     fontWeight: 'bold',

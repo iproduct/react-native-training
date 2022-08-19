@@ -1,47 +1,48 @@
+import { Component } from 'react';
+import { StyleProp, TextStyle } from 'react-native';
+import { FormComponent } from './FormComponent.js';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate.js';
-import { FormTextComponent } from './FormTextComponent.js';
-export type FormComponents<Entity> = {
-    [Prop in keyof Entity]?: FormComponent<Prop>
-}
 
-export interface FormComponent<State> {
-    id: string;
-    value: State;
-    valid: ValidStatus;
-    changed: ChangedStatus;
-    readonly initialValue?: State;
+export interface FormComponentConfig<V> {
+    id?: string;
+    label?: string;
+    onChange?: FormComponentListener<V>;
+    valid?: ValidStatus;
     validators?: Validator | Validator[];
-    reset(): void;
-    validate(): string[]; // validation errors, empty [] in no errors
-    render(): string;
+    multiline?: boolean;
+    labelStyles?: StyleProp<TextStyle>;
+    inputStyles?: StyleProp<TextStyle>;
 }
 
-export interface FormTextComponentType extends FormComponent<string> {
-    multiline: boolean;
+export type FormComponentConfigs<Entity> = {
+    [Prop in keyof Entity]?: FormComponentConfig<Entity[Prop]>
 }
 
-export type FormCheckboxComponentType = FormComponent<boolean>;
 
-export interface FormNumberComponentType extends FormComponent<number> {
-    min: number;
-    max: number;
+export interface FormComponentListener<V> {
+    (value: V): void;
 }
 
-export interface FormUrlComponentType extends FormComponent<string> {
-    allowRelative: boolean;
-    allowInsecure: boolean;
-}
 
-export type FormComponentType<Prop> =
-    Prop extends string ? FormTextComponent | FormUrlComponentType :
-    Prop extends number ? FormNumberComponentType :
-    Prop extends boolean ? FormCheckboxComponentType : never;
+
+// export type FormCheckboxComponentType = FormComponent<boolean>;
+
+// export interface FormNumberComponentType extends FormComponent<number> {
+//     min: number;
+//     max: number;
+// }
+
+// export interface FormUrlComponentType extends FormComponent<string> {
+//     allowRelative: boolean;
+//     allowInsecure: boolean;
+// }
+
+// export type FormComponentType<Prop> =
+//     Prop extends string ? FormTextComponent | FormUrlComponentType :
+//     Prop extends number ? FormNumberComponentType :
+//     Prop extends boolean ? FormCheckboxComponentType : never;
 
 // export type FormComponentUnionType =
 //   FormTextComponent | FormUrlComponentType | FormNumberComponentType | FormCheckboxComponentType;
-
-export type FormElements<Entity> = {
-    [Prop in keyof Entity]: FormComponentType<Prop>
-}
 
 
