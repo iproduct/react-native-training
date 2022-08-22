@@ -4,49 +4,50 @@ import { Cat } from "./cat-model";
 import CatComponent, { CatComponentProps } from "./CatComponent";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
-import { TodosAPI } from "./dao/rest-api-client";
+import { BlogsAPI, TodosAPI } from "./dao/rest-api-client";
 import { Optional } from "./model/shared-types";
 import { Todo } from "./model/todo.model";
 import { FEMALE_CATS, MALE_CATS } from "./sample-cats";
 import { FilterType } from "./TodoApp";
 import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Form } from "./components/formbuilder/Form";
+import { Post } from "./model/posts.model";
 
 interface AppState {
   errors: string | undefined;
-  todos: Todo[];
+  posts: Post[];
   filter: FilterType;
-  editedTodo: Optional<Todo>;
+  editedPost: Optional<Post>;
 }
 
 class App extends Component<{}, AppState> {
   state: AppState = {
     errors: '',
-    todos: [],
+    posts: [],
     filter: undefined,
-    editedTodo: undefined,
+    editedPost: undefined,
   }
 
   async componentDidMount() {
     try {
-      const allTodos = await TodosAPI.findAll();
-      this.setState({ todos: allTodos, errors: undefined })
+      const allPosts = await BlogsAPI.findAll();
+      this.setState({ posts: allPosts, errors: undefined })
     } catch (err) {
       this.setState({ errors: err as string })
     }
   }
 
-  handleUpdateTodo = (todo: Todo) => {
-    this.setState(({ todos }) => ({
-      todos: todos.map(td => td.id === todo.id ? todo : td)
+  handleUpdateTodo = (post: Post) => {
+    this.setState(({ posts }) => ({
+      posts: posts.map(td => td.id === post.id ? post : td)
     }))
   }
 
-  handleDeleteTodo = async (todo: Todo) => {
+  handleDeleteTodo = async (post: Post) => {
     try {
-      await TodosAPI.deleteById(todo.id);
-      this.setState(({ todos }) => ({
-        todos: todos.filter(td => td.id !== todo.id),
+      await BlogsAPI.deleteById(post.id);
+      this.setState(({ posts }) => ({
+        posts: posts.filter(p => p.id !== post.id),
         errors: undefined
       }));
     } catch (err) {
@@ -54,19 +55,19 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  handleCreateTodo = async (todo: Todo) => {
+  handleCreateTodo = async (post: Post) => {
     try {
-      if (todo.id) { //edit todo
-        const updated = await TodosAPI.update(todo);
-        this.setState(({ todos }) => ({
-          todos: todos.map(td => td.id === updated.id ? updated : td),
+      if (post.id) { //edit post
+        const updated = await BlogsAPI.update(post);
+        this.setState(({ posts }) => ({
+          posts: posts.map(p => p.id === updated.id ? updated : p),
           errors: undefined,
-          editedTodo: undefined
+          editedPost: undefined
         }))
-      } else { // create todo
-        const created = await TodosAPI.create(todo);
-        this.setState(({ todos }) => ({
-          todos: todos.concat(created),
+      } else { // create post
+        const created = await BlogsAPI.create(post);
+        this.setState(({ posts }) => ({
+          posts: posts.concat(created),
           errors: undefined
         }));
       }
@@ -75,8 +76,8 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  handleEditTodo = (todo: Todo) => {
-    this.setState({ editedTodo: todo });
+  handleEditTodo = (post: Post) => {
+    this.setState({ editedPost: post });
   }
 
   handlefilterChange = (status: FilterType) => {
@@ -85,23 +86,32 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <Form<Todo> style={styles.form}
+      <Form<Post> style={styles.form}
         config={{
           id: {
             label: 'ID',
           },
-          text: {
-            label: 'What to do next?',
+        title: {
+            label: 'Blog Title',
+          },
+          content: {
+            label: 'Blog Content',
+          },
+          tags: {
+          },
+          imageUrl: {
+            label: 'Blog Image URL',
           },
           status: {
-            label: 'Todo Status',
+            componentKind: 'FormDropdownComponent',
+            label: 'Blog Status',
           },
-          deadline: {
-            label: "What's the deadline?",
+          authorId: {
+            label: 'Author ID',
           },
         }}
-        initialValue={new Todo('test todo')}
-        onSubmit={(todo: Todo) => { }} />);
+        initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+        onSubmit={(todo: Post) => { }} />);
 
     {/* <Text style={styles.header}>TODO Demo</Text>
           {this.state.errors ? <Text style={styles.errors}>{this.state.errors}</Text>:<></>}

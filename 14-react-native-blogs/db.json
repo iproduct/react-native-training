@@ -37,6 +37,7 @@
       ],
       "imageUrl": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
       "authorId": 1,
+      "status": 1,
       "id": 1
     },
     {
@@ -49,6 +50,7 @@
       ],
       "imageUrl": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg",
       "authorId": 1,
+      "status": 1,
       "id": 2
     },
     {
@@ -62,6 +64,7 @@
         "easy"
       ],
       "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
+      "status": 1,
       "authorId": 1
     },
     {
@@ -73,6 +76,7 @@
       ],
       "imageUrl": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg",
       "authorId": 1,
+      "status": 1,
       "id": 23
     },
     {
@@ -84,6 +88,7 @@
       ],
       "imageUrl": "https://www.publicdomainpictures.net/pictures/40000/velka/robin-bird.jpg",
       "authorId": 1,
+      "status": 1,
       "id": 24
     },
     {
@@ -96,6 +101,7 @@
       ],
       "imageUrl": "https://cdn.mos.cms.futurecdn.net/sfgpCc8Ba2GFWVLcPmBzcM.jpg",
       "authorId": 1,
+      "status": 1,
       "id": 25
     }
   ],

@@ -1,5 +1,9 @@
 import { IdType } from "./shared-types.js";
 
+export enum PostStatus {
+    Published = 1, Draft
+}
+
 // export class PostCreateDto {
 //     constructor(
 //         public title: string,
@@ -17,7 +21,8 @@ export class Post {
         public tags: string[],
         public imageUrl: string,
         public authorId: IdType,
-        public id: IdType,
+        public status: PostStatus = PostStatus.Published,
+        public id: IdType = undefined,
     ) {
         // super(title, content, tags, imageUrl, authorId);
     }

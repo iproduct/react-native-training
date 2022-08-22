@@ -1,11 +1,10 @@
 import { FormComponentConfigs, FormComponentListener } from './form-types';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate';
-import { capitalize } from '../../utils/utils';
 import { Component } from 'react';
-import { StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
-import { FormComponent } from './FormComponent';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { StyleProp, View, ViewStyle, StyleSheet, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import IconButton from '../IconButton';
+import { FormTextComponent } from './FormTextComponent';
+import { FormDropdownComponent } from './FormDropdownComponent';
 
 
 
@@ -85,23 +84,33 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
     render() {
         const { config, style = {}, initialValue } = this.props;
         return (
-            <View style={style}>
-                {
-                    Object.keys(config).map(field => {
-                        const entityProp = field as keyof Entity & string;
-                        return <FormComponent key={entityProp} id={entityProp} initialValue={initialValue[entityProp]}
-                            {...config[entityProp]} />
-                    })
-                }
-                <View style={styles.buttons}>
-                    <IconButton size={30} backgroundColor="green" color="white" onPress={() => { }} name='check-circle' >
-                        Add TODO
-                    </IconButton>
-                    <IconButton size={30} backgroundColor="red" color="white" onPress={() => { }} name='times-circle' >
-                        Reset
-                    </IconButton>
-                </View>
-            </View>
+            
+                <ScrollView contentContainerStyle={style}>
+                    {
+                        Object.keys(config).map(field => {
+                            const entityProp = field as keyof Entity & string;
+                            const initVal = initialValue[entityProp];
+                            const fieldConfig = config[entityProp];
+                            switch (fieldConfig?.componentKind) {
+                                case 'FormDropdownComponent':
+                                    return <FormDropdownComponent key={entityProp} id={entityProp} initialValue={initVal}
+                                        {...config[entityProp]} />
+                                default:
+                                    return <FormTextComponent key={entityProp} id={entityProp} initialValue={initVal}
+                                        {...config[entityProp]} />
+                            }
+
+                        })
+                    }
+                    <View style={styles.buttons}>
+                        <IconButton size={30} backgroundColor="green" color="white" onPress={() => { }} name='check-circle' >
+                            Add TODO
+                        </IconButton>
+                        <IconButton size={30} backgroundColor="red" color="white" onPress={() => { }} name='times-circle' >
+                            Reset
+                        </IconButton>
+                    </View>
+                </ScrollView>
         );
         // ` 
         // <form id="${this.formId}" class="col s12">
@@ -137,12 +146,16 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
     form: {
         padding: 10,
         width: '100%',
     },
     label: {
-        paddingTop: 15,
+        paddingTop: 10,
         fontSize: 20,
         alignSelf: 'flex-start',
     },
