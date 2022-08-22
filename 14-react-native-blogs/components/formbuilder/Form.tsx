@@ -94,11 +94,11 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
                     })
                 }
                 <View style={styles.buttons}>
-                    <IconButton size={30} backgroundColor="green" color="white" onPress={() => { } } name='check-circle' >
+                    <IconButton size={30} backgroundColor="green" color="white" onPress={() => { }} name='check-circle' >
                         Add TODO
                     </IconButton>
-                    <IconButton size={30} backgroundColor="red" color="white" onPress={() => { } } name='check-circle' >
-                    Reset
+                    <IconButton size={30} backgroundColor="red" color="white" onPress={() => { }} name='times-circle' >
+                        Reset
                     </IconButton>
                 </View>
             </View>

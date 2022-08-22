@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "api": "json-server db.json --routes routes.json --host=192.168.1.101 --port=4000",
+    "api": "json-server db.json --routes routes.json --host=192.168.0.12 --port=4000",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -29,6 +29,7 @@
     "@types/react": "~18.0.14",
     "@types/react-native": "^0.69.5",
     "json-server": "^0.17.0",
+    "react-error-overlay": "6.0.9",
     "typescript": "~4.3.5"
   },
   "private": true

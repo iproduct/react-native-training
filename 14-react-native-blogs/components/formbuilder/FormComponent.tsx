@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         flex: 1,
+        height: 40,
     },
     idField: {
         fontSize: 24,
