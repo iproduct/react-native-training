@@ -3,7 +3,7 @@ import { FlatList, Image, Text, TextInput, View, StyleSheet, SectionList } from 
 import { Cat } from "./cat-model";
 import CatComponent, { CatComponentProps } from "./CatComponent";
 import TodoInput from "./components/TodoInput";
-import TodoList from "./components/TodoList";
+import TodoList from "./components/PostList";
 import { TodosAPI } from "./dao/rest-api-client";
 import { Optional } from "./model/shared-types";
 import { Todo } from "./model/todo.model";

@@ -1,4 +1,4 @@
-import { FilterType } from "../TodoApp";
+import { Post, PostStatus } from "./posts.model";
 import { Todo } from "./todo.model";
 
 export type IdType = number | undefined
@@ -16,8 +16,16 @@ export interface TodoListener {
   (todo: Todo): void;
 }
 
+export interface PostListener {
+  (todo: Post): void;
+}
+
+export type FilterType = PostStatus | undefined;
+
 export interface FilterChangeListener {
   (filter: FilterType): void;
 }
+
+
 
 

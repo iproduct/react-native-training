@@ -1,46 +1,48 @@
 import React from "react";
-import { TodoListener } from "../model/shared-types";
-import { Todo, TodoStatus } from "../model/todo.model"
+import { PostListener } from "../model/shared-types";
+import { Post, PostStatus } from "../model/posts.model"
 import { Button, StyleSheet, Text, View, } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-interface TodoItemProps {
-    todo: Todo;
-    onUpdate: TodoListener;
-    onDelete: TodoListener;
-    onEdit: TodoListener;
+interface PostItemProps {
+    post: Post;
+    onUpdate: PostListener;
+    onDelete: PostListener;
+    onEdit: PostListener;
 }
 
-const TodoItem = ({ todo, onUpdate, onDelete, onEdit }: TodoItemProps) => {
+const PostItem = ({ post, onUpdate, onDelete, onEdit }: PostItemProps) => {
     function handleCompletion() {
-        onUpdate({ ...todo, status: TodoStatus.Completed })
+        onUpdate({ ...post, status: PostStatus.Published })
     }
     return (
-        <View style={styles.todoItem}>
-            <Text style={styles.todoText}>
-                {todo.id} {todo.text} - {new Date(todo.deadline).toDateString()}
+        <View style={styles.postItem}>
+            <Text style={styles.postText}>
+                <>
+                {post.id} {post.title} - {post.content}
+                </>
             </Text>
 
-            <View style={styles.todoItemRight}>
-                <Text style={styles.todoItemStatus}>{TodoStatus[todo.status].substring(0, 1)}</Text>
-                {todo.status === TodoStatus.Active ?
+            <View style={styles.postItemRight}>
+                <Text style={styles.postItemStatus}>{PostStatus[post.status].substring(0, 1)}</Text>
+                {post.status === PostStatus.Published ?
                     <FontAwesome.Button style={styles.button} name="check-circle" size={40} color="green" backgroundColor='transparent'
                         onPress={handleCompletion} /> :
                     // <Button color="green" onPress={handleCompletion} title='Complete'/> :
                     <FontAwesome.Button style={styles.button} name="times-circle" size={40} color="red" backgroundColor='transparent'
-                        onPress={() => onDelete(todo)} />
+                        onPress={() => onDelete(post)} />
                 }
                 <FontAwesome.Button style={styles.button} name="pencil-square" size={40} color="gray" backgroundColor='transparent'
-                    onPress={() => onEdit(todo)} />
+                    onPress={() => onEdit(post)} />
             </View>
         </View >
     )
 }
 
-export default TodoItem
+export default PostItem
 
 const styles = StyleSheet.create({
-    todoItem: {
+    postItem: {
         marginTop: 10,
         display: 'flex',
         flexDirection: 'row',
@@ -51,15 +53,15 @@ const styles = StyleSheet.create({
         backgroundImage: 'gray',
         border: 1,
     },
-    todoText: {
+    postText: {
         width: '65%',
         fontSize: 24,
     },
-    todoItemId: {
+    postItemId: {
         paddingRight: 10,
         fontSize: 24,
     },
-    todoItemRight: {
+    postItemRight: {
         width: '35%',
         display: 'flex',
         flexDirection: 'row',
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
         backgroundImage: 'gray',
         border: 1
     },
-    todoItemStatus: {
+    postItemStatus: {
         fontSize: 24,
     },
     button: {

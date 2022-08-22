@@ -1,27 +1,29 @@
 import React, { Component } from "react";
-import { FlatList, Image, Text, TextInput, View, StyleSheet, SectionList, SafeAreaViewComponent, SafeAreaView, ScrollView, StatusBar } from "react-native";
-import { Cat } from "./cat-model";
-import CatComponent, { CatComponentProps } from "./CatComponent";
-import TodoInput from "./components/TodoInput";
-import TodoList from "./components/TodoList";
-import { BlogsAPI, TodosAPI } from "./dao/rest-api-client";
-import { Optional } from "./model/shared-types";
-import { Todo } from "./model/todo.model";
-import { FEMALE_CATS, MALE_CATS } from "./sample-cats";
-import { FilterType } from "./TodoApp";
-import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar } from "react-native";
+import { BlogsAPI } from "./dao/rest-api-client";
+import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
 import { Post } from "./model/posts.model";
+import PostList from "./components/PostList";
+import { FormComponentConfigs } from "./components/formbuilder/form-types";
+import IconButton from './components/IconButton';
+
+export enum Views {
+  PostFormView = 1, PostListView
+}
 
 interface AppState {
+  activeView: Views;
   errors: string | undefined;
   posts: Post[];
   filter: FilterType;
   editedPost: Optional<Post>;
+
 }
 
 class App extends Component<{}, AppState> {
   state: AppState = {
+    activeView: Views.PostListView,
     errors: '',
     posts: [],
     filter: undefined,
@@ -84,38 +86,39 @@ class App extends Component<{}, AppState> {
     this.setState({ filter: status })
   }
 
+  handleViewChange = () => {
+    this.setState(({ activeView }) => ({
+      activeView: activeView === Views.PostListView ? Views.PostFormView : Views.PostListView
+    }));
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="green"/>
-        <ScrollView contentContainerStyle={styles.form}>
-          <Form<Post>
-            config={{
-              id: {
-                label: 'ID',
-              },
-              title: {
-                label: 'Blog Title',
-              },
-              content: {
-                label: 'Blog Content',
-              },
-              tags: {
-              },
-              imageUrl: {
-                label: 'Blog Image URL',
-              },
-              status: {
-                componentKind: 'FormDropdownComponent',
-                label: 'Blog Status',
-              },
-              authorId: {
-                label: 'Author ID',
-              },
-            }}
-            initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-            onSubmit={(todo: Post) => { }} />
-        </ScrollView>
+        <StatusBar backgroundColor="green" />
+        <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleViewChange} name='check-circle' >
+          {this.state.activeView === Views.PostListView ? 'Add New Post' : 'Show All Posts'}
+        </IconButton>
+        {(() => {
+          switch (this.state.activeView) {
+            case Views.PostFormView:
+              return (
+                <ScrollView contentContainerStyle={styles.form}>
+                  <Form<Post>
+                    config={postFormConfig}
+                    initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+                    onSubmit={(todo: Post) => { }} />
+                </ScrollView>);
+            case Views.PostListView:
+              return (
+                <PostList posts={this.state.posts}
+                  filter={this.state.filter}
+                  onUpdate={this.handleUpdateTodo}
+                  onDelete={this.handleDeleteTodo}
+                  onEdit={this.handleEditTodo}
+                />);
+          }
+        })()}
       </SafeAreaView>
     );
 
@@ -133,6 +136,31 @@ class App extends Component<{}, AppState> {
 }
 
 export default App;
+
+
+const postFormConfig: FormComponentConfigs<Post> = {
+  id: {
+    label: 'ID',
+  },
+  title: {
+    label: 'Blog Title',
+  },
+  content: {
+    label: 'Blog Content',
+  },
+  tags: {
+  },
+  imageUrl: {
+    label: 'Blog Image URL',
+  },
+  status: {
+    componentKind: 'FormDropdownComponent',
+    label: 'Blog Status',
+  },
+  authorId: {
+    label: 'Author ID',
+  },
+};
 
 const styles = StyleSheet.create({
   container: {
