@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
         padding: 5,
         borderColor: 'gray',
         borderWidth: 1,
-        flex: 1,
         height: 40,
     },
     idField: {
