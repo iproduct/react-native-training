@@ -84,7 +84,7 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
     render() {
         const { config, style = {}, initialValue } = this.props;
         return (
-            
+            <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={style}>
                     {
                         Object.keys(config).map(field => {
@@ -111,6 +111,7 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
                         </IconButton>
                     </View>
                 </ScrollView>
+            </SafeAreaView>
         );
         // ` 
         // <form id="${this.formId}" class="col s12">

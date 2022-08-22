@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, Text, TextInput, View, StyleSheet, SectionList } from "react-native";
+import { FlatList, Image, Text, TextInput, View, StyleSheet, SectionList, SafeAreaViewComponent, SafeAreaView, ScrollView, StatusBar } from "react-native";
 import { Cat } from "./cat-model";
 import CatComponent, { CatComponentProps } from "./CatComponent";
 import TodoInput from "./components/TodoInput";
@@ -86,32 +86,38 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <Form<Post> style={styles.form}
-        config={{
-          id: {
-            label: 'ID',
-          },
-        title: {
-            label: 'Blog Title',
-          },
-          content: {
-            label: 'Blog Content',
-          },
-          tags: {
-          },
-          imageUrl: {
-            label: 'Blog Image URL',
-          },
-          status: {
-            componentKind: 'FormDropdownComponent',
-            label: 'Blog Status',
-          },
-          authorId: {
-            label: 'Author ID',
-          },
-        }}
-        initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-        onSubmit={(todo: Post) => { }} />);
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="green"/>
+        <ScrollView contentContainerStyle={styles.form}>
+          <Form<Post>
+            config={{
+              id: {
+                label: 'ID',
+              },
+              title: {
+                label: 'Blog Title',
+              },
+              content: {
+                label: 'Blog Content',
+              },
+              tags: {
+              },
+              imageUrl: {
+                label: 'Blog Image URL',
+              },
+              status: {
+                componentKind: 'FormDropdownComponent',
+                label: 'Blog Status',
+              },
+              authorId: {
+                label: 'Author ID',
+              },
+            }}
+            initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+            onSubmit={(todo: Post) => { }} />
+        </ScrollView>
+      </SafeAreaView>
+    );
 
     {/* <Text style={styles.header}>TODO Demo</Text>
           {this.state.errors ? <Text style={styles.errors}>{this.state.errors}</Text>:<></>}
@@ -129,6 +135,10 @@ class App extends Component<{}, AppState> {
 export default App;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+  },
   form: {
     flex: 1,
     justifyContent: 'center',
