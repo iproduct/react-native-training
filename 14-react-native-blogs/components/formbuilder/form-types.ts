@@ -6,6 +6,11 @@ import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropd
 import { FormTextComponentOptions } from './FormTextComponent.js';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate.js';
 
+interface Convertor<V> {
+    toString(value: V): string;
+    fromString(value: string): V;
+} 
+
 export interface FormComponentConfig<V, CompKind extends ComponentKinds> {
     componentKind?: CompKind;
     id?: string;
@@ -14,6 +19,7 @@ export interface FormComponentConfig<V, CompKind extends ComponentKinds> {
     options?: OptionType<CompKind>;
     valid?: ValidStatus;
     validators?: Validator | Validator[];
+    convertor?: Convertor<V>;
     multiline?: boolean;
     labelStyles?: StyleProp<TextStyle>;
     inputStyles?: StyleProp<TextStyle>;
