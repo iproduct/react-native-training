@@ -6,7 +6,7 @@ import { Text, TextInput, TextStyle, StyleSheet, View, ViewStyle } from 'react-n
 
 export interface FormComponentProps<V, OT> {
     id: string;
-    readonly initialValue: V;
+    value: V;
     label?: string;
     onChange?: FormComponentListener<V>;
     valid?: ValidStatus;
@@ -27,6 +27,6 @@ export interface FormComponentState<V> {
 
 export type ComponentKinds = 'FormTextComponent' | 'FormDropdownComponent';
 
-export interface FormComponent<V, OT> extends Component<FormComponentProps<V, OT>, FormComponentState<V>> {
+export interface FormComponent<V, OT> extends Component<FormComponentProps<V, OT>> {
     componentKind: ComponentKinds;
 }

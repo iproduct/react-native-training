@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
+import { Optional } from '../../model/shared-types.js';
 import { ComponentKinds } from './FormComponent.js';
 import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropdownComponent.js';
 import { FormTextComponentOptions } from './FormTextComponent.js';

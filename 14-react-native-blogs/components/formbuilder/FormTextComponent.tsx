@@ -10,22 +10,15 @@ export interface FormTextComponentOptions {
     numberOfLines?: number;
 }
 
-export class FormTextComponent<V = string>
-    extends Component<FormComponentProps<V, FormTextComponentOptions>, FormComponentState<V>>
-    implements FormComponent<V, FormTextComponentOptions> {
+export class FormTextComponent
+    extends Component<FormComponentProps<string, FormTextComponentOptions>>
+    implements FormComponent<string, FormTextComponentOptions> {
     componentKind = 'FormTextComponent' as const;
-    state: Readonly<FormComponentState<V>> = {
-        value: this.props.initialValue,
-        changed: ChangedStatus.PRISTINE,
-        valid: this.props.valid || ValidStatus.INVALID,
-        validationErrors: [],
-    }
 
     handleFieldChanged = (text: string) => {
-        this.setState({
-            value: text as V,
-            changed: ChangedStatus.DIRTY,
-        });
+        if (this.props.onChange) {
+            this.props.onChange(text);
+        }
     }
 
     // validate(): string[] {
@@ -51,6 +44,7 @@ export class FormTextComponent<V = string>
 
     render() {
         let { id,
+            value,
             label = capitalize(id),
             options: { multiline = false, numberOfLines = 5 } = { multiline: false },
             style = {},
@@ -61,7 +55,7 @@ export class FormTextComponent<V = string>
         return (
             <View style={{ ...styles.view, ...style }}>
                 <Text style={{ ...styles.label, ...labelStyle }}>{label}</Text>
-                <TextInput style={{ ...styles.input, ...inputStyle }} value={this.state.value?.toString()}
+                <TextInput style={{ ...styles.input, ...inputStyle }} value={value}
                     onChangeText={this.handleFieldChanged}
                     multiline={multiline} numberOfLines={numberOfLines} />
             </View>

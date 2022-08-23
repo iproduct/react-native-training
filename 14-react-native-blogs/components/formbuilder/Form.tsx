@@ -21,36 +21,61 @@ interface FormProps<Entity, FormConfig extends PropToComponentKindMapping<Entity
 }
 
 type FormState<Entity> = {
-    [Prop in keyof Entity]: FormComponentState<Entity[Prop]>
+    [Prop in keyof Entity]?: FormComponentState<Entity[Prop]>
 }
 
 
 export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>> extends
     Component<FormProps<Entity, FormConfig>, FormState<Entity>> {
 
+    state: Readonly<FormState<Entity>> = Object.keys(this.props.config).reduce(
+        (prevState: Partial<FormState<Entity>>, field: string) => {
+            const prop = field as keyof Entity;
+            prevState[prop] = {
+                value: this.props.initialValue[prop],
+                changed: ChangedStatus.PRISTINE,
+                valid: ValidStatus.INVALID,
+                validationErrors: [],
+            }
+            return prevState;
+        }, {} as Partial<FormState<Entity>>);
+
+    handleFieldChange = (fieldName: keyof FormState<Entity> & string,
+        value: string | Entity[keyof Entity & string] | undefined) => {
+        const fieldUpdate = {
+            value: value,
+            changed: ChangedStatus.PRISTINE,
+            valid: ValidStatus.INVALID,
+            validationErrors: []
+        } as FormComponentState<Entity[typeof fieldName]>;
+        this.setState({ [fieldName]: fieldUpdate } as Pick<FormState<Entity>, keyof Entity>);
+    }
+
     render() {
         const { config, style = {}, initialValue } = this.props;
+        console.log(this.state);
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={style}>
                     {
                         Object.keys(config).map(field => {
                             const entityProp = field as keyof Entity & string;
-                            const initVal = initialValue[entityProp];
+                            const value = this.state[entityProp]?.value;
                             const fieldConfig = config[entityProp];
                             switch (fieldConfig?.componentKind) {
                                 case 'FormDropdownComponent':
                                     const fieldConfigDropdown = Object.assign({}, config[entityProp],
                                         { options: fieldConfig.options as FormDropdownComponentOptions });
-                                    return <FormDropdownComponent key={entityProp} id={entityProp} initialValue={initVal}
+                                    return <FormDropdownComponent<typeof value | undefined>
+                                        key={entityProp} id={entityProp} value={value}
+                                        onChange={val => this.handleFieldChange(entityProp, val)}
                                         {...fieldConfigDropdown} />
                                 default:
                                     const fieldConfigText = Object.assign({}, config[entityProp],
                                         { options: fieldConfig.options as FormTextComponentOptions });
-                                    return <FormTextComponent key={entityProp} id={entityProp} initialValue={initVal}
-                                        {...fieldConfigText} />
+                                    return <FormTextComponent key={entityProp} id={entityProp} value={value + ''}
+                                        onChange={val => this.handleFieldChange(entityProp, val)} {...fieldConfigText} />
                             }
-
                         })
                     }
                     <View style={styles.buttons}>
