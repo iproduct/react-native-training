@@ -23,7 +23,7 @@ interface AppState {
 }
 
 type PostFormPropToCompKindMapping = {
-  id: 'FormTextComponent';
+  id: 'FormReadonlyTextComponent';
   title: 'FormTextComponent';
   content: 'FormTextComponent';
   tags: 'FormTextComponent';
@@ -69,7 +69,7 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  handleCreateTodo = async (post: Post) => {
+  handleCreatePost = async (post: Post) => {
     try {
       if (post.id) { //edit post
         const updated = await BlogsAPI.update(post);
@@ -118,8 +118,9 @@ class App extends Component<{}, AppState> {
                 <ScrollView contentContainerStyle={styles.form}>
                   <Form<Post, PostFormPropToCompKindMapping>
                     config={postFormConfig}
-                    initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-                    onSubmit={(todo: Post) => { }} />
+                    // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+                    initialValue={new Post('', '', [], '', 1)}
+                    onSubmit={this.handleCreatePost} />
                 </ScrollView>);
             case Views.PostListView:
               return (
@@ -151,6 +152,7 @@ export default App;
 
 const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> = {
   id: {
+    componentKind: 'FormReadonlyTextComponent',
     label: 'ID',
   },
   title: {

@@ -3,8 +3,9 @@ import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConf
 import { capitalize } from '../../utils/utils';
 import { Component } from 'react';
 import { Text, TextInput, TextStyle, StyleSheet, View, ViewStyle } from 'react-native';
+import { Optional } from '../../model/shared-types';
 
-export interface FormComponentProps<V, OT> {
+export interface FormComponentProps<V, OT = {}> {
     id: string;
     value: V;
     label?: string;
@@ -25,8 +26,8 @@ export interface FormComponentState<V> {
     validationErrors: string[];
 }
 
-export type ComponentKinds = 'FormTextComponent' | 'FormDropdownComponent';
+export type ComponentKinds = 'FormTextComponent' | 'FormReadonlyTextComponent' | 'FormDropdownComponent';
 
-export interface FormComponent<V, OT> extends Component<FormComponentProps<V, OT>> {
+export interface FormComponent<V, OT = {}> extends Component<FormComponentProps<V, OT>> {
     componentKind: ComponentKinds;
 }

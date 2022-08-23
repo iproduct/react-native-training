@@ -103,6 +103,15 @@
       "authorId": 1,
       "status": 1,
       "id": 25
+    },
+    {
+      "title": "Test Title",
+      "content": "Test content ...",
+      "tags": "test, react, native",
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg",
+      "authorId": 1,
+      "status": "2",
+      "id": 26
     }
   ],
   "comments": [
