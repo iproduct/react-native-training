@@ -1,13 +1,16 @@
 import { Component } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import { ComponentKinds } from './FormComponent.js';
+import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropdownComponent.js';
+import { FormTextComponentOptions } from './FormTextComponent.js';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate.js';
 
-export interface FormComponentConfig<V> {
-    componentKind?: ComponentKinds;
+export interface FormComponentConfig<V, CompKind extends ComponentKinds> {
+    componentKind?: CompKind;
     id?: string;
     label?: string;
     onChange?: FormComponentListener<V>;
+    options?: OptionType<CompKind>;
     valid?: ValidStatus;
     validators?: Validator | Validator[];
     multiline?: boolean;
@@ -15,8 +18,14 @@ export interface FormComponentConfig<V> {
     inputStyles?: StyleProp<TextStyle>;
 }
 
-export type FormComponentConfigs<Entity> = {
-    [Prop in keyof Entity]?: FormComponentConfig<Entity[Prop]>
+export type OptionType<CompKind extends ComponentKinds> = CompKind extends 'FormDropdownComponent' ? FormDropdownComponentOptions : FormTextComponentOptions; 
+
+export type PropToComponentKindMapping<Entity> = {
+    [Prop in keyof Entity]: ComponentKinds
+}
+
+export type FormComponentConfigs<Entity, FormConfig extends PropToComponentKindMapping<Entity>> = {
+    [Prop in keyof Entity]: FormComponentConfig<Entity[Prop], FormConfig[Prop]>;
 }
 
 

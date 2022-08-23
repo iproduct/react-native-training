@@ -1,15 +1,15 @@
-import { FormComponentConfigs, FormComponentListener } from './form-types';
+import { FormComponentConfigs, FormComponentListener, PropToComponentKindMapping } from './form-types';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate';
 import { Component } from 'react';
 import { StyleProp, View, ViewStyle, StyleSheet, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import IconButton from '../IconButton';
-import { FormTextComponent } from './FormTextComponent';
-import { FormDropdownComponent } from './FormDropdownComponent';
+import { FormTextComponent, FormTextComponentOptions } from './FormTextComponent';
+import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropdownComponent';
 
 
 
-interface FormProps<Entity> {
-    config: FormComponentConfigs<Entity>;
+interface FormProps<Entity, FormConfig extends PropToComponentKindMapping<Entity>> {
+    config: FormComponentConfigs<Entity, FormConfig>;
     initialValue: Entity;
     onSubmit: FormComponentListener<Entity>;
     validationConfig?: ValidationConfig<Entity>;
@@ -23,7 +23,7 @@ interface FormState<Entity> {
 }
 
 
-export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>> {
+export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>> extends Component<FormProps<Entity, FormConfig>, FormState<Entity>> {
     // init() {
     //     for (const elemId in this.intitialValue) {
     //         this.elements[elemId].initialValue = this.intitialValue[elemId];
@@ -93,11 +93,15 @@ export class Form<Entity> extends Component<FormProps<Entity>, FormState<Entity>
                             const fieldConfig = config[entityProp];
                             switch (fieldConfig?.componentKind) {
                                 case 'FormDropdownComponent':
+                                    const fieldConfigDropdown = Object.assign({}, config[entityProp],
+                                        { options: fieldConfig.options as FormDropdownComponentOptions });
                                     return <FormDropdownComponent key={entityProp} id={entityProp} initialValue={initVal}
-                                        {...config[entityProp]} />
+                                        {...fieldConfigDropdown} />
                                 default:
+                                    const fieldConfigText = Object.assign({}, config[entityProp],
+                                        { options: fieldConfig.options as FormTextComponentOptions });
                                     return <FormTextComponent key={entityProp} id={entityProp} initialValue={initVal}
-                                        {...config[entityProp]} />
+                                        {...fieldConfigText} />
                             }
 
                         })

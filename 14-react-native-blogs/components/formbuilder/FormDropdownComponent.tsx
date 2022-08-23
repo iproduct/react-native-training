@@ -1,4 +1,4 @@
-import { FormComponentListener } from './form-types';
+import { FormComponentListener, OptionType, PropToComponentKindMapping } from './form-types';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate';
 import { capitalize } from '../../utils/utils';
 import { Component } from 'react';
@@ -6,15 +6,20 @@ import { Text, TextInput, TextStyle, StyleSheet, View, ViewStyle } from 'react-n
 import { FormComponentState, FormComponent, FormComponentProps } from './FormComponent';
 import { Picker } from '@react-native-picker/picker';
 
-export interface FormTextComponentOptions {
-    choices?: string[];
-    hasUndefinedChoice?: boolean;
-    itemStyle: TextStyle;
+export interface DropdownChoice {
+    value: number;
+    label: string;
 }
 
+export interface FormDropdownComponentOptions {
+    choices?: DropdownChoice[];
+    hasUndefinedChoice?: boolean;
+    itemStyle?: TextStyle;
+}
+//OptionType<FormConfig[keyof V & string]> | undefined
 export class FormDropdownComponent<V = number>
-    extends Component<FormComponentProps<V, FormTextComponentOptions>, FormComponentState<V>>
-    implements FormComponent<V, FormTextComponentOptions> {
+    extends Component<FormComponentProps<V, OptionType<'FormDropdownComponent'>>, FormComponentState<V>>
+    implements FormComponent<V, OptionType<'FormDropdownComponent'>> {
     componentKind = 'FormDropdownComponent' as const;
     state: Readonly<FormComponentState<V>> = {
         value: this.props.initialValue,
@@ -40,17 +45,18 @@ export class FormDropdownComponent<V = number>
             inputStyle = {}
         } = this.props;
         return (
-            <View style={[styles.view, style]}>
-                <Text style={[styles.label, labelStyle]}>{label}</Text>
+            <View style={{...styles.view, ...style}}>
+                <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
                 <Picker
-                    style={[styles.input, inputStyle]}
-                    itemStyle={itemStyle}
+                    style={{...styles.input, ...inputStyle}}
+                    itemStyle={{...styles.item, ...itemStyle}}
                     selectedValue={this.state.value}
                     onValueChange={(itemValue, itemIndex) =>
                         this.handleFieldChanged(itemValue)
                     }>
-                    <Picker.Item label="Java" value="java" />
-                    <Picker.Item label="JavaScript" value="js" />
+                    {hasUndefinedChoice && <Picker.Item key='undefined' label="--" value="undefined" />}
+                    {choices.map(choice => (<Picker.Item key={choice.value} label={choice.label} value={choice.value}
+                        style={{...styles.item, ...itemStyle}} />))}
                 </Picker>
             </View>
         );
@@ -70,10 +76,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'flex-start',
     },
+    item: {
+        fontSize: 20,
+    },
     input: {
-        fontSize: 24,
+        fontSize: 20,
         padding: 5,
-        borderColor: 'gray',
+        borderColor: 'red',
         borderWidth: 1,
         height: 40,
     },

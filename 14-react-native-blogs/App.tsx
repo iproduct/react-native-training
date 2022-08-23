@@ -3,10 +3,11 @@ import { StyleSheet, SafeAreaView, ScrollView, StatusBar } from "react-native";
 import { BlogsAPI } from "./dao/rest-api-client";
 import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
-import { Post } from "./model/posts.model";
+import { Post, PostStatus } from "./model/posts.model";
 import PostList from "./components/PostList";
 import { FormComponentConfigs } from "./components/formbuilder/form-types";
 import IconButton from './components/IconButton';
+import { FormTextComponent } from "./components/formbuilder/FormTextComponent";
 
 export enum Views {
   PostFormView = 1, PostListView
@@ -20,6 +21,17 @@ interface AppState {
   editedPost: Optional<Post>;
 
 }
+
+type PostFormPropToCompKindMapping = {
+  id: 'FormTextComponent';
+  title: 'FormTextComponent';
+  content: 'FormTextComponent';
+  tags: 'FormTextComponent';
+  imageUrl: 'FormTextComponent';
+  status: 'FormDropdownComponent';
+  authorId: 'FormTextComponent';
+}
+
 
 class App extends Component<{}, AppState> {
   state: AppState = {
@@ -104,7 +116,7 @@ class App extends Component<{}, AppState> {
             case Views.PostFormView:
               return (
                 <ScrollView contentContainerStyle={styles.form}>
-                  <Form<Post>
+                  <Form<Post, PostFormPropToCompKindMapping>
                     config={postFormConfig}
                     initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
                     onSubmit={(todo: Post) => { }} />
@@ -137,8 +149,7 @@ class App extends Component<{}, AppState> {
 
 export default App;
 
-
-const postFormConfig: FormComponentConfigs<Post> = {
+const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> = {
   id: {
     label: 'ID',
   },
@@ -152,10 +163,18 @@ const postFormConfig: FormComponentConfigs<Post> = {
   },
   imageUrl: {
     label: 'Blog Image URL',
+    options: {
+    }
   },
   status: {
     componentKind: 'FormDropdownComponent',
     label: 'Blog Status',
+    options: {
+      choices: [
+        { label: PostStatus[PostStatus.Published], value: PostStatus.Published },
+        { label: PostStatus[PostStatus.Draft], value: PostStatus.Draft }
+      ]
+    }
   },
   authorId: {
     label: 'Author ID',
