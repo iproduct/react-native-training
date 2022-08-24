@@ -101,10 +101,13 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     input: {
-        fontSize: 24,
-        padding: 5,
-        borderColor: 'gray',
+        fontSize: 20,
+        borderColor: "green",
+        backgroundColor: "white",
         borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 5,
+        padding: 5,
         height: 40,
     },
 });

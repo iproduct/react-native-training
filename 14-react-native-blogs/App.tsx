@@ -18,20 +18,10 @@ interface AppState {
   errors: string | undefined;
   posts: Post[];
   filter: FilterType;
-  editedPost: Optional<Post>;
-
+  editedPost: Post;
 }
 
-type PostFormPropToCompKindMapping = {
-  id: 'FormReadonlyTextComponent';
-  title: 'FormTextComponent';
-  content: 'FormTextComponent';
-  tags: 'FormTextComponent';
-  imageUrl: 'FormTextComponent';
-  status: 'FormDropdownComponent';
-  authorId: 'FormTextComponent';
-}
-
+const EMPTY_POST = new Post('', '', [], '', 1);
 
 class App extends Component<{}, AppState> {
   state: AppState = {
@@ -39,7 +29,7 @@ class App extends Component<{}, AppState> {
     errors: '',
     posts: [],
     filter: undefined,
-    editedPost: undefined,
+    editedPost: EMPTY_POST,
   }
 
   async componentDidMount() {
@@ -71,18 +61,20 @@ class App extends Component<{}, AppState> {
 
   handleCreatePost = async (post: Post) => {
     try {
+      post.tags = post.tags.filter(tag => tag.trim().length > 0)
       if (post.id) { //edit post
         const updated = await BlogsAPI.update(post);
         this.setState(({ posts }) => ({
           posts: posts.map(p => p.id === updated.id ? updated : p),
           errors: undefined,
-          editedPost: undefined
+          editedPost: EMPTY_POST
         }))
       } else { // create post
         const created = await BlogsAPI.create(post);
         this.setState(({ posts }) => ({
           posts: posts.concat(created),
-          errors: undefined
+          errors: undefined,
+          activeView: Views.PostListView,
         }));
       }
     } catch (err) {
@@ -90,8 +82,15 @@ class App extends Component<{}, AppState> {
     }
   }
 
+  handleFormCancel = () => {
+    this.setState({
+      errors: undefined,
+      activeView: Views.PostListView,
+    })
+  }
+
   handleEditTodo = (post: Post) => {
-    this.setState({ editedPost: post });
+    this.setState({ editedPost: post, activeView: Views.PostFormView });
   }
 
   handlefilterChange = (status: FilterType) => {
@@ -119,14 +118,14 @@ class App extends Component<{}, AppState> {
                   <Form<Post, PostFormPropToCompKindMapping>
                     config={postFormConfig}
                     // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-                    initialValue={new Post('', '', [], '', 1)}
-                    onSubmit={this.handleCreatePost} />
+                    initialValue={this.state.editedPost}
+                    onSubmit={this.handleCreatePost}
+                    onCancel={this.handleFormCancel} />
                 </ScrollView>);
             case Views.PostListView:
               return (
                 <PostList posts={this.state.posts}
                   filter={this.state.filter}
-                  onUpdate={this.handleUpdateTodo}
                   onDelete={this.handleDeleteTodo}
                   onEdit={this.handleEditTodo}
                 />);
@@ -150,6 +149,17 @@ class App extends Component<{}, AppState> {
 
 export default App;
 
+
+type PostFormPropToCompKindMapping = {
+  id: 'FormReadonlyTextComponent';
+  title: 'FormTextComponent';
+  content: 'FormTextComponent';
+  tags: 'FormTextComponent';
+  imageUrl: 'FormTextComponent';
+  status: 'FormDropdownComponent';
+  authorId: 'FormTextComponent';
+}
+
 const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> = {
   id: {
     componentKind: 'FormReadonlyTextComponent',
@@ -162,6 +172,10 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
     label: 'Blog Content',
   },
   tags: {
+    convertor: {
+      fromString: (tags: string) => tags.split(/\W+/),
+      toString: (tagsArray: string[]) => tagsArray.toString()
+    }
   },
   imageUrl: {
     label: 'Blog Image URL',

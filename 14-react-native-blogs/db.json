@@ -107,11 +107,54 @@
     {
       "title": "Test Title",
       "content": "Test content ...",
-      "tags": "test, react, native",
+      "tags": [
+        "test",
+        "react",
+        "native"
+      ],
       "imageUrl": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg",
       "authorId": 1,
       "status": "2",
       "id": 26
+    },
+    {
+      "title": "Asddfff",
+      "content": "Ddggghhjjj",
+      "tags": [
+        "Aaaa",
+        "ddddd"
+      ],
+      "imageUrl": "http://example.com",
+      "authorId": 1,
+      "status": 2,
+      "id": 27
+    },
+    {
+      "title": "wewqewqq",
+      "content": "qwewqewq",
+      "tags": [
+        "qqqq",
+        "dddd",
+        "ffff",
+        "wwww"
+      ],
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg",
+      "authorId": 1,
+      "status": 1,
+      "id": 28
+    },
+    {
+      "title": "ewdewdewde",
+      "content": "edewdewdwe",
+      "tags": [
+        "sdsdsfds",
+        "dsfsfsds",
+        "dsfdf"
+      ],
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1266859371lhIe.jpg",
+      "authorId": 1,
+      "status": 1,
+      "id": 29
     }
   ],
   "comments": [

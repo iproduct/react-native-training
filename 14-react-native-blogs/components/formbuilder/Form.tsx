@@ -1,4 +1,4 @@
-import { FormComponentConfigs, FormComponentListener, PropToComponentKindMapping } from './form-types';
+import { FormCancelListener, FormComponentConfigs, FormComponentListener, PropToComponentKindMapping } from './form-types';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate';
 import { Component } from 'react';
 import { StyleProp, View, ViewStyle, StyleSheet, ScrollView, SafeAreaView, StatusBar, Text } from 'react-native';
@@ -15,10 +15,11 @@ interface FormProps<Entity, FormConfig extends PropToComponentKindMapping<Entity
     config: FormComponentConfigs<Entity, FormConfig>;
     initialValue: Entity;
     onSubmit: FormComponentListener<Entity>;
+    onCancel?: FormCancelListener;
     validationConfig?: ValidationConfig<Entity>;
     valid?: ValidStatus;
     formId?: number;
-    style?: StyleProp<ViewStyle>;
+    style?: ViewStyle;
 }
 
 type FormState<Entity> = {
@@ -33,8 +34,13 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
 
     handleFieldChange = (fieldName: keyof FormState<Entity> & string,
         value: string | Entity[keyof Entity & string] | undefined) => {
+        const convertor = this.props.config[fieldName].convertor;
+        let fieldValue = value;
+        if (value !== undefined && convertor) {
+            fieldValue = convertor.fromString(value + '');
+        };
         const fieldUpdate = {
-            value: value,
+            value: fieldValue,
             changed: ChangedStatus.PRISTINE,
             valid: ValidStatus.INVALID,
             validationErrors: []
@@ -77,13 +83,17 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
     render() {
         const { config, style = {}, initialValue } = this.props;
         return (
-            <SafeAreaView style={styles.container}>
-                <ScrollView contentContainerStyle={style}>
+                <View style={{...styles.form, ...style}}>
                     {
                         Object.keys(config).map(field => {
                             const entityProp = field as keyof Entity & string;
                             const value = this.state[entityProp]?.value;
                             const fieldConfig = config[entityProp];
+                            const convertor = fieldConfig.convertor;
+                            let stringValue: string = value ?  value + '' : '';
+                            if (value !== undefined && convertor) {
+                                stringValue = convertor.toString(value);
+                            }
                             switch (fieldConfig?.componentKind) {
                                 case 'FormDropdownComponent':
                                     const fieldConfigDropdown = Object.assign({}, config[entityProp],
@@ -95,12 +105,12 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
                                 case 'FormReadonlyTextComponent':
                                     const { options, onChange, ...fieldConfigReadonlyText } = config[entityProp];
                                     return <FormReadonlyTextComponent
-                                        key={entityProp} id={entityProp} value={value ? value + '' : ''}
+                                        key={entityProp} id={entityProp} value={stringValue}
                                         {...fieldConfigReadonlyText} />
                                 default:
                                     const fieldConfigText = Object.assign({}, config[entityProp],
                                         { options: fieldConfig.options as FormTextComponentOptions });
-                                    return <FormTextComponent key={entityProp} id={entityProp} value={value ? value + '' : ''}
+                                    return <FormTextComponent key={entityProp} id={entityProp} value={stringValue}
                                         onChange={val => this.handleFieldChange(entityProp, val)} {...fieldConfigText} />
                             }
                         })
@@ -109,20 +119,27 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
                         <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleSubmit} name='check-circle' >
                             Add TODO
                         </IconButton>
-                        <IconButton size={30} backgroundColor="red" color="white" onPress={this.reset} name='times-circle' >
+                        <IconButton size={30} backgroundColor="#ff4466" color="white" onPress={this.reset} name='times-circle' >
                             Reset
                         </IconButton>
+                        <IconButton size={30} backgroundColor="gray" color="white" onPress={this.props.onCancel} name='times-circle' >
+                            Cancel
+                        </IconButton>
                     </View>
-                </ScrollView>
-            </SafeAreaView>
+                </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
+    form: {
+        width: "90%",
+        backgroundColor: "#eee",
+        borderRadius: 10,
+        alignItems: "stretch",
+        paddingHorizontal: 40,
+        paddingBottom: 20,
+        marginTop: 10,
     },
     buttons: {
         fontSize: 45,

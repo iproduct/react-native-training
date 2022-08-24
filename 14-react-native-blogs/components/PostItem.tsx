@@ -1,40 +1,41 @@
 import React from "react";
 import { PostListener } from "../model/shared-types";
 import { Post, PostStatus } from "../model/posts.model"
-import { Button, StyleSheet, Text, View, } from "react-native";
+import { Button, Image, StyleSheet, Text, View, } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import IconButton from "./IconButton";
 
 interface PostItemProps {
     post: Post;
-    onUpdate: PostListener;
     onDelete: PostListener;
     onEdit: PostListener;
 }
 
-const PostItem = ({ post, onUpdate, onDelete, onEdit }: PostItemProps) => {
-    function handleCompletion() {
-        onUpdate({ ...post, status: PostStatus.Published })
-    }
+const PostItem = ({ post, onDelete, onEdit }: PostItemProps) => {
     return (
-        <View style={styles.postItem}>
-            <Text style={styles.postText}>
-                <>
-                {post.id} {post.title} - {post.content}
-                </>
-            </Text>
+        <View style={styles.itemContainer}>
+            <View style={styles.postItem}>
+                <View style={styles.postHeader}>
+                    <Image resizeMode='contain' style={styles.postImage} source={{ uri: post.imageUrl }}></Image>
+                    <View style={styles.postContent} >
+                        <Text style={styles.title}>{post.title}</Text>
+                        <Text style={styles.postMetadata}>{PostStatus[post.status]},  Author ID: {post.authorId}</Text>
+                        <View style={styles.postTags}>
+                            {post.tags.map(tag => <Text key={tag} style={styles.postTag}>{tag}</Text>)}
+                        </View>
+                    </View>
+                </View>
 
-            <View style={styles.postItemRight}>
-                <Text style={styles.postItemStatus}>{PostStatus[post.status].substring(0, 1)}</Text>
-                {post.status === PostStatus.Published ?
-                    <FontAwesome.Button style={styles.button} name="check-circle" size={40} color="green" backgroundColor='transparent'
-                        onPress={handleCompletion} /> :
-                    // <Button color="green" onPress={handleCompletion} title='Complete'/> :
-                    <FontAwesome.Button style={styles.button} name="times-circle" size={40} color="red" backgroundColor='transparent'
-                        onPress={() => onDelete(post)} />
-                }
-                <FontAwesome.Button style={styles.button} name="pencil-square" size={40} color="gray" backgroundColor='transparent'
-                    onPress={() => onEdit(post)} />
-            </View>
+                <Text style={styles.postText}>{post.content}</Text>
+                <View style={styles.postItemButtons}>
+                    <IconButton style={styles.button} textStyle={styles.buttonText} name="pencil-square" size={27} color="white" backgroundColor='green'
+                        onPress={() => onEdit(post)}>Edit
+                    </IconButton>
+                    <IconButton style={styles.button} textStyle={styles.buttonText} name="times-circle" size={27} color="white" backgroundColor='#ff4466'
+                        onPress={() => onDelete(post)}>Delete
+                    </IconButton>
+                </View>
+            </View >
         </View >
     )
 }
@@ -42,16 +43,56 @@ const PostItem = ({ post, onUpdate, onDelete, onEdit }: PostItemProps) => {
 export default PostItem
 
 const styles = StyleSheet.create({
+    itemContainer: {
+        padding: 10,
+    },
     postItem: {
+        padding: 5,
+        backgroundColor: '#eee',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#aaa',
+    },
+    postHeader: {
         marginTop: 10,
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
         gap: 15,
-        padding: 5,
-        backgroundImage: 'gray',
-        border: 1,
+    },
+    postImage: {
+        width: '30%',
+        height: 'auto',
+        borderRadius: 10,
+    },
+    postContent: {
+        width: '70%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
+    postMetadata: {
+        fontSize: 18,
+        fontStyle: 'italic',
+    },
+    postTags: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    postTag: {
+        margin: 5,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        fontSize: 18,
+        fontWeight: 'bold',
+        backgroundColor: '#fccb58',
+        borderRadius: 15,
+        borderColor: 'green',
     },
     postText: {
         width: '65%',
@@ -61,7 +102,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         fontSize: 24,
     },
-    postItemRight: {
+    postItemButtons: {
         width: '35%',
         display: 'flex',
         flexDirection: 'row',
@@ -71,12 +112,29 @@ const styles = StyleSheet.create({
         backgroundImage: 'gray',
         border: 1
     },
-    postItemStatus: {
-        fontSize: 24,
-    },
     button: {
+        paddingVertical: 3,
+        paddingHorizontal: 10,
+    },
+    buttonText: {
         padding: 0,
-        width: 50,
-        height: 40,
-    }
+    },
+    card: {
+        padding: 10,
+        borderWidth: 1,
+        borderColor: "grey",
+        borderRadius: 10,
+        width: 280,
+        display: "flex",
+        alignItems: "center",
+        backgroundColor: "#C4D7E0",
+    },
+
+    btnContainer: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 40,
+        marginTop: 20,
+    },
+
 });

@@ -37,6 +37,7 @@ type IconType = "link" | "search" | "image" | "header" | "code" | "map" | "table
 interface IButtonProps {
     size ?: number;
     style ?: TextStyle;
+    textStyle ?: TextStyle;
     children ?: ReactNode;
     backgroundColor ?: string | OpaqueColorValue | undefined;
     ref?: ForwardedRef<any>;
@@ -46,10 +47,10 @@ interface IButtonProps {
 type IButtonPropsType = Partial<IconButtonProps & IconProps> & IButtonProps;
 
 const IconButton = React.forwardRef<Component<IButtonPropsType>, IButtonPropsType>((props, fRef) => {
-    const { name, style, size, children, color, ...other } = props;
+    const { name, textStyle, size, children, color, ...other } = props;
     return (
         <FontAwesome.Button {...props} name={name} ref={fRef}>
-            <Text style={[style, { fontSize: size, color: color }]}>{children}</Text>
+            <Text style={{...textStyle, ...{ fontSize: size, color: color }}}>{children}</Text>
         </FontAwesome.Button>
     );
 });

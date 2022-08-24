@@ -7,7 +7,6 @@ import PostItem from "./PostItem";
 interface Props {
     posts: Post[];
     filter: FilterType;
-    onUpdate: PostListener;
     onDelete: PostListener;
     onEdit: PostListener;
 }

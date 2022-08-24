@@ -35,8 +35,11 @@ export type FormComponentConfigs<Entity, FormConfig extends PropToComponentKindM
     [Prop in keyof Entity]: FormComponentConfig<Entity[Prop], FormConfig[Prop]>;
 }
 
-
 export interface FormComponentListener<V> {
     (value: V): void;
+}
+
+export interface FormCancelListener {
+    (): void;
 }
 
