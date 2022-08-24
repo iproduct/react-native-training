@@ -59,7 +59,6 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
             }
         })
         this.props.onSubmit(entity);
-        this.reset();
     }
 
     createInitialFormState(): FormState<Entity> {
@@ -76,7 +75,7 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
             }, {} as Partial<FormState<Entity>>);
     }
 
-    reset() {
+    reset = () => {
         this.setState(this.createInitialFormState());
     }
 
@@ -117,7 +116,7 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
                     }
                     <View style={styles.buttons}>
                         <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleSubmit} name='check-circle' >
-                            Add TODO
+                            Submit
                         </IconButton>
                         <IconButton size={30} backgroundColor="#ff4466" color="white" onPress={this.reset} name='times-circle' >
                             Reset

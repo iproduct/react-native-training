@@ -7,7 +7,7 @@ import { Post, PostStatus } from "./model/posts.model";
 import PostList from "./components/PostList";
 import { FormComponentConfigs } from "./components/formbuilder/form-types";
 import IconButton from './components/IconButton';
-import { FormTextComponent } from "./components/formbuilder/FormTextComponent";
+import * as yup from 'yup';
 
 export enum Views {
   PostFormView = 1, PostListView
@@ -59,24 +59,25 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  handleCreatePost = async (post: Post) => {
+  handleSubmitPost = async (post: Post) => {
     try {
       post.tags = post.tags.filter(tag => tag.trim().length > 0)
       if (post.id) { //edit post
         const updated = await BlogsAPI.update(post);
         this.setState(({ posts }) => ({
           posts: posts.map(p => p.id === updated.id ? updated : p),
-          errors: undefined,
-          editedPost: EMPTY_POST
         }))
       } else { // create post
         const created = await BlogsAPI.create(post);
         this.setState(({ posts }) => ({
           posts: posts.concat(created),
-          errors: undefined,
-          activeView: Views.PostListView,
         }));
       }
+      this.setState({
+        errors: undefined,
+        editedPost: EMPTY_POST,
+        activeView: Views.PostListView,
+      });
     } catch (err) {
       this.setState({ errors: err as string })
     }
@@ -119,7 +120,7 @@ class App extends Component<{}, AppState> {
                     config={postFormConfig}
                     // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
                     initialValue={this.state.editedPost}
-                    onSubmit={this.handleCreatePost}
+                    onSubmit={this.handleSubmitPost}
                     onCancel={this.handleFormCancel} />
                 </ScrollView>);
             case Views.PostListView:
@@ -167,6 +168,7 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
   },
   title: {
     label: 'Blog Title',
+    validators: yup.string(),
   },
   content: {
     label: 'Blog Content',
