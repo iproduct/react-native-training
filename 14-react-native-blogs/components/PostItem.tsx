@@ -1,50 +1,59 @@
-import React from "react";
+import React, { Component } from "react";
 import { PostListener } from "../model/shared-types";
 import { Post, PostStatus } from "../model/posts.model"
 import { Button, Image, StyleSheet, Text, View, } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import IconButton from "./IconButton";
 
-interface PostItemProps {
+export const ITEM_HEIGHT = 400;
+
+export interface PostItemProps {
     post: Post;
     onDelete: PostListener;
     onEdit: PostListener;
 }
 
-const PostItem = ({ post, onDelete, onEdit }: PostItemProps) => {
-    return (
-        <View style={styles.itemContainer}>
-            <View style={styles.postItem}>
-                <View style={styles.postHeader}>
-                    <Image resizeMode='contain' style={styles.postImage} source={{ uri: post.imageUrl }}></Image>
-                    <View style={styles.postContent} >
-                        <Text style={styles.title}>{post.title}</Text>
-                        <Text style={styles.postMetadata}>{PostStatus[post.status]},  Author ID: {post.authorId}</Text>
-                        <View style={styles.postTags}>
-                            {post.tags.map(tag => <Text key={tag} style={styles.postTag}>{tag}</Text>)}
-                        </View>
-                    </View>
-                </View>
 
-                <Text style={styles.postText}>{post.content}</Text>
-                <View style={styles.postItemButtons}>
-                    <IconButton style={styles.button} textStyle={styles.buttonText} name="pencil-square" size={27} color="white" backgroundColor='green'
-                        onPress={() => onEdit(post)}>Edit
-                    </IconButton>
-                    <IconButton style={styles.button} textStyle={styles.buttonText} name="times-circle" size={27} color="white" backgroundColor='#ff4466'
-                        onPress={() => onDelete(post)}>Delete
-                    </IconButton>
-                </View>
-            </View >
-        </View >
-    )
+export interface PostItemListener {
+    (post: Post, postItemComponent: Component<PostItemProps, {}>): void;
 }
 
-export default PostItem
+export default class PostItem extends Component<PostItemProps, {}> {
+    render() {
+        const { post, onDelete, onEdit }: PostItemProps = this.props;
+        return (
+            <View style={styles.itemContainer}>
+                <View style={styles.postItem}>
+                    <View style={styles.postHeader}>
+                        <Image resizeMode='contain' style={styles.postImage} source={{ uri: post.imageUrl }}></Image>
+                        <View style={styles.postContent} >
+                            <Text style={styles.title}>{post.title}</Text>
+                            <Text style={styles.postMetadata}>{PostStatus[post.status]},  Author ID: {post.authorId}</Text>
+                            <View style={styles.postTags}>
+                                {post.tags.map(tag => <Text key={tag} style={styles.postTag}>{tag}</Text>)}
+                            </View>
+                        </View>
+                    </View>
+
+                    <Text style={styles.postText}>{post.content}</Text>
+                    <View style={styles.postItemButtons}>
+                        <IconButton style={styles.button} textStyle={styles.buttonText} name="pencil-square" size={27} color="white" backgroundColor='green'
+                            onPress={() => onEdit(post)}>Edit
+                        </IconButton>
+                        <IconButton style={styles.button} textStyle={styles.buttonText} name="times-circle" size={27} color="white" backgroundColor='#ff4466'
+                            onPress={() => onDelete(post)}>Delete
+                        </IconButton>
+                    </View>
+                </View >
+            </View >
+        )
+    }
+}
 
 const styles = StyleSheet.create({
     itemContainer: {
         padding: 10,
+        height: ITEM_HEIGHT,
     },
     postItem: {
         padding: 5,

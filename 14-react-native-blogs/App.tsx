@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform, FlatList } from "react-native";
 import { BlogsAPI } from "./dao/rest-api-client";
 import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
@@ -8,6 +8,7 @@ import PostList from "./components/PostList";
 import { FormComponentConfigs } from "./components/formbuilder/form-types";
 import IconButton from './components/IconButton';
 import * as yup from 'yup';
+import PostItem, { PostItemProps } from "./components/PostItem";
 
 export enum Views {
   PostFormView = 1, PostListView
@@ -19,6 +20,7 @@ interface AppState {
   posts: Post[];
   filter: FilterType;
   editedPost: Post;
+  scrollIndex: number;
 }
 
 const EMPTY_POST = new Post('', '', [], '', 1);
@@ -30,7 +32,9 @@ class App extends Component<{}, AppState> {
     posts: [],
     filter: undefined,
     editedPost: EMPTY_POST,
+    scrollIndex: 0,
   }
+  postsListRef = React.createRef<FlatList<Post>>()
 
   async componentDidMount() {
     try {
@@ -39,6 +43,10 @@ class App extends Component<{}, AppState> {
     } catch (err) {
       this.setState({ errors: err as string })
     }
+  }
+
+  componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<AppState>, snapshot?: any): void {
+    this.postsListRef.current?.scrollToIndex({index: this.state.scrollIndex});
   }
 
   handleUpdateTodo = (post: Post) => {
@@ -64,13 +72,21 @@ class App extends Component<{}, AppState> {
       post.tags = post.tags.filter(tag => tag.trim().length > 0)
       if (post.id) { //edit post
         const updated = await BlogsAPI.update(post);
-        this.setState(({ posts }) => ({
-          posts: posts.map(p => p.id === updated.id ? updated : p),
-        }))
+        const scrollIndex = this.state.posts.findIndex(p => p.id === updated.id)
+        this.setState(({ posts }) => {
+          const postsCopy = posts.slice();
+          postsCopy[scrollIndex] = updated;
+          return {
+            posts: postsCopy,
+            scrollIndex,
+          }
+        });
       } else { // create post
         const created = await BlogsAPI.create(post);
+        const scrollIndex = this.state.posts.length;
         this.setState(({ posts }) => ({
           posts: posts.concat(created),
+          scrollIndex,
         }));
       }
       this.setState({
@@ -119,18 +135,19 @@ class App extends Component<{}, AppState> {
             switch (this.state.activeView) {
               case Views.PostFormView:
                 return (
-                    <Form<Post, PostFormPropToCompKindMapping>
-                      config={postFormConfig}
-                      // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-                      initialValue={this.state.editedPost}
-                      onSubmit={this.handleSubmitPost}
-                      onCancel={this.handleFormCancel} />);
+                  <Form<Post, PostFormPropToCompKindMapping>
+                    config={postFormConfig}
+                    // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+                    initialValue={this.state.editedPost}
+                    onSubmit={this.handleSubmitPost}
+                    onCancel={this.handleFormCancel} />);
               case Views.PostListView:
                 return (
-                  <PostList posts={this.state.posts}
+                  <PostList ref={this.postsListRef} posts={this.state.posts}
                     filter={this.state.filter}
                     onDelete={this.handleDeleteTodo}
                     onEdit={this.handleEditTodo}
+                    scrollIndex={this.state.scrollIndex }
                   />);
             }
           })()}

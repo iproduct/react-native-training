@@ -17,7 +17,7 @@ export interface TodoListener {
 }
 
 export interface PostListener {
-  (todo: Post): void;
+  (post: Post): void;
 }
 
 export type FilterType = PostStatus | undefined;

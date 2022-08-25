@@ -64,7 +64,7 @@
         "easy"
       ],
       "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
-      "status": 1,
+      "status": 2,
       "authorId": 1
     },
     {
@@ -76,7 +76,7 @@
       ],
       "imageUrl": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg",
       "authorId": 1,
-      "status": 1,
+      "status": 2,
       "id": 23
     },
     {
@@ -126,7 +126,7 @@
       ],
       "imageUrl": "https://themewagon.com/wp-content/uploads/2021/11/purple-react-1.png",
       "authorId": 1,
-      "status": "1",
+      "status": "2",
       "id": 27
     },
     {
@@ -165,8 +165,19 @@
       ],
       "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
       "authorId": 3,
-      "status": "2",
+      "status": "1",
       "id": 30
+    },
+    {
+      "title": "swq",
+      "content": "qwwqdwqdwqdwqdwqdwqdwqwqdwqdewqdweqdewqewqdwe",
+      "tags": [
+        "wqdwq"
+      ],
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
+      "authorId": 1,
+      "status": 1,
+      "id": 31
     }
   ],
   "comments": [
