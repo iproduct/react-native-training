@@ -6,6 +6,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import IconButton from "./IconButton";
 
 export const ITEM_HEIGHT = 400;
+export const ITEM_PADDING = 10;
 
 export interface PostItemProps {
     post: Post;
@@ -52,7 +53,7 @@ export default class PostItem extends Component<PostItemProps, {}> {
 
 const styles = StyleSheet.create({
     itemContainer: {
-        padding: 10,
+        padding: ITEM_PADDING,
         height: ITEM_HEIGHT,
     },
     postItem: {
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#aaa',
+        height: ITEM_HEIGHT - 2 * ITEM_PADDING,
     },
     postHeader: {
         marginTop: 10,

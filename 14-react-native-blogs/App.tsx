@@ -8,7 +8,7 @@ import PostList from "./components/PostList";
 import { FormComponentConfigs } from "./components/formbuilder/form-types";
 import IconButton from './components/IconButton';
 import * as yup from 'yup';
-import PostItem, { PostItemProps } from "./components/PostItem";
+import PostItem, { ITEM_HEIGHT, PostItemProps } from "./components/PostItem";
 
 export enum Views {
   PostFormView = 1, PostListView
@@ -46,7 +46,13 @@ class App extends Component<{}, AppState> {
   }
 
   componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<AppState>, snapshot?: any): void {
-    this.postsListRef.current?.scrollToIndex({index: this.state.scrollIndex});
+    if (this.state.activeView === Views.PostListView) {
+      if (Platform.OS === 'web') {
+        // this.postsListRef.current?.scrollToOffset({offset: (this.state.scrollIndex-1) * ITEM_HEIGHT - 1});
+      } else {
+        this.postsListRef.current?.scrollToIndex({ index: this.state.scrollIndex });
+      }
+    }
   }
 
   handleUpdateTodo = (post: Post) => {
@@ -102,6 +108,7 @@ class App extends Component<{}, AppState> {
   handleFormCancel = () => {
     this.setState({
       errors: undefined,
+      editedPost: EMPTY_POST,
       activeView: Views.PostListView,
     })
   }
@@ -147,7 +154,7 @@ class App extends Component<{}, AppState> {
                     filter={this.state.filter}
                     onDelete={this.handleDeleteTodo}
                     onEdit={this.handleEditTodo}
-                    scrollIndex={this.state.scrollIndex }
+                    scrollIndex={this.state.scrollIndex}
                   />);
             }
           })()}
