@@ -1,141 +1,59 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  ColorValue,
-  FlatList,
-  GestureResponderEvent,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
+export default function App() {
+  let openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-export const ITEM_HEIGHT = 200;
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
 
-interface ItemData {
-  id: string;
-  title: string;
-}
-
-interface Props {
-  item: ItemData;
-  onPress: (event: GestureResponderEvent) => void;
-  backgroundColor: TextStyle;
-  textColor: TextStyle;
-}
-
-
-
-const DATA: ItemData[] = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Item 4',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f69',
-    title: 'Item 5',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d79',
-    title: 'Item 6',
-  },
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28b9',
-    title: 'Item 7',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f68',
-    title: 'Item 8',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d78',
-    title: 'Item 9',
-  },
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28b8',
-    title: 'Item 10',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f67',
-    title: 'Item 11',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d77',
-    title: 'Item 12',
-  },
-];
-
-const Item = ({ item, onPress, backgroundColor, textColor }: Props) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-const App = () => {
-  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
-  const flatListRef = useRef<FlatList<ItemData>| null>(null)
-  useEffect(() => {
-    flatListRef.current?.scrollToIndex({index: 3});
-  })
-
-  const renderItem = ({ item }: { item: ItemData }) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === selectedId ? 'white' : 'black';
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    console.log(pickerResult);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList ref={flatListRef}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        extraData={selectedId}
-        getItemLayout={(data: ItemData[] | null | undefined, index: number) => (
-          { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
-        )}
-        // initialScrollIndex={11}
-      />
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.logo} />
+      <Text style={styles.instructions}>
+        To share a photo from your phone with a friend, just press the button below!
+      </Text>
+
+      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+        <Text style={styles.buttonText}>Pick a photo</Text>
+      </TouchableOpacity>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  item: {
+  logo: {
+    width: 305,
+    height: 159,
+    marginBottom: 20,
+  },
+  instructions: {
+    color: '#888',
+    fontSize: 18,
+    marginHorizontal: 15,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: 'blue',
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    height: ITEM_HEIGHT,
+    borderRadius: 5,
   },
-  title: {
-    fontSize: 32,
+  buttonText: {
+    fontSize: 20,
+    color: '#fff',
   },
 });
-
-export default App;
