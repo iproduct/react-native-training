@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+interface SelectedUri {
+  localUri: ImagePicker.ImageInfo;
+}
+
+
 export default function App() {
+  const [selectedImage, setSelectedImage] = useState<SelectedUri | null>(null);
+
   let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -13,11 +20,18 @@ export default function App() {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
     console.log(pickerResult);
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage({ localUri: pickerResult });
   };
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.logo} />
+      <Image source={{ uri: selectedImage?.localUri.uri }} 
+      style={styles.logo} 
+      resizeMode='contain' />
       <Text style={styles.instructions}>
         To share a photo from your phone with a friend, just press the button below!
       </Text>
@@ -37,9 +51,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 305,
-    height: 159,
     marginBottom: 20,
+    width: 500,
+    height: 500,
   },
   instructions: {
     color: '#888',
