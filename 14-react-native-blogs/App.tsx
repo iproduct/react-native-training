@@ -134,17 +134,6 @@ class App extends Component<{}, AppState> {
         })()}
       </SafeAreaView>
     );
-
-    {/* <Text style={styles.header}>TODO Demo</Text>
-          {this.state.errors ? <Text style={styles.errors}>{this.state.errors}</Text>:<></>}
-          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleCreateTodo} />
-          <TodoList
-            todos={this.state.todos}
-            filter={this.state.filter}
-            onUpdate={this.handleUpdateTodo}
-            onDelete={this.handleDeleteTodo}
-            onEdit={this.handleEditTodo}
-          /> */}
   }
 }
 
@@ -168,10 +157,14 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
   },
   title: {
     label: 'Blog Title',
-    validators: yup.string(),
+    validators: yup.string().min(3).max(40),
   },
   content: {
     label: 'Blog Content',
+    options: {
+      multiline: true,
+    },
+    validators: yup.string().min(40).max(2048),
   },
   tags: {
     convertor: {
@@ -181,8 +174,7 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
   },
   imageUrl: {
     label: 'Blog Image URL',
-    options: {
-    }
+    validators: yup.string().url(),
   },
   status: {
     componentKind: 'FormDropdownComponent',
@@ -196,6 +188,14 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
   },
   authorId: {
     label: 'Author ID',
+    validators: yup.number().integer().positive(),
+    convertor: {
+      fromString: (value: string) => {
+        const num = +value;
+        return isNaN(num) ? 0 : num;
+      },
+      toString: (num: number) => num + ''
+    }
   },
 };
 

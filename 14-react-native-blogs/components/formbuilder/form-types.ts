@@ -18,7 +18,7 @@ export interface FormComponentConfig<V, CompKind extends ComponentKinds> {
     onChange?: FormComponentListener<V>;
     options?: OptionType<CompKind>;
     valid?: ValidStatus;
-    validators?: Validator | Validator[];
+    validators?: Validator<V> | Validator<V>[];
     convertor?: Convertor<V>;
     multiline?: boolean;
     labelStyles?: StyleProp<TextStyle>;

@@ -21,69 +21,26 @@ export class FormTextComponent
         }
     }
 
-    // validate(): string[] {
-    //     const errors = [] as string[];
-    //     if (!this.validators) return [];
-    //     if (Array.isArray(this.validators)) {
-    //         for (const validator of this.validators) {
-    //             try {
-    //                 validator(this.value, this.id);
-    //             } catch (err) {
-    //                 errors.push(err as string);
-    //             }
-    //         }
-    //     } else {
-    //         try {
-    //             this.validators(this.value, this.id);
-    //         } catch (err) {
-    //             errors.push(err as string);
-    //         }
-    //     }
-    //     return errors;
-    // }
-
     render() {
         let { id,
             value,
             label = capitalize(id),
-            options: { multiline = false, numberOfLines = 5 } = { multiline: false },
+            options: { multiline = false, numberOfLines = multiline ? 5 : 1 } = { multiline: false },
+            errors = undefined,
             style = {},
             labelStyle = {},
-            inputStyle = {}
+            inputStyle = {},
+            errorStyle = {},
         } = this.props;
-        // const validationErrors = this.validate();
         return (
             <View style={{ ...styles.view, ...style }}>
                 <Text style={{ ...styles.label, ...labelStyle }}>{label}</Text>
                 <TextInput style={{ ...styles.input, ...inputStyle }} value={value}
                     onChangeText={this.handleFieldChanged}
                     multiline={multiline} numberOfLines={numberOfLines} />
+                {errors && <Text style={{ ...styles.error, ...errorStyle }}>{errors}</Text>}
             </View>
         );
-
-
-        // return this.multiline ?
-        //     `
-        // <div class="input-field col s12">
-        //     <textarea id="${this.id}" name="${this.id}" type="text" 
-        //         class="materialize-textarea validate ${validationErrors ? 'invalid' : 'valid'}" data-property="${this.property}">${this.value}</textarea>
-        //     <label for="${this.id}">${this.label}</label>
-        //     <span class="helper-text" data-error="${this.validate().join(', ')}"></span>
-        // </div>
-        // `
-        //     : this.hidden ?
-        //         `
-        //     <input id="${this.id}" name="${this.id}" hidden data-property="${this.property}" >
-        // `
-        //         :
-        //         `
-        // <div class="input-field col s12">
-        //     <input id="${this.id}" name="${this.id}" data-property="${this.property}" type="text" class="validate ${validationErrors ? 'invalid' : 'valid'}"
-        //         value="${this.value}">
-        //     <label for="${this.id}">${this.label}</label>
-        //     <span class="helper-text" data-error="${this.validate().join(', ')}"></span>
-        // </div>
-        // `
     }
 }
 
@@ -93,7 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        padding: 20,
+        padding: 5,
     },
     label: {
         paddingTop: 5,
@@ -108,6 +65,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 5,
         padding: 5,
-        height: 40,
     },
+    error: {
+        fontSize: 15,
+        color: "red",
+        borderColor: "red",
+        backgroundColor: "#fcbdbd",
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 5,
+        padding: 5,
+    }
 });

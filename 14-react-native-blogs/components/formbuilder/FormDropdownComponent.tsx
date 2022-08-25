@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        padding: 20,
+        padding: 5,
     },
     label: {
         paddingTop: 15,
