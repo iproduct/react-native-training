@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, ScrollView, StatusBar } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform } from "react-native";
 import { BlogsAPI } from "./dao/rest-api-client";
 import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
@@ -108,30 +108,33 @@ class App extends Component<{}, AppState> {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="green" />
-        <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleViewChange} name='check-circle' >
-          {this.state.activeView === Views.PostListView ? 'Add New Post' : 'Show All Posts'}
-        </IconButton>
-        {(() => {
-          switch (this.state.activeView) {
-            case Views.PostFormView:
-              return (
-                <ScrollView contentContainerStyle={styles.form}>
-                  <Form<Post, PostFormPropToCompKindMapping>
-                    config={postFormConfig}
-                    // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
-                    initialValue={this.state.editedPost}
-                    onSubmit={this.handleSubmitPost}
-                    onCancel={this.handleFormCancel} />
-                </ScrollView>);
-            case Views.PostListView:
-              return (
-                <PostList posts={this.state.posts}
-                  filter={this.state.filter}
-                  onDelete={this.handleDeleteTodo}
-                  onEdit={this.handleEditTodo}
-                />);
-          }
-        })()}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboarAvoidingView}
+        >
+          <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleViewChange} name='check-circle' >
+            {this.state.activeView === Views.PostListView ? 'Add New Post' : 'Show All Posts'}
+          </IconButton>
+          {(() => {
+            switch (this.state.activeView) {
+              case Views.PostFormView:
+                return (
+                    <Form<Post, PostFormPropToCompKindMapping>
+                      config={postFormConfig}
+                      // initialValue={new Post('Example Post', 'Example content ...', ['example', 'post'], 'https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg', 1)}
+                      initialValue={this.state.editedPost}
+                      onSubmit={this.handleSubmitPost}
+                      onCancel={this.handleFormCancel} />);
+              case Views.PostListView:
+                return (
+                  <PostList posts={this.state.posts}
+                    filter={this.state.filter}
+                    onDelete={this.handleDeleteTodo}
+                    onEdit={this.handleEditTodo}
+                  />);
+            }
+          })()}
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -203,6 +206,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingTop: StatusBar.currentHeight,
+  },
+  keyboarAvoidingView: {
+    flex: 1
   },
   form: {
     flex: 1,

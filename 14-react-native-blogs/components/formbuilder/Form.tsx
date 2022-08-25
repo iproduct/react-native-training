@@ -95,62 +95,63 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
     render() {
         const { config, style = {}, initialValue } = this.props;
         return (
-            <ScrollView style={styles.scrollPanel}>
-                <View style={{ ...styles.form, ...style }}>
-                    {
-                        Object.keys(config).map(field => {
-                            const entityProp = field as keyof Entity & string;
-                            const prop = this.state[entityProp]
-                            const value = prop?.value;
-                            const errors = prop?.validationErrors;
-                            const erorrsStr = errors? errors.toString(): undefined;
-                            const fieldConfig = config[entityProp];
-                            const convertor = fieldConfig.convertor;
-                            let stringValue: string = value ? value + '' : '';
-                            if (value !== undefined && convertor) {
-                                stringValue = convertor.toString(value);
-                            }
-                            switch (fieldConfig?.componentKind) {
-                                case 'FormDropdownComponent':
-                                    const fieldConfigDropdown = Object.assign({}, config[entityProp],
-                                        { options: fieldConfig.options as FormDropdownComponentOptions });
-                                    return <FormDropdownComponent<typeof value | undefined>
-                                        key={entityProp} id={entityProp} value={value}
-                                        onChange={val => this.handleFieldChange(entityProp, val)}
-                                        {...fieldConfigDropdown} errors={erorrsStr} />
-                                case 'FormReadonlyTextComponent':
-                                    const { options, onChange, ...fieldConfigReadonlyText } = config[entityProp];
-                                    return <FormReadonlyTextComponent
-                                        key={entityProp} id={entityProp} value={stringValue}
-                                        {...fieldConfigReadonlyText} errors={erorrsStr} />
-                                default:
-                                    const fieldConfigText = Object.assign({}, config[entityProp],
-                                        { options: fieldConfig.options as FormTextComponentOptions });
-                                    return <FormTextComponent key={entityProp} id={entityProp} value={stringValue}
-                                        onChange={val => this.handleFieldChange(entityProp, val)} {...fieldConfigText} 
-                                        errors={erorrsStr} />
-                            }
-                        })
-                    }
-                    <View style={styles.buttons}>
-                        <IconButton size={20} backgroundColor="green" color="white" onPress={this.handleSubmit} name='check-circle' >
-                            Submit
-                        </IconButton>
-                        <IconButton size={20} backgroundColor="#ff4466" color="white" onPress={this.reset} name='times-circle' >
-                            Reset
-                        </IconButton>
-                        <IconButton size={20} backgroundColor="gray" color="white" onPress={this.props.onCancel} name='times-circle' >
-                            Cancel
-                        </IconButton>
+                <ScrollView style={styles.scrollPanel}>
+                    <View style={{ ...styles.form, ...style }}>
+                        {
+                            Object.keys(config).map(field => {
+                                const entityProp = field as keyof Entity & string;
+                                const prop = this.state[entityProp]
+                                const value = prop?.value;
+                                const errors = prop?.validationErrors;
+                                const erorrsStr = errors ? errors.toString() : undefined;
+                                const fieldConfig = config[entityProp];
+                                const convertor = fieldConfig.convertor;
+                                let stringValue: string = value ? value + '' : '';
+                                if (value !== undefined && convertor) {
+                                    stringValue = convertor.toString(value);
+                                }
+                                switch (fieldConfig?.componentKind) {
+                                    case 'FormDropdownComponent':
+                                        const fieldConfigDropdown = Object.assign({}, config[entityProp],
+                                            { options: fieldConfig.options as FormDropdownComponentOptions });
+                                        return <FormDropdownComponent<typeof value | undefined>
+                                            key={entityProp} id={entityProp} value={value}
+                                            onChange={val => this.handleFieldChange(entityProp, val)}
+                                            {...fieldConfigDropdown} errors={erorrsStr} />
+                                    case 'FormReadonlyTextComponent':
+                                        const { options, onChange, ...fieldConfigReadonlyText } = config[entityProp];
+                                        return <FormReadonlyTextComponent
+                                            key={entityProp} id={entityProp} value={stringValue}
+                                            {...fieldConfigReadonlyText} errors={erorrsStr} />
+                                    default:
+                                        const fieldConfigText = Object.assign({}, config[entityProp],
+                                            { options: fieldConfig.options as FormTextComponentOptions });
+                                        return <FormTextComponent key={entityProp} id={entityProp} value={stringValue}
+                                            onChange={val => this.handleFieldChange(entityProp, val)} {...fieldConfigText}
+                                            errors={erorrsStr} />
+                                }
+                            })
+                        }
+                        <View style={styles.buttons}>
+                            <IconButton size={20} backgroundColor="green" color="white" onPress={this.handleSubmit} name='check-circle' >
+                                Submit
+                            </IconButton>
+                            <IconButton size={20} backgroundColor="#ff4466" color="white" onPress={this.reset} name='times-circle' >
+                                Reset
+                            </IconButton>
+                            <IconButton size={20} backgroundColor="gray" color="white" onPress={this.props.onCancel} name='times-circle' >
+                                Cancel
+                            </IconButton>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
     scrollPanel: {
+        flex: 1,
         width: "100%",
     },
     form: {
