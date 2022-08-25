@@ -154,6 +154,19 @@
       "authorId": 1,
       "status": 1,
       "id": 29
+    },
+    {
+      "title": "Test Article",
+      "content": "React Native provides a number of built-in Core Components ready for you to use in your app. You can find them all in the left sidebar (or menu above, if you are on a narrow screen). If you're not sure where to get started, take a look at the following categories:\n\n- Basic Components\n- User Interface\n- List Views\n- Android-specific\n- iOS-specific components\nOthers",
+      "tags": [
+        "react_native",
+        "components",
+        "overview"
+      ],
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
+      "authorId": 3,
+      "status": "2",
+      "id": 30
     }
   ],
   "comments": [
