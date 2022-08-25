@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as Sharing from 'expo-sharing';
-import * as ImageManipulator from "expo-image-manipulator";
 
 interface SelectedUri {
   localUri: ImagePicker.ImageInfo;
@@ -29,37 +27,15 @@ export default function App() {
     setSelectedImage({ localUri: pickerResult });
   };
 
-  let openShareDialogAsync = async () => {    
-    if (!Platform || Platform.OS === 'web') {
-      alert(`Uh oh, sharing isn't available on your platform`);
-      return;
-    }
-    if (selectedImage) {
-      const imageTmp = await ImageManipulator.manipulateAsync(selectedImage.localUri.uri);
-      await Sharing.shareAsync(imageTmp.uri);
-    }
-    
-  }; 
-
-  if (selectedImage !== null) {
-    return (
-      <View style={styles.container}>
-        <Image source={{ uri: selectedImage?.localUri.uri }}
-          style={styles.image}
-          resizeMode='contain' />
-        <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
-          <Text style={styles.buttonText}>Share this photo</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
   return (
     <View style={styles.container}>
-      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.image}
-          resizeMode='contain' />
+      <Image source={{ uri: selectedImage?.localUri.uri }} 
+      style={styles.image} 
+      resizeMode='cover' />
       <Text style={styles.instructions}>
         To share a photo from your phone with a friend, just press the button below!
       </Text>
+
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
         <Text style={styles.buttonText}>Pick a photo</Text>
       </TouchableOpacity>
