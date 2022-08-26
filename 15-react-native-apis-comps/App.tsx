@@ -1,97 +1,79 @@
-import React, { useState } from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import * as Sharing from 'expo-sharing';
-import * as ImageManipulator from "expo-image-manipulator";
-
-interface SelectedUri {
-  localUri: ImagePicker.ImageInfo;
-}
-
+import React, { useState, useEffect } from 'react';
+import { Button, Image, StyleSheet, View } from 'react-native';
+import { Asset } from 'expo-asset';
+import { manipulateAsync, FlipType, SaveFormat, ImageResult } from 'expo-image-manipulator';
 
 export default function App() {
-  const [selectedImage, setSelectedImage] = useState<SelectedUri | null>(null);
+  const [ready, setReady] = useState<boolean>(false);
+  const [image, setImage] = useState<Asset | ImageResult | null>(null);
 
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  useEffect(() => {
+    (async () => {
+      const image = Asset.fromModule(require('./assets/snack-icon.png'));
+      await image.downloadAsync();
+      setImage(image);
+      setReady(true);
+    })();
+  }, []);
 
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
-    if (pickerResult.cancelled === true) {
-      return;
-    }
-
-    setSelectedImage({ localUri: pickerResult });
-  };
-
-  let openShareDialogAsync = async () => {    
-    if (!Platform || Platform.OS === 'web') {
-      alert(`Uh oh, sharing isn't available on your platform`);
-      return;
-    }
-    if (selectedImage) {
-      const imageTmp = await ImageManipulator.manipulateAsync(selectedImage.localUri.uri);
-      await Sharing.shareAsync(imageTmp.uri);
-    }
-    
-  }; 
-
-  if (selectedImage !== null) {
-    return (
-      <View style={styles.container}>
-        <Image source={{ uri: selectedImage?.localUri.uri }}
-          style={styles.image}
-          resizeMode='contain' />
-        <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
-          <Text style={styles.buttonText}>Share this photo</Text>
-        </TouchableOpacity>
-      </View>
+  const _rotate90andFlip = async () => {
+    const manipResult = await manipulateAsync(
+      getImageUri(image),
+      [
+        {
+          resize: {
+            width: 200,
+          }
+        },
+        { rotate: 45 },
+      ],
+      { base64: true, format: SaveFormat.PNG }
     );
+    setImage(manipResult);
   }
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.image}
-          resizeMode='contain' />
-      <Text style={styles.instructions}>
-        To share a photo from your phone with a friend, just press the button below!
-      </Text>
-      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Pick a photo</Text>
-      </TouchableOpacity>
+
+  const _renderImage = () => (
+    <View style={styles.imageContainer}>
+      <Image
+        source={{ uri: getImageUri(image) }}
+        style={styles.image}
+      />
     </View>
   );
+
+  return (
+    <View style={styles.container}>
+      {ready && image && _renderImage()}
+      <Button title="Rotate and Flip" onPress={_rotate90andFlip} />
+    </View>
+  );
+}
+
+function getImageUri(image: Asset | ImageResult | null) {
+  let uri: string = '';
+  if (image) {
+    if ('localUri' in image) {
+      uri = image.localUri ?? '';
+    } else {
+      uri = image.uri;
+    }
+  }
+  return uri;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
+  imageContainer: {
+    marginVertical: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    marginBottom: 20,
     width: 300,
     height: 300,
-  },
-  instructions: {
-    color: '#888',
-    fontSize: 18,
-    marginHorizontal: 15,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff',
+    resizeMode: 'contain',
   },
 });

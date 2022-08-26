@@ -2,7 +2,7 @@
   "name": "14-react-native-blogs",
   "version": "1.0.0",
   "scripts": {
-    "api": "json-server db.json --routes routes.json --host=192.168.0.12 --port=4000",
+    "api": "json-server db.json --routes routes.json --host=192.168.1.101 --port=4000",
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
