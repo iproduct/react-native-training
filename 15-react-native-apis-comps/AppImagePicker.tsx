@@ -18,7 +18,7 @@ export default function App() {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({exif: true, quality: 1});
     console.log(pickerResult);
     if (pickerResult.cancelled === true) {
       return;

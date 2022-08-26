@@ -22,8 +22,8 @@ interface AppState {
   editedPost: Post;
   scrollIndex: number;
 }
-
-const EMPTY_POST = new Post('', '', [], '', 1);
+export const EMPTY_IMAGE_DATA = { uri: '', width: 0, height: 0 };
+const EMPTY_POST = new Post('', '', [], EMPTY_IMAGE_DATA, 1);
 
 class App extends Component<{}, AppState> {
   state: AppState = {
@@ -55,13 +55,13 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  handleUpdateTodo = (post: Post) => {
+  handleUpdatePost = (post: Post) => {
     this.setState(({ posts }) => ({
       posts: posts.map(td => td.id === post.id ? post : td)
     }))
   }
 
-  handleDeleteTodo = async (post: Post) => {
+  handleDeletePost = async (post: Post) => {
     try {
       await BlogsAPI.deleteById(post.id);
       this.setState(({ posts }) => ({
@@ -152,7 +152,7 @@ class App extends Component<{}, AppState> {
                 return (
                   <PostList ref={this.postsListRef} posts={this.state.posts}
                     filter={this.state.filter}
-                    onDelete={this.handleDeleteTodo}
+                    onDelete={this.handleDeletePost}
                     onEdit={this.handleEditTodo}
                     scrollIndex={this.state.scrollIndex}
                   />);
@@ -172,7 +172,7 @@ type PostFormPropToCompKindMapping = {
   title: 'FormTextComponent';
   content: 'FormTextComponent';
   tags: 'FormTextComponent';
-  imageUrl: 'FormTextComponent';
+  image: 'FormImageComponent';
   status: 'FormDropdownComponent';
   authorId: 'FormTextComponent';
 }
@@ -199,9 +199,12 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
       toString: (tagsArray: string[]) => tagsArray.toString()
     }
   },
-  imageUrl: {
+  image: {
+    componentKind: 'FormImageComponent',
     label: 'Blog Image URL',
-    validators: yup.string().url(),
+    options: {
+    }
+    // validators: yup.string().url(),
   },
   status: {
     componentKind: 'FormDropdownComponent',

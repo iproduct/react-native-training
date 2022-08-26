@@ -35,7 +35,9 @@
         "rest",
         "api"
       ],
-      "imageUrl": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
+      "image": {
+        "uri": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png"
+      },
       "authorId": 1,
       "status": 1,
       "id": 1
@@ -48,7 +50,9 @@
         "es6",
         "class"
       ],
-      "imageUrl": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg",
+      "image": {
+        "uri": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg"
+      },
       "authorId": 1,
       "status": 1,
       "id": 2
@@ -63,7 +67,9 @@
         "http",
         "easy"
       ],
-      "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
+      "image": {
+        "uri": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default"
+      },
       "status": 2,
       "authorId": 1
     },
@@ -74,7 +80,9 @@
         "coffee",
         "script"
       ],
-      "imageUrl": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg",
+      "image": {
+        "uri": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg"
+      },
       "authorId": 1,
       "status": 2,
       "id": 23
@@ -86,7 +94,9 @@
         "typescript",
         "demo"
       ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/40000/velka/robin-bird.jpg",
+      "image": {
+        "uri": "https://www.publicdomainpictures.net/pictures/40000/velka/robin-bird.jpg"
+      },
       "authorId": 1,
       "status": 1,
       "id": 24
@@ -99,7 +109,9 @@
         "script",
         "matrix"
       ],
-      "imageUrl": "https://cdn.mos.cms.futurecdn.net/sfgpCc8Ba2GFWVLcPmBzcM.jpg",
+      "image": {
+        "uri": "https://cdn.mos.cms.futurecdn.net/sfgpCc8Ba2GFWVLcPmBzcM.jpg"
+      },
       "authorId": 1,
       "status": 1,
       "id": 25
@@ -112,7 +124,9 @@
         "react",
         "native"
       ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg",
+      "image": {
+        "uri": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg"
+      },
       "authorId": 1,
       "status": "2",
       "id": 26
@@ -124,7 +138,9 @@
         "react",
         "intro"
       ],
-      "imageUrl": "https://themewagon.com/wp-content/uploads/2021/11/purple-react-1.png",
+      "image": {
+        "uri": "https://themewagon.com/wp-content/uploads/2021/11/purple-react-1.png"
+      },
       "authorId": 1,
       "status": "2",
       "id": 27
@@ -137,23 +153,12 @@
         "native",
         "styles"
       ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg",
+      "image": {
+        "uri": "https://www.publicdomainpictures.net/pictures/160000/velka/jeune-femme-poste-de-travail.jpg"
+      },
       "authorId": 1,
       "status": 1,
       "id": 28
-    },
-    {
-      "title": "Title",
-      "content": "AASDSASAASASA\nSADAS\n\nADSAASDADS\nSADDS\nSDA\nDSSA",
-      "tags": [
-        "AAAA",
-        "AAAAA",
-        "VVVV"
-      ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/20000/velka/computer-memory-chips.jpg",
-      "authorId": 1,
-      "status": 1,
-      "id": 29
     },
     {
       "title": "Test Article",
@@ -163,101 +168,12 @@
         "components",
         "overview"
       ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
+      "image": {
+        "uri": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg"
+      },
       "authorId": 3,
       "status": "1",
       "id": 30
-    },
-    {
-      "title": "swq",
-      "content": "qwwqdwqdwqdwqdwqdwqdwqwqdwqdewqdweqdewqewqdwe",
-      "tags": [
-        "wqdwq"
-      ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
-      "authorId": 1,
-      "status": 1,
-      "id": 31
-    },
-    {
-      "title": "sdsadsa",
-      "content": "assasda\nasd\nsadsa\ndsa\nsa\nsa\n\nsa\ns\ndsa\ndsa",
-      "tags": [
-        "assad"
-      ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
-      "authorId": 1,
-      "status": 1,
-      "id": 32
-    },
-    {
-      "title": "sadsadas",
-      "content": "adssadasdsadsadsasadsadsadsadasdsadasdsadsadsa",
-      "tags": [
-        "asds"
-      ],
-      "imageUrl": "https://www.publicdomainpictures.net/pictures/60000/velka/computer-electronics.jpg",
-      "authorId": 1,
-      "status": 1,
-      "id": 33
-    },
-    {
-      "title": "",
-      "content": "",
-      "tags": [],
-      "imageUrl": "",
-      "authorId": 1,
-      "status": 1,
-      "id": 34
-    },
-    {
-      "title": "",
-      "content": "",
-      "tags": [],
-      "imageUrl": "",
-      "authorId": 1,
-      "status": 1,
-      "id": 35
-    },
-    {
-      "title": "",
-      "content": "",
-      "tags": [],
-      "imageUrl": "",
-      "authorId": 1,
-      "status": 1,
-      "id": 36
-    },
-    {
-      "title": "dsad",
-      "content": "dw",
-      "tags": [
-        "wqdsq"
-      ],
-      "imageUrl": "sasda",
-      "authorId": 1,
-      "status": 1,
-      "id": 37
-    },
-    {
-      "title": "",
-      "content": "",
-      "tags": [],
-      "imageUrl": "",
-      "authorId": 1,
-      "status": 1,
-      "id": 38
-    },
-    {
-      "title": "xswq",
-      "content": "qwsxwqxwq",
-      "tags": [
-        "xwqxq"
-      ],
-      "imageUrl": "xqwx",
-      "authorId": 1,
-      "status": 1,
-      "id": 39
     }
   ],
   "comments": [

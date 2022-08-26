@@ -7,6 +7,9 @@ import { FormTextComponent, FormTextComponentOptions } from './FormTextComponent
 import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropdownComponent';
 import { FormComponentState } from './FormComponent';
 import { FormReadonlyTextComponent } from './FormReadonlyTextComponent';
+import { FormImageComponent, FormImageComponentOptions } from './FormImageComponent';
+import { EMPTY_IMAGE_DATA } from '../../App';
+import { ImageData } from '../../model/shared-types';
 
 
 interface FormProps<Entity, FormConfig extends PropToComponentKindMapping<Entity>> {
@@ -123,8 +126,15 @@ export class Form<Entity, FormConfig extends PropToComponentKindMapping<Entity>>
                                     return <FormReadonlyTextComponent
                                         key={entityProp} id={entityProp} value={stringValue}
                                         {...fieldConfigReadonlyText} errors={erorrsStr} />
+                                case 'FormImageComponent':
+                                    const fieldConfigImage = Object.assign({}, fieldConfig,
+                                        { options: fieldConfig.options as FormImageComponentOptions });
+                                    return <FormImageComponent<typeof value | undefined>
+                                        key={entityProp} id={entityProp} value={value}
+                                        onChange={val => this.handleFieldChange(entityProp, val)}
+                                        {...fieldConfigImage} errors={erorrsStr} />
                                 default:
-                                    const fieldConfigText = Object.assign({}, config[entityProp],
+                                    const fieldConfigText = Object.assign({}, fieldConfig,
                                         { options: fieldConfig.options as FormTextComponentOptions });
                                     return <FormTextComponent key={entityProp} id={entityProp} value={stringValue}
                                         onChange={val => this.handleFieldChange(entityProp, val)} {...fieldConfigText}

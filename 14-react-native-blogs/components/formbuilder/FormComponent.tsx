@@ -24,7 +24,7 @@ export interface FormComponentState<V> {
     validationErrors: FieldValidationResult;
 }
 
-export type ComponentKinds = 'FormTextComponent' | 'FormReadonlyTextComponent' | 'FormDropdownComponent';
+export type ComponentKinds = 'FormTextComponent' | 'FormReadonlyTextComponent' | 'FormDropdownComponent' | 'FormImageComponent';
 
 export interface FormComponent<V, OT = {}> extends Component<FormComponentProps<V, OT>> {
     componentKind: ComponentKinds;

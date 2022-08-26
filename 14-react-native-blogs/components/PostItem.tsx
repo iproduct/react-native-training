@@ -26,7 +26,7 @@ export default class PostItem extends Component<PostItemProps, {}> {
             <View style={styles.itemContainer}>
                 <View style={styles.postItem}>
                     <View style={styles.postHeader}>
-                        <Image resizeMode='contain' style={styles.postImage} source={{ uri: post.imageUrl }}></Image>
+                        <Image resizeMode='contain' style={styles.postImage} source={{ uri: post.image.uri }}></Image>
                         <View style={styles.postContent} >
                             <Text style={styles.title}>{post.title}</Text>
                             <Text style={styles.postMetadata}>{PostStatus[post.status]},  Author ID: {post.authorId}</Text>
