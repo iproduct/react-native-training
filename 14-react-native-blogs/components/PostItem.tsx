@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PostListener } from "../model/shared-types";
 import { Post, PostStatus } from "../model/posts.model"
-import { Button, Image, StyleSheet, Text, View, } from "react-native";
+import { Button, Image, ScrollView, StyleSheet, Text, View, } from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import IconButton from "./IconButton";
 
@@ -36,11 +36,14 @@ export default class PostItem extends Component<PostItemProps, {}> {
                         </View>
                     </View>
 
-                    <Text style={styles.postText}>{post.content}</Text>
+                    <ScrollView style={styles.textScrollView} nestedScrollEnabled={true}>
+                        <Text style={styles.postText}>{post.content}</Text>
+                    </ScrollView>
                     <View style={styles.postItemButtons}>
                         <IconButton style={styles.button} textStyle={styles.buttonText} name="pencil-square" size={27} color="white" backgroundColor='green'
                             onPress={() => onEdit(post)}>Edit
                         </IconButton>
+                        <View style={{ width: 20, backgroundColor: 'transparent' }} />
                         <IconButton style={styles.button} textStyle={styles.buttonText} name="times-circle" size={27} color="white" backgroundColor='#ff4466'
                             onPress={() => onDelete(post)}>Delete
                         </IconButton>
@@ -76,6 +79,7 @@ const styles = StyleSheet.create({
         width: '30%',
         height: 'auto',
         borderRadius: 10,
+        marginRight: 10,
     },
     postContent: {
         width: '70%',
@@ -105,20 +109,23 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         borderColor: 'green',
     },
+    textScrollView:{
+        height: ITEM_HEIGHT * 2 / 3,
+        marginTop: 5,
+        marginBottom: 10,
+    },
     postText: {
-        width: '65%',
-        fontSize: 24,
+        width: '100%',
+        fontSize: 18,
     },
     postItemId: {
         paddingRight: 10,
         fontSize: 24,
     },
     postItemButtons: {
-        width: '35%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: 15,
+        justifyContent: 'flex-start',
         padding: 0,
         backgroundImage: 'gray',
         border: 1

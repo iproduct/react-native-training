@@ -2,13 +2,14 @@ import { FormComponentListener, OptionType } from './form-types';
 import { ValidStatus, ChangedStatus, Validator, ValidationResult, ValidationConfig } from './validation/validate';
 import { capitalize } from '../../utils/utils';
 import { Component } from 'react';
-import { Text, TextInput, TextStyle, StyleSheet, View, ViewStyle } from 'react-native';
+import { Text, StyleSheet, View, Image } from 'react-native';
 import { FormComponentState, FormComponent, FormComponentProps, ComponentKinds } from './FormComponent';
 import IconButton, { IconType } from '../IconButton';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageInfo } from 'expo-image-picker';
 import { manipulateAsync, FlipType, SaveFormat, ImageResult } from 'expo-image-manipulator';
 import { ImageData } from '../../model/shared-types';
+import { TextInput } from 'react-native-paper';
 
 const DEFAULT_BUTTON_NAME = 'Pick an Image';
 const DEFAULT_BUTTON_ICON = 'image';
@@ -44,6 +45,20 @@ export class FormImageComponent<V = ImageData>
     implements FormComponent<V, OptionType<'FormImageComponent'>> {
     componentKind = 'FormImageComponent' as const;
 
+    handleFieldChanged = (uri: string) => {
+        const fileExtension = uri.substring(uri.lastIndexOf('.') + 1) as SupportedFileExtensions;
+        const inferredFormat = fileExtension ? FileExtensionToFormatMap[fileExtension] : undefined;
+        if (this.props.onChange) {
+            this.props.onChange({
+                uri,
+                localUri: '',
+                format: inferredFormat,
+                width: undefined,
+                height: undefined,
+            } as V);
+        }
+    }
+
     openImagePickerAsync = async () => {
         if (!this.props.onChange) return;
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -59,8 +74,8 @@ export class FormImageComponent<V = ImageData>
             return;
         }
 
-        const formImageDataUri = await this.getFormImageResult(pickerResult);
-        this.props.onChange(formImageDataUri as V);
+        const formImageData = await this.getFormImageResult(pickerResult);
+        this.props.onChange(formImageData as V);
     };
 
     async getFormImageResult(pickerResult: ImageInfo): Promise<ImageData> {
@@ -105,10 +120,17 @@ export class FormImageComponent<V = ImageData>
         return (
             <View style={{ ...styles.view, ...style }}>
                 <Text style={{ ...styles.label, ...labelStyle }}>{label}</Text>
-                <Text style={{ ...styles.input, ...inputStyle }}>{imageData.localUri ?? ''} [{imageData.format ?? ''}]</Text>
-                <IconButton size={20} backgroundColor="green" color="white" onPress={this.openImagePickerAsync} name={buttonIcon}>
-                    Pick an image
-                </IconButton>
+                <View style={styles.imagePicker}>
+                    <View style={styles.imagePickerControls}>
+                        <TextInput style={{ ...styles.input, ...inputStyle }}
+                            value={imageData.uri.startsWith('data') ? imageData.format?.toLocaleUpperCase() : imageData.uri}
+                            onChangeText={this.handleFieldChanged} numberOfLines={1} />
+                        <IconButton size={20} backgroundColor="green" color="white" onPress={this.openImagePickerAsync} name={buttonIcon}>
+                            Pick an image
+                        </IconButton>
+                    </View>
+                    <Image source={{ uri: imageData.uri }} style={styles.imagePickerThumbnail} resizeMode='cover' />
+                </View>
                 {errors && <Text style={{ ...styles.error, ...errorStyle }}>{errors}</Text>}
             </View>
         );
@@ -140,13 +162,13 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     input: {
+        height: 40,
         fontSize: 20,
         borderColor: "green",
         backgroundColor: "white",
         borderWidth: 1,
         borderRadius: 5,
         marginBottom: 5,
-        padding: 5,
     },
     error: {
         fontSize: 15,
@@ -157,5 +179,24 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 5,
         padding: 5,
-    }
+    },
+    imagePicker: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    imagePickerControls: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '75%',
+    },
+    imagePickerThumbnail: {
+        width: 90,
+        height: 90,
+        borderColor: "green",
+        backgroundColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 5,
+        marginLeft: 8,
+    },
 });

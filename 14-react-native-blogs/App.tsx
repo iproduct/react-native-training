@@ -202,9 +202,17 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
   image: {
     componentKind: 'FormImageComponent',
     label: 'Blog Image URL',
-    options: {
-    }
-    // validators: yup.string().url(),
+    validators: yup.object().shape({
+      uri: yup.string().required().test(
+        'is-url',
+        '${path} is not a valid URL',
+        (value: string | undefined) => !!value && (value.startsWith('data') || yup.string().url().isValidSync(value))
+      ),
+      localUri: yup.string(),
+      format: yup.string().oneOf(['jpeg', 'png', 'webp']),
+      width: yup.number().integer().min(0),
+      height: yup.number().integer().min(0)
+    }),
   },
   status: {
     componentKind: 'FormDropdownComponent',

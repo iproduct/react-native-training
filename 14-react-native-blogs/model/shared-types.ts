@@ -9,8 +9,8 @@ export interface ImageData {
   uri: string;
   localUri?: string;
   format?: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 export type FormFieldDict<Value> = {
