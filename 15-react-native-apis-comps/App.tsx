@@ -1,73 +1,69 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useRef, useState } from "react";
+import { Button, DrawerLayoutAndroid, Text, StyleSheet, View } from "react-native";
 
-interface SelectedUri {
-  localUri: ImagePicker.ImageInfo;
-}
-
-
-export default function App() {
-  const [selectedImage, setSelectedImage] = useState<SelectedUri | null>(null);
-
-  let openImagePickerAsync = async () => {
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
-      return;
+const App = () => {
+  const drawer = useRef(null);
+  const [drawerPosition, setDrawerPosition] = useState("left");
+  const changeDrawerPosition = () => {
+    if (drawerPosition === "left") {
+      setDrawerPosition("right");
+    } else {
+      setDrawerPosition("left");
     }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
-    if (pickerResult.cancelled === true) {
-      return;
-    }
-
-    setSelectedImage({ localUri: pickerResult });
   };
 
-  return (
-    <View style={styles.container}>
-      <Image source={{ uri: selectedImage?.localUri.uri }} 
-      style={styles.image} 
-      resizeMode='cover' />
-      <Text style={styles.instructions}>
-        To share a photo from your phone with a friend, just press the button below!
-      </Text>
-
-      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Pick a photo</Text>
-      </TouchableOpacity>
+  const navigationView = () => (
+    <View style={[styles.container, styles.navigationContainer]}>
+      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+      <Button
+        title="Close drawer"
+        onPress={() => drawer.current.closeDrawer()}
+      />
     </View>
   );
-}
+
+  return (
+    <DrawerLayoutAndroid
+      ref={drawer}
+      drawerWidth={300}
+      drawerPosition={drawerPosition}
+      renderNavigationView={navigationView}
+    >
+      <View style={styles.container}>
+        <Text style={styles.paragraph}>
+          Drawer on the {drawerPosition}!
+        </Text>
+        <Button
+          title="Change Drawer Position"
+          onPress={() => changeDrawerPosition()}
+        />
+        <Text style={styles.paragraph}>
+          Swipe from the side or press button below to see it!
+        </Text>
+        <Button
+          title="Open drawer"
+          onPress={() => drawer.current.openDrawer()}
+        />
+      </View>
+    </DrawerLayoutAndroid>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16
   },
-  image: {
-    marginBottom: 20,
-    width: 300,
-    height: 300,
+  navigationContainer: {
+    backgroundColor: "#ecf0f1"
   },
-  instructions: {
-    color: '#888',
-    fontSize: 18,
-    marginHorizontal: 15,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff',
-  },
+  paragraph: {
+    padding: 16,
+    fontSize: 15,
+    textAlign: "center"
+  }
 });
+
+export default App;

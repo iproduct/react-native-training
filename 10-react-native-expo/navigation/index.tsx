@@ -19,13 +19,21 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+const Drawer = createDrawerNavigator();
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
+      <Drawer.Navigator>
+        <Drawer.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Drawer.Screen name="Modal" component={ModalScreen} />
+      </Drawer.Navigator>
+      {/* <RootNavigator /> */}
     </NavigationContainer>
   );
 }
