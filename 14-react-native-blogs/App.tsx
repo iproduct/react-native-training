@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform, FlatList } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform, FlatList, Animated } from "react-native";
 import { BlogsAPI } from "./dao/rest-api-client";
 import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
@@ -10,6 +10,8 @@ import IconButton from './components/IconButton';
 import * as yup from 'yup';
 import PostItem, { ITEM_HEIGHT, PostItemProps } from "./components/PostItem";
 
+export const DEFAULT_PAGE_SIZE = 5;
+
 export enum Views {
   PostFormView = 1, PostListView
 }
@@ -18,6 +20,7 @@ interface AppState {
   activeView: Views;
   errors: string | undefined;
   posts: Post[];
+  page: number;
   filter: FilterType;
   editedPost: Post;
   scrollIndex: number;
@@ -30,6 +33,7 @@ class App extends Component<{}, AppState> {
     activeView: Views.PostListView,
     errors: '',
     posts: [],
+    page: 0,
     filter: undefined,
     editedPost: EMPTY_POST,
     scrollIndex: 0,
@@ -37,9 +41,17 @@ class App extends Component<{}, AppState> {
   postsListRef = React.createRef<FlatList<Post>>()
 
   async componentDidMount() {
+    this.loadMoreItems();
+  }
+
+  loadMoreItems = async () => {
     try {
-      const allPosts = await BlogsAPI.findAll();
-      this.setState({ posts: allPosts, errors: undefined })
+      const newPosts = await BlogsAPI.findByPage(this.state.page, DEFAULT_PAGE_SIZE);
+      this.setState(({ posts, page, errors }) => ({
+        posts: posts.concat(newPosts),
+        page: page + 1,
+        errors: undefined
+      }))
     } catch (err) {
       this.setState({ errors: err as string })
     }
@@ -151,6 +163,7 @@ class App extends Component<{}, AppState> {
               case Views.PostListView:
                 return (
                   <PostList ref={this.postsListRef} posts={this.state.posts}
+                    page={this.state.page}
                     filter={this.state.filter}
                     onDelete={this.handleDeletePost}
                     onEdit={this.handleEditTodo}

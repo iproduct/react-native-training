@@ -19,6 +19,13 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         return this.handleRequest(`${API_BASE_URL}/${this.collectionSuffix}`);
     }
 
+    async findByPage(page: number, limit: number): Promise<V[]> {
+        return this.handleRequest(`${API_BASE_URL}/${this.collectionSuffix}?${new URLSearchParams({
+            _page: page + '',
+            _limit: limit + '',
+        }).toString()}`);
+    }
+
     async findById(id: K): Promise<V> {
         return this.handleRequest(`${API_BASE_URL}/${this.collectionSuffix}/${id}`);
     }
