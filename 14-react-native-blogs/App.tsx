@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, ScrollView, StatusBar, KeyboardAvoidingView, Platform, FlatList, Animated } from "react-native";
+import { StyleSheet, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, FlatList, Dimensions } from "react-native";
 import { BlogsAPI } from "./dao/rest-api-client";
 import { FilterType, Optional } from "./model/shared-types";
 import { Form } from "./components/formbuilder/Form";
@@ -41,10 +41,10 @@ class App extends Component<{}, AppState> {
   postsListRef = React.createRef<FlatList<Post>>()
 
   async componentDidMount() {
-    this.loadMoreItems();
+    this.loadMorePosts();
   }
 
-  loadMoreItems = async () => {
+  loadMorePosts = async () => {
     try {
       const newPosts = await BlogsAPI.findByPage(this.state.page, DEFAULT_PAGE_SIZE);
       this.setState(({ posts, page, errors }) => ({
@@ -168,6 +168,7 @@ class App extends Component<{}, AppState> {
                     onDelete={this.handleDeletePost}
                     onEdit={this.handleEditTodo}
                     scrollIndex={this.state.scrollIndex}
+                    onLoadMorePosts={this.loadMorePosts}
                   />);
             }
           })()}
@@ -252,7 +253,7 @@ const postFormConfig: FormComponentConfigs<Post, PostFormPropToCompKindMapping> 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: Dimensions.get('window').height,
     // paddingTop: StatusBar.currentHeight,
   },
   keyboarAvoidingView: {

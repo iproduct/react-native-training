@@ -12,11 +12,12 @@ interface Props {
     scrollIndex?: number;
     onDelete: PostListener;
     onEdit: PostListener;
+    onLoadMorePosts: ()=>void;
 }
 
 const PostList = forwardRef<FlatList<Post>, Props>((props, fRef) => {
     const postsAnimatedValues = useRef<Animated.Value[]>([]).current;
-    const { posts, page, filter, scrollIndex, ...rest }: Props = props;
+    const { posts, page, filter, scrollIndex, onLoadMorePosts, ...rest }: Props = props;
     const visiblePosts = (posts: Post[], filter: FilterType) => posts.filter(post => !filter ? true : post.status === filter);
     const memoizedVisiblePosts = useMemo(() => visiblePosts(posts, filter), [posts, filter]);
 
@@ -44,7 +45,9 @@ const PostList = forwardRef<FlatList<Post>, Props>((props, fRef) => {
                 { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
             )}
             ItemSeparatorComponent={() => <View style={{ width: "100%", height: .7, backgroundColor: 'rgba( 52,52,52,1)' }} />}
-        />);
+            onEndReachedThreshold={0.1}
+            onEndReached={onLoadMorePosts}
+            />);
 });
 
 export default PostList;
