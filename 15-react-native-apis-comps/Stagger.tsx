@@ -9,14 +9,12 @@ type Item = string;
 interface StaggerState {
     items: Item[];
     page: number;
-    hasScrolled: boolean;
 }
 
 export default class Stagger extends Component<{}, StaggerState> {
     state: Readonly<StaggerState> = {
         items: [],
         page: 0,
-        hasScrolled: false,
     };
 
     animatedValues: Animated.Value[] = [];
@@ -43,7 +41,6 @@ export default class Stagger extends Component<{}, StaggerState> {
     }
 
     loadMoreItems = () => {
-        if (this.state.page > 0 && !this.state.hasScrolled) return
         const newItems: Item[] = [];
         for (let i = this.state.page * PAGE_SIZE; i < (this.state.page + 1) * PAGE_SIZE; i++) {
             newItems.push(`Item ${i}`);
@@ -71,9 +68,6 @@ export default class Stagger extends Component<{}, StaggerState> {
                     renderItem={({ item }) => item}
                     onEndReachedThreshold={0.1}
                     onEndReached={this.loadMoreItems}
-                    onScroll={() =>
-                        this.setState({ hasScrolled: true })
-                    }
                 >
                 </FlatList>
             </SafeAreaView>
