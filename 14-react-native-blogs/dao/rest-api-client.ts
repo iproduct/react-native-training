@@ -21,7 +21,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
 
     async findByPage(page: number, limit: number): Promise<V[]> {
         return this.handleRequest(`${API_BASE_URL}/${this.collectionSuffix}?${new URLSearchParams({
-            _page: page + '',
+            _page: page + 1 + '',
             _limit: limit + '',
         }).toString()}`);
     }
