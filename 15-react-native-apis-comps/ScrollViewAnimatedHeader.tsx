@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet, useWindowDimensions, Text, Dimensions, Pl
 export default () => {
     const [headerShown, setHeaderShown] = useState(false);
     const [orientation, setOrientation] = useState('portrait');
-    
+
     const { width, height } = useWindowDimensions();
 
     const isPortrait = () => {
@@ -19,51 +19,65 @@ export default () => {
         };
     }, [])
 
-    const headerPosition = useRef(new Animated.Value(-100)).current;
+    const scrolling = useRef(new Animated.Value(0)).current;
+    // const headerPosition = useRef(new Animated.Value(-100)).current;
 
-    useEffect(() => {
-        Animated.timing(headerPosition, {
-          toValue: headerShown ? 0 : -100,
-          duration: 250,
-          useNativeDriver: true,
-        }).start();
-      }, [headerShown]);
+    // useEffect(() => {
+    //     Animated.timing(headerPosition, {
+    //         toValue: headerShown ? 0 : -100,
+    //         duration: 250,
+    //         useNativeDriver: true,
+    //     }).start();
+    // }, [headerShown]);
 
     return (
         <>
             <Animated.View style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 100,
-                    backgroundColor: 'tomato',
-                    zIndex: 1,
-                    elevation: 1,
-                    transform: [
-                        { translateY: headerPosition },
-                    ],
-                    opacity: 1,
-                }}
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 100,
+                backgroundColor: 'tomato',
+                zIndex: 1,
+                elevation: 1,
+                transform: [
+                    { translateY: scrolling.interpolate({
+                        inputRange: [100, 130],
+                        outputRange: [-100, 0],
+                        extrapolate: 'clamp',
+                      }) },
+                ],
+                opacity: 1,
+            }}
             />
 
             <Animated.View style={{ height }}>
                 <ScrollView
+                    onScroll={Animated.event(
+                        [{
+                            nativeEvent: {
+                                contentOffset: {
+                                    y: scrolling,
+                                },
+                            },
+                        }],
+                        { useNativeDriver: true },
+                    )}
+                    // onScroll={(event) => {
+                    //     const scrolling = event.nativeEvent.contentOffset.y;
 
-                    onScroll={(event) => {
-                        const scrolling = event.nativeEvent.contentOffset.y;
-
-                        if (scrolling > 100) {
-                            setHeaderShown(true);
-                        } else {
-                            setHeaderShown(false);
-                        }
-                    }}
+                    //     if (scrolling > 100) {
+                    //         setHeaderShown(true);
+                    //     } else {
+                    //         setHeaderShown(false);
+                    //     }
+                    // }}
                     // onScroll will be fired every 16ms
                     scrollEventThrottle={16}
                     style={{ flex: 1 }}
                 >
-                    <View style={{ backgroundColor: '#ccc'}}>
+                    <View style={{ backgroundColor: '#ccc' }}>
                         <Text>{`
                         
                         
