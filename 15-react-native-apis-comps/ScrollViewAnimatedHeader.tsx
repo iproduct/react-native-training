@@ -52,8 +52,8 @@ export default () => {
             }}
             />
 
-            <Animated.View style={{ height }}>
-                <ScrollView
+            <View style={{ height }}>
+                <Animated.ScrollView
                     onScroll={Animated.event(
                         [{
                             nativeEvent: {
@@ -62,7 +62,10 @@ export default () => {
                                 },
                             },
                         }],
-                        { useNativeDriver: true },
+                        { 
+                            useNativeDriver: true,
+                            listener: (event) => console.log(event.nativeEvent)
+                        },
                     )}
                     // onScroll={(event) => {
                     //     const scrolling = event.nativeEvent.contentOffset.y;
@@ -131,8 +134,8 @@ export default () => {
                             Microsoft builds and maintains React Native for Windows and React Native for macOS.`}
                         </Text>
                     </View>
-                </ScrollView>
-            </Animated.View>
+                </Animated.ScrollView>
+            </View>
         </>
     );
 }
