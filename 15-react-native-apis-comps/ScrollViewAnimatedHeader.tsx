@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, useWindowDimensions, Text, Dimensions, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { ScrollView, View, StyleSheet, useWindowDimensions, Text, Dimensions, Platform, Animated } from 'react-native';
 export default () => {
     const [headerShown, setHeaderShown] = useState(false);
     const [orientation, setOrientation] = useState('portrait');
+    
     const { width, height } = useWindowDimensions();
 
     const isPortrait = () => {
@@ -18,30 +19,35 @@ export default () => {
         };
     }, [])
 
+    const headerPosition = useRef(new Animated.Value(-100)).current;
+
+    useEffect(() => {
+        Animated.timing(headerPosition, {
+          toValue: headerShown ? 0 : -100,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      }, [headerShown]);
+
     return (
         <>
-            <View
-                style={{
-                    position: 'relative',
+            <Animated.View style={{
+                    position: 'absolute',
                     top: 0,
                     left: 0,
                     right: 0,
                     height: 100,
                     backgroundColor: 'tomato',
-                    zIndex: 1000,
+                    zIndex: 1,
+                    elevation: 1,
                     transform: [
-                        { translateY: headerShown ? 0 : - 100 },
+                        { translateY: headerPosition },
                     ],
                     opacity: 1,
                 }}
             />
 
-            <View style={{
-                height: headerShown ? height - 100 : height,
-                transform: [
-                    { translateY: headerShown ? 0 : - 100 },
-                ],
-            }}>
+            <Animated.View style={{ height }}>
                 <ScrollView
 
                     onScroll={(event) => {
@@ -112,7 +118,7 @@ export default () => {
                         </Text>
                     </View>
                 </ScrollView>
-            </View>
+            </Animated.View>
         </>
     );
 }
