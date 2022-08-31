@@ -18,21 +18,15 @@ export default () => {
         };
     }, [])
 
-    const styles = StyleSheet.create({
-        container: {
-            height,
-        }
-    });
-
     return (
         <>
             <View
                 style={{
-                    position: 'absolute',
+                    position: 'relative',
                     top: 0,
                     left: 0,
                     right: 0,
-                    height: 80,
+                    height: 100,
                     backgroundColor: 'tomato',
                     zIndex: 1000,
                     transform: [
@@ -42,7 +36,12 @@ export default () => {
                 }}
             />
 
-            <View style={styles.container}>
+            <View style={{
+                height: headerShown ? height - 100 : height,
+                transform: [
+                    { translateY: headerShown ? 0 : - 100 },
+                ],
+            }}>
                 <ScrollView
 
                     onScroll={(event) => {
@@ -58,7 +57,7 @@ export default () => {
                     scrollEventThrottle={16}
                     style={{ flex: 1 }}
                 >
-                    <View style={{ height: 1500 }}>
+                    <View style={{ backgroundColor: '#ccc'}}>
                         <Text>{`
                         
                         
