@@ -10,7 +10,7 @@ import Stagger from "./Stagger";
 export default () =>
 (
     <SafeAreaView style={styles.container}>
-        <LightBox images={SAMPLE_IMAGES} height={400} />
+        <LightBox images={SAMPLE_IMAGES} height={400} width={800}/>
     </SafeAreaView>
 )
 
