@@ -82,7 +82,7 @@ export default class LightBox extends Component<LightBoxProps, LightBoxState> {
                                     x: this.scrollX
                                 }
                             }
-                        }])
+                        }], { useNativeDriver: false })
                     }
                     scrollEventThrottle={1}
                 >
@@ -92,32 +92,36 @@ export default class LightBox extends Component<LightBoxProps, LightBoxState> {
                                 width,
                                 height: imageHeight,
                             }} key={index}>
-                                <Hoverable
-                                    onHoverIn={() => this.setState({ isImageHovered: true })}
-                                    onHoverOut={() => this.setState({ isImageHovered: false })}
-                                >
-                                    <ImageBackground source={{ uri: image }} style={styles.card}>
-                                        <Hoverable
-                                            onHoverIn={() => this.setState({ isImageHovered: true })}
-                                            onHoverOut={() => this.setState({ isImageHovered: false })}
-                                        >
-                                            <View style={styles.textContainer}>
-                                                <FontAwesome.Button style={styles.chevron}
-                                                    backgroundColor={this.textBackgroundColor}
-                                                    name="chevron-left" size={32} color={this.textColor} 
-                                                    onPress={() => this.scrollToIndex(index -1)}/>
-                                                <Text style={[styles.imageText, 
-                                                    { 
+                                <Pressable style={{ flex: 1 }}
+                                    onPressIn={() => this.setState({ isImageHovered: true })}
+                                    onPressOut={() => this.setState({ isImageHovered: false })}>
+                                    <Hoverable
+                                        onHoverIn={() => this.setState({ isImageHovered: true })}
+                                        onHoverOut={() => this.setState({ isImageHovered: false })}
+                                    >
+                                        <ImageBackground source={{ uri: image }} style={styles.card}>
+                                            <Hoverable
+                                                onHoverIn={() => this.setState({ isImageHovered: true })}
+                                                onHoverOut={() => this.setState({ isImageHovered: false })}
+                                            >
+                                                <View style={styles.textContainer}>
+                                                    <FontAwesome.Button style={styles.chevron}
+                                                        backgroundColor={this.textBackgroundColor}
+                                                        name="chevron-left" size={32} color={this.textColor}
+                                                        onPress={() => this.scrollToIndex(index - 1)} />
+                                                    <Text style={[styles.imageText,
+                                                    {
                                                         backgroundColor: this.textBackgroundColor,
                                                         color: this.textColor,
                                                     }]}>Image - {index + 1} </Text>
-                                                <FontAwesome.Button style={styles.chevron} backgroundColor={this.textBackgroundColor}
-                                                    name="chevron-right" size={32} color={this.textColor} 
-                                                    onPress={() => this.scrollToIndex(index + 1)}/>
-                                            </View>
-                                        </Hoverable>
-                                    </ImageBackground>
-                                </Hoverable>
+                                                    <FontAwesome.Button style={styles.chevron} backgroundColor={this.textBackgroundColor}
+                                                        name="chevron-right" size={32} color={this.textColor}
+                                                        onPress={() => this.scrollToIndex(index + 1)} />
+                                                </View>
+                                            </Hoverable>
+                                        </ImageBackground>
+                                    </Hoverable>
+                                </Pressable>
                             </View>
                         ))
                     }
