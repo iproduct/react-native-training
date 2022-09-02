@@ -11,7 +11,9 @@ import {
     SafeAreaView
 } from "react-native";
 
-let CIRCLE_RADIUS = 30;
+const CIRCLE_RADIUS = 30;
+const LOG_PANEL_HEIGHT= 30;
+const DROP_ZONE_HEIGHT = 50;
 
 const INTIAL_POS = { x: 100, y: 300 }
 
@@ -79,7 +81,7 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
             transform: [{
                 translateX: Animated.subtract(this.panValue.x, CIRCLE_RADIUS)
             }, {
-                translateY: Animated.subtract(this.panValue.y, CIRCLE_RADIUS + 80)
+                translateY: Animated.subtract(this.panValue.y, CIRCLE_RADIUS + LOG_PANEL_HEIGHT + DROP_ZONE_HEIGHT)
             }]
         }
         return (
@@ -109,14 +111,13 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
     }
 }
 
-
 let styles = StyleSheet.create({
     conatainer: {
         flex: 1,
     },
     textConatainer: {
         width: '100%',
-        height: 30,
+        height: LOG_PANEL_HEIGHT,
     },
     circle: {
         zIndex: 1,
@@ -129,6 +130,6 @@ let styles = StyleSheet.create({
 
     },
     dropZoneText: {
-        height: 50,
+        height: DROP_ZONE_HEIGHT,
     },
 });
