@@ -13,7 +13,7 @@ import {
 
 const CIRCLE_RADIUS = 30;
 const LOG_PANEL_HEIGHT= 30;
-const DROP_ZONE_HEIGHT = 50;
+const DROP_ZONE_HEIGHT = 100;
 
 const INTIAL_POS = { x: 100, y: 300 }
 
@@ -127,7 +127,7 @@ let styles = StyleSheet.create({
         borderRadius: CIRCLE_RADIUS
     },
     dropZone: {
-
+        backgroundColor: 'lawngreen',
     },
     dropZoneText: {
         height: DROP_ZONE_HEIGHT,
