@@ -56,7 +56,14 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
                 friction: 5,
                 useNativeDriver: false,
             }).start();
-        }
+        },
+        onPanResponderTerminate: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
+            Animated.spring(this.panValue, {
+                toValue: INTIAL_POS,
+                friction: 5,
+                useNativeDriver: false,
+            }).start();
+        },
     });
 
     // componentWillMount() {
@@ -72,15 +79,15 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
             transform: [{
                 translateX: Animated.subtract(this.panValue.x, CIRCLE_RADIUS)
             }, {
-                translateY: Animated.subtract(this.panValue.y, CIRCLE_RADIUS)
+                translateY: Animated.subtract(this.panValue.y, CIRCLE_RADIUS + 80)
             }]
         }
         return (
             <View style={styles.conatainer}  >
-                <View style={styles.textConatainer} pointerEvents='none'>
+                <View style={styles.textConatainer}>
                     <Text>{this.state.panState?.x}, {this.state.panState?.y}</Text>
                 </View>
-                <View style={styles.dropZone} pointerEvents='none'>
+                <View style={styles.dropZone}>
                     <Text style={styles.dropZoneText}>Drop them here!</Text>
                 </View>
                 <Animated.View
@@ -109,6 +116,7 @@ let styles = StyleSheet.create({
     },
     textConatainer: {
         width: '100%',
+        height: 30,
     },
     circle: {
         zIndex: 1,
@@ -121,6 +129,6 @@ let styles = StyleSheet.create({
 
     },
     dropZoneText: {
-
+        height: 50,
     },
 });
