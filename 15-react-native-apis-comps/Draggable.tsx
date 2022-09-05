@@ -15,7 +15,8 @@ const CIRCLE_RADIUS = 30;
 const LOG_PANEL_HEIGHT= 30;
 const DROP_ZONE_HEIGHT = 100;
 
-const INTIAL_POS = { x: 100, y: 300 }
+const ZERO_POS = { x: 0, y: 0 }
+const BALL_POS = { x: 100, y: 200 }
 
 interface Point {
     x: number;
@@ -31,7 +32,7 @@ interface DraggableState {
 }
 
 export default class Draggable extends Component<DraggableProps, DraggableState> {
-    panValue = new Animated.ValueXY(INTIAL_POS);
+    panValue = new Animated.ValueXY(ZERO_POS);
     state: Readonly<DraggableState> = {
         panState: undefined,
     };
@@ -46,7 +47,7 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
             // console.log({...gestureState});
             this.setState({ panState: { x: gestureState.moveX, y: gestureState.moveY } })
             Animated.event([
-                { nativeEvent: { pageX: this.panValue.x, pageY: this.panValue.y } }, null
+                null, { dx: this.panValue.x, dy: this.panValue.y }
             ], {
                 useNativeDriver: false,
             })(e, gestureState);
@@ -54,14 +55,14 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
 
         onPanResponderRelease: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
             Animated.spring(this.panValue, {
-                toValue: INTIAL_POS,
+                toValue: ZERO_POS,
                 friction: 5,
                 useNativeDriver: false,
             }).start();
         },
         onPanResponderTerminate: (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
             Animated.spring(this.panValue, {
-                toValue: INTIAL_POS,
+                toValue: ZERO_POS,
                 friction: 5,
                 useNativeDriver: false,
             }).start();
@@ -79,12 +80,14 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
     render() {
         const panStyle = {
             transform: [{
-                translateX: Animated.subtract(this.panValue.x, CIRCLE_RADIUS)
+                translateX: Animated.add(this.panValue.x, BALL_POS.x)
             }, {
-                translateY: Animated.subtract(this.panValue.y, CIRCLE_RADIUS + LOG_PANEL_HEIGHT + DROP_ZONE_HEIGHT)
+                translateY: Animated.add(this.panValue.y, BALL_POS.y)
             }]
         }
         return (
+            <>
+            <View style={{height: 300}} />
             <View style={styles.conatainer}  >
                 <View style={styles.textConatainer}>
                     <Text>{this.state.panState?.x}, {this.state.panState?.y}</Text>
@@ -92,6 +95,7 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
                 <View style={styles.dropZone}>
                     <Text style={styles.dropZoneText}>Drop them here!</Text>
                 </View>
+                {/* <View style={{marginTop:200}}> */}
                 <Animated.View
                     {...this.panResponder.panHandlers}
                     // onStartShouldSetResponder={() => true}
@@ -105,8 +109,10 @@ export default class Draggable extends Component<DraggableProps, DraggableState>
                     // }}
                     style={{ ...panStyle, ...styles.circle }}
                 />
+                </View>
                 <StatusBar hidden />
-            </View>
+            {/* </View> */}
+            </>
         );
     }
 }

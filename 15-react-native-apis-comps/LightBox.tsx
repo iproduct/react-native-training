@@ -3,21 +3,11 @@ import { Animated, Dimensions, ImageBackground, ImageStore, Pressable, ScaledSiz
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Hoverable from './hover-web/Hoverable';
 
-const BASE_URL = 'localhost:19000';
-export const SAMPLE_IMAGES = [
-    `http://${BASE_URL}/assets/image/kunstliche-intelligenz-1603866343eG3.jpg`,
-    `http://${BASE_URL}/assets/image/jeune-femme-poste-de-travail.jpg`,
-    `http://${BASE_URL}/assets/image/ordinateur-apple-ipad.jpg`,
-    `http://${BASE_URL}/assets/image/poste-de-travail-pc-portable-cafe.jpg`,
-    `http://${BASE_URL}/assets/image/computer-memory-chips.jpg`,
-    `http://${BASE_URL}/assets/image/dog-using-laptop-computer.jpg`,
-];
-
 const DEFAULT_HEIGHT = 300;
 const window = Dimensions.get("window");
 
 interface LightBoxProps {
-    images: string[];
+    images: string[] | undefined;
     height?: number;
     width?: number;
 }
@@ -42,8 +32,9 @@ export default class LightBox extends Component<LightBoxProps, LightBoxState> {
 
     onDimensionsChange = ({ window }: { window: ScaledSize; }) => this.setState({ window })
 
-    componentDidMount(): void {
+    async componentDidMount() {
         Dimensions.addEventListener("change", this.onDimensionsChange);
+        
     }
 
     get width() {
@@ -87,7 +78,7 @@ export default class LightBox extends Component<LightBoxProps, LightBoxState> {
                     scrollEventThrottle={1}
                 >
                     {
-                        this.props.images.map((image, index) => (
+                        this.props.images?.map((image, index) => (
                             <View style={{
                                 width,
                                 height: imageHeight,
@@ -127,7 +118,7 @@ export default class LightBox extends Component<LightBoxProps, LightBoxState> {
                     }
                 </ScrollView>
                 <View style={styles.indicatorContainer}>
-                    {this.props.images.map((image, index) => {
+                    {this.props.images?.map((image, index) => {
                         const animatedWidth = this.scrollX.interpolate({
                             inputRange: [
                                 width * (index - 1),
