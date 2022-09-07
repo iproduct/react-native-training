@@ -1,15 +1,22 @@
-// prettier-ignore
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",     /* Recommended React Native TSConfig base */
-  "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
-
-    /* Completeness */
-    "skipLibCheck": true,  /* Skip type checking all .d.ts files. */
-    "outDir": "./dist/",
-    "lib": [
-      "esnext",
-      "dom"
-    ] /* Specify library files to be included in the compilation. */,                               
-  }
+    "extends": "@tsconfig/react-native/tsconfig.json" /* Recommended React Native TSConfig base */,
+    "compilerOptions": {
+        "target": "es6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": false,
+        "noEmit": true,
+        "jsx": "react-native",
+        "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+        "outDir": "./dist/"
+    },
+    "include": ["src"]
 }

@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {PropsWithChildren} from 'react';
+import React, { PropsWithChildren } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -14,25 +13,24 @@ const Section: React.FC<
     PropsWithChildren<{
         title: string;
     }>
-> = ({children, title}) => {
+> = ({ children, title }) => {
     const isDarkMode = useColorScheme() === 'dark';
+    const color = {
+        color: isDarkMode ? 'white' : 'black',
+    };
     return (
         <View style={styles.sectionContainer}>
             <Text
                 style={[
                     styles.sectionTitle,
-                    {
-                        color: isDarkMode ? 'white' : 'black',
-                    },
+                    color,
                 ]}>
                 {title}
             </Text>
             <Text
                 style={[
                     styles.sectionDescription,
-                    {
-                        color: isDarkMode ? 'white' : 'black',
-                    },
+                    color,
                 ]}>
                 {children}
             </Text>
@@ -54,12 +52,10 @@ const App = () => {
                 contentInsetAdjustmentBehavior="automatic"
                 style={backgroundStyle}>
                 <View
-                    style={{
-                        backgroundColor: isDarkMode ? 'black' : 'white',
-                    }}>
+                    style={{ backgroundColor: isDarkMode ? 'black' : 'white' }}>
                     <Section title="Step One">
                         Edit <Text style={styles.highlight}>App.tsx</Text> to
-                        change this screen and then come back to see your edits.
+                        change this screen and then come back to see your edits. TEST123
                     </Section>
                     <Section title="Learn More">
                         Read the docs to discover what to do next:
