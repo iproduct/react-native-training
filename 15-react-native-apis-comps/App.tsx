@@ -1,12 +1,16 @@
 import { Asset } from "expo-asset/build/Asset";
 import { useEffect, useState } from "react";
 import { Dimensions, LayoutAnimation, RefreshControl, SafeAreaView, StyleSheet } from "react-native";
+import AlertDemo from "./AlertDemo";
 import AppAnimation01 from "./AppAnimation01";
 import AppAnimation02 from "./AppAnimation02";
 import AppEasing from "./AppEasing";
+import AsyncStorageDemo from "./AsyncStorageDemo";
+import AsyncStorageDemoClass from "./AsyncStorageDemoClass";
 import CheckBoxDemo from "./CheckBoxDemo";
 import Draggable from "./Draggable";
 import GestureResponder from "./GestureResponder";
+import InteractionManager1 from "./IntercationManager1";
 import LayoutAnimationDemo2 from "./LayoutAnimationDemo2";
 import LightBox from "./LightBox";
 import RefreshControlDemo from "./RefreshControl";
@@ -56,16 +60,19 @@ export default () => {
     useEffect(() => {
         Asset.loadAsync(SAMPLE_IMAGES)
             .then(localUris => setLocalUris(localUris.map(asset => asset.localUri ?? '')));
-    }, [SAMPLE_IMAGES])
+    }, SAMPLE_IMAGES)
     return (
-        <SafeAreaView style={styles.container}>
-            <LightBox images={localUris} height={400} width={800} />
-        </SafeAreaView>
+        // <SafeAreaView style={styles.container}>
+        //     <LightBox images={localUris} height={400} width={800} />
+        // </SafeAreaView>
         // <Draggable />
         // <LayoutAnimationDemo2 sections={DATA} title='LayoutAnimation Demo 2' />
         // <RefreshControlDemo />
         // <SwitchDemo />
         // <CheckBoxDemo />
+        // <AlertDemo />
+        // <InteractionManager1 />
+        <AsyncStorageDemoClass />
     )
 }
 

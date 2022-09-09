@@ -1,18 +1,28 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Asset } from "expo-asset/build/Asset";
+// import { Asset } from "expo-asset/build/Asset";
 import { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import LightBox from "./components/LightBox";
 
-export const SAMPLE_IMAGES = [
-    require(`./assets/image/kunstliche-intelligenz-1603866343eG3.jpg`),
-    require(`./assets/image/jeune-femme-poste-de-travail.jpg`),
-    require(`./assets/image/ordinateur-apple-ipad.jpg`),
-    require(`./assets/image/poste-de-travail-pc-portable-cafe.jpg`),
-    require(`./assets/image/computer-memory-chips.jpg`),
-    require(`./assets/image/dog-using-laptop-computer.jpg`),
-];
+const BASE_URL = 'http://localhost:19000';
 
+// export const SAMPLE_IMAGES = [
+//     require(`./assets/image/kunstliche-intelligenz-1603866343eG3.jpg`),
+//     require(`./assets/image/jeune-femme-poste-de-travail.jpg`),
+//     require(`./assets/image/ordinateur-apple-ipad.jpg`),
+//     require(`./assets/image/poste-de-travail-pc-portable-cafe.jpg`),
+//     require(`./assets/image/computer-memory-chips.jpg`),
+//     require(`./assets/image/dog-using-laptop-computer.jpg`),
+// ];
+
+export const SAMPLE_IMAGES = [
+    require(`${BASE_URL}/assets/image/kunstliche-intelligenz-1603866343eG3.jpg`),
+    require(`${BASE_URL}/assets/image/jeune-femme-poste-de-travail.jpg`),
+    require(`${BASE_URL}/assets/image/ordinateur-apple-ipad.jpg`),
+    require(`${BASE_URL}/assets/image/poste-de-travail-pc-portable-cafe.jpg`),
+    require(`${BASE_URL}/assets/image/computer-memory-chips.jpg`),
+    require(`${BASE_URL}/assets/image/dog-using-laptop-computer.jpg`),
+];
 const DATA = {
     'positions': [
         { key: 'first', value: true },
@@ -42,14 +52,14 @@ const DATA = {
 };
 
 export default () => {
-    const [localUris, setLocalUris] = useState<(string)[]>();
-    useEffect(() => {
-        Asset.loadAsync(SAMPLE_IMAGES)
-            .then(localUris => setLocalUris(localUris.map(asset => asset.localUri ?? '')));
-    }, [])
+    // const [localUris, setLocalUris] = useState<(string)[]>();
+    // useEffect(() => {
+    //     Asset.loadAsync(SAMPLE_IMAGES)
+    //         .then(localUris => setLocalUris(localUris.map(asset => asset.localUri ?? '')));
+    // }, [])
     return (
         <SafeAreaView style={styles.container}>
-            <LightBox images={localUris} height={400} width={800} />
+            <LightBox images={SAMPLE_IMAGES} height={400} width={800} />
         </SafeAreaView>
         // <Draggable />
         // <LayoutAnimationDemo2 sections={DATA} title='LayoutAnimation Demo 2' />
