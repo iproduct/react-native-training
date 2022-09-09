@@ -30,13 +30,8 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      [
-        "@rnmapbox/maps",
-        {
-          "RNMapboxMapsImpl": "maplibre"
-        }
-      ]
-    ]
+    "extra": {
+      "fact": "kittens are cool"
+    }
   }
 }
