@@ -28,7 +28,8 @@
       "package": "course.rn"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
     "extra": {
       "fact": "kittens are cool"
