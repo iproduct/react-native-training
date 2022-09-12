@@ -8,7 +8,7 @@ import { FormDropdownComponent, FormDropdownComponentOptions } from './FormDropd
 import { FormComponentState } from './FormComponent';
 import { FormReadonlyTextComponent } from './FormReadonlyTextComponent';
 import { FormImageComponent, FormImageComponentOptions } from './FormImageComponent';
-import { EMPTY_IMAGE_DATA } from '../BlogsMain';
+import { EMPTY_IMAGE_DATA } from '../../App';
 import { ImageData } from '../../model/shared-types';
 
 

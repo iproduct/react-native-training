@@ -3,7 +3,7 @@ import { FlatList, View, Animated, Dimensions } from "react-native";
 import { FilterType, IdType, PostListener } from "../model/shared-types";
 import { Post } from "../model/posts.model";
 import PostItem, { ITEM_HEIGHT, PostItemListener } from "./PostItem";
-import { DEFAULT_PAGE_SIZE } from "./BlogsMain";
+import { DEFAULT_PAGE_SIZE } from "../App";
 
 interface Props {
     posts: Post[];
@@ -45,6 +45,7 @@ const PostList = forwardRef<FlatList<Post>, Props>((props, fRef) => {
     return (
         <FlatList<Post> ref={fRef} style={{ flex: 1, width: '100%' }} data={memoizedVisiblePosts}
             renderItem={({ item: post }) => {
+                console.log(post.id, ' -> ', postsAnimatedValues[post.id!])
                 return <Animated.View style={{
                     opacity: postsAnimatedValues[post.id!],
                     marginLeft: postsAnimatedValues[post.id!]?.interpolate({
