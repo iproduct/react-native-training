@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, FlatList, Dimensions } from "react-native";
+import { StyleSheet, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, FlatList, Dimensions, ColorSchemeName } from "react-native";
 import { BlogsAPI } from "../dao/rest-api-client";
 import { FilterType, Optional } from "../model/shared-types";
 import { Form } from "./formbuilder/Form";
@@ -9,6 +9,7 @@ import { FormComponentConfigs } from "./formbuilder/form-types";
 import IconButton from './IconButton';
 import * as yup from 'yup';
 import PostItem, { ITEM_HEIGHT, PostItemProps } from "./PostItem";
+import Navigation from "../navigation";
 
 export const DEFAULT_PAGE_SIZE = 5;
 
@@ -16,7 +17,11 @@ export enum Views {
   PostFormView = 1, PostListView
 }
 
-interface AppState {
+interface BlogsMainProps {
+  colorScheme: NonNullable<ColorSchemeName>;
+}
+
+interface BlogsMainState {
   activeView: Views;
   errors: string | undefined;
   posts: Post[];
@@ -28,8 +33,8 @@ interface AppState {
 export const EMPTY_IMAGE_DATA = { uri: '', width: 0, height: 0 };
 const EMPTY_POST = new Post('', '', [], EMPTY_IMAGE_DATA, 1);
 
-class App extends Component<{}, AppState> {
-  state: AppState = {
+class App extends Component<BlogsMainProps, BlogsMainState> {
+  state: BlogsMainState = {
     activeView: Views.PostListView,
     errors: '',
     posts: [],
@@ -57,7 +62,7 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<AppState>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<BlogsMainState>, snapshot?: any): void {
     if (this.state.activeView === Views.PostListView) {
       if (Platform.OS === 'web') {
         // this.postsListRef.current?.scrollToOffset({offset: (this.state.scrollIndex-1) * ITEM_HEIGHT - 1});
@@ -141,11 +146,20 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <>
-        <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleViewChange} name='check-circle' >
+      <Navigation colorScheme={this.props.colorScheme}
+        posts={this.state.posts}
+        page={this.state.page}
+        filter={this.state.filter}
+        editedPost={this.state.editedPost}
+        scrollIndex={this.state.scrollIndex}
+      />
+    );
+  }
+
+  /* <IconButton size={30} backgroundColor="green" color="white" onPress={this.handleViewChange} name='check-circle' >
           {this.state.activeView === Views.PostListView ? 'Add New Post' : 'Show All Posts'}
-        </IconButton>
-        {(() => {
+        </IconButton> *
+         {(() => {
           switch (this.state.activeView) {
             case Views.PostFormView:
               return (
@@ -166,10 +180,7 @@ class App extends Component<{}, AppState> {
                   onLoadMorePosts={this.loadMorePosts}
                 />);
           }
-        })()}
-      </>
-    );
-  }
+        })()} */
 }
 
 export default App;
