@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import DrawerNavigator from './navigation/DrawerNavigator';
 import { Dimensions, StyleSheet } from 'react-native';
 import BlogsMain from './components/BlogsMain';
 

@@ -5,8 +5,8 @@
  */
 import { FontAwesome } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator, MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme, CompositeScreenProps, RouteProp } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer, DefaultTheme, DarkTheme, CompositeScreenProps, RouteProp, NavigatorScreenParams } from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Button, ColorSchemeName, Linking, Pressable, useWindowDimensions } from 'react-native';
 
@@ -16,87 +16,14 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootDrawerParamList, RootStackParamList} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerScreenProps, useDrawerProgress } from '@react-navigation/drawer';
 import AboutScreen from '../screens/AboutScreen';
 import Animated, { Adaptable } from 'react-native-reanimated';
 import { Post } from '../model/posts.model';
-import { FilterType } from '../model/shared-types';
-
-const Drawer = createDrawerNavigator<RootDrawerParamList>();
-
-interface TabNavigatorProps {
-  posts: Post[];
-  page: number;
-  filter: FilterType;
-  editedPost: Post;
-  scrollIndex: number;
-}
-
-interface NavigationProps extends TabNavigatorProps {
-  colorScheme: ColorSchemeName;
-}
-
-export default function Navigation({ colorScheme, ...rest }: NavigationProps) {
-  // const dimensions = useWindowDimensions();
-  // const isLargeScreen = dimensions.width >= 768;
-  return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{
-          drawerType: 'front',
-          drawerStyle: {
-            backgroundColor: '#c6cbef',
-            width: 240,
-          },
-        }}
-      // screenOptions={{
-      //   drawerType: isLargeScreen ? 'permanent' : 'back',
-      //   drawerStyle: isLargeScreen ? null : { width: '100%' },
-      //   overlayColor: 'transparent',
-      // }}
-      >
-        <Drawer.Screen name="Root">
-          {(props) => <TabNavigator {...props} {...rest}/>}
-        </Drawer.Screen>
-        <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
-        {/* <Drawer.Screen name="Stack" component={RootNavigator} /> */}
-        <Drawer.Group>
-          <Drawer.Screen name="Modal" component={ModalScreen} />
-        </Drawer.Group>
-      </Drawer.Navigator>
-      {/* <RootNavigator /> */}
-    </NavigationContainer>
-  );
-}
-
-function CustomDrawerContent(props: DrawerContentComponentProps) {
-  const { navigation } = props;
-
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        icon={({ focused, color, size }) =>
-          <FontAwesome color={color} size={size} name={(focused ? 'heart' : 'heart-o') as any} />
-        }
-        label="Drawer Help ..."
-        onPress={() => Linking.openURL('https://reactnavigation.org/docs/drawer-navigator')}
-      />
-      <Button
-        title="Close Drawer"
-        onPress={() => {
-          // Navigate using the `navigation` prop that you received
-          navigation.closeDrawer();
-        }}
-      />
-    </DrawerContentScrollView>
-  );
-}
+import { FilterType, PostListener } from '../model/shared-types';
+import PostList from '../components/PostList';
+import { RootDrawerParamList } from './DrawerNavigator';
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -121,6 +48,18 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
+ export interface TabNavigatorProps {
+  posts: Post[];
+  page: number;
+  filter: FilterType;
+  editedPost: Post;
+  scrollIndex: number;
+  onDelete: PostListener;
+  onEdit: PostListener;
+  onLoadMorePosts: () => void;
+}
+
+
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   MaterialTopTabScreenProps<RootTabParamList, Screen>,
   DrawerScreenProps<RootDrawerParamList>
@@ -139,12 +78,12 @@ export type RootTabParamList = {
 //   DrawerScreenProps<RootDrawerParamList>
 // > & TabNavigatorProps;
 
-export type TabNavigatorScreenProps = DrawerScreenProps<RootDrawerParamList, 'Root'>
- & TabNavigatorProps;
+export type TabNavigatorScreenProps = DrawerScreenProps<RootDrawerParamList, 'Posts'>
+  & TabNavigatorProps;
 
 const BottomTab = createMaterialTopTabNavigator<RootTabParamList>();
 
-function TabNavigator(props: TabNavigatorScreenProps) {
+export function TabNavigator({ navigation, route, ...rest }: TabNavigatorScreenProps) {
   const colorScheme = useColorScheme();
 
   return (
@@ -155,7 +94,6 @@ function TabNavigator(props: TabNavigatorScreenProps) {
       }}>
       <BottomTab.Screen
         name="TabOne"
-        component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Users',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -174,7 +112,9 @@ function TabNavigator(props: TabNavigatorScreenProps) {
             </Pressable>
           ),
         })}
-      />
+      >
+        {(props) => (<PostList {...rest} />)}
+      </BottomTab.Screen>
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}

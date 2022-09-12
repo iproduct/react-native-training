@@ -9,7 +9,7 @@ import { FormComponentConfigs } from "./formbuilder/form-types";
 import IconButton from './IconButton';
 import * as yup from 'yup';
 import PostItem, { ITEM_HEIGHT, PostItemProps } from "./PostItem";
-import Navigation from "../navigation";
+import DrawerNavigator from "../navigation/DrawerNavigator";
 
 export const DEFAULT_PAGE_SIZE = 5;
 
@@ -130,7 +130,7 @@ class App extends Component<BlogsMainProps, BlogsMainState> {
     })
   }
 
-  handleEditTodo = (post: Post) => {
+  handleEditPost = (post: Post) => {
     this.setState({ editedPost: post, activeView: Views.PostFormView });
   }
 
@@ -146,13 +146,16 @@ class App extends Component<BlogsMainProps, BlogsMainState> {
 
   render() {
     return (
-      <Navigation colorScheme={this.props.colorScheme}
+      <DrawerNavigator colorScheme={this.props.colorScheme}
         posts={this.state.posts}
         page={this.state.page}
         filter={this.state.filter}
         editedPost={this.state.editedPost}
         scrollIndex={this.state.scrollIndex}
-      />
+        onDelete={this.handleDeletePost}
+        onEdit={this.handleEditPost}
+        onLoadMorePosts={this.loadMorePosts}
+    />
     );
   }
 
