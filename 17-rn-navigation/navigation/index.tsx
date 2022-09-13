@@ -16,11 +16,13 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootDrawerParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootDrawerParamList, StackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, useDrawerProgress } from '@react-navigation/drawer';
 import AboutScreen from '../screens/AboutScreen';
 import Animated, { Adaptable } from 'react-native-reanimated';
+import { HomeScreen } from '../screens/HomeScreen';
+import { DetailsScreen } from '../screens/DetailsScreen';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
@@ -37,7 +39,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         screenOptions={{
           drawerType: 'front',
           drawerStyle: {
-            backgroundColor: '#c6cbef',
+            // backgroundColor: '#c6cbef',
             width: 240,
           },
         }}
@@ -47,12 +49,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       //   overlayColor: 'transparent',
       // }}
       >
-        <Drawer.Screen name="Root" component={BottomTabNavigator} />
         <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
-        <Drawer.Screen name="Stack" component={RootNavigator} />
+        <Drawer.Screen name="Stack" component={StackNavigator} />
         <Drawer.Group>
           <Stack.Screen name="Modal" component={ModalScreen} />
         </Drawer.Group>
+        <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       </Drawer.Navigator>
       {/* <RootNavigator /> */}
     </NavigationContainer>
@@ -87,13 +89,14 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<StackParamList>();
 
-function RootNavigator() {
+function StackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="TabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
