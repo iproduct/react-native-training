@@ -44,7 +44,4 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
   DrawerScreenProps<RootDrawerParamList>
 >;
 
-export type MyDrawerScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, Screen>,
-  DrawerScreenProps<RootDrawerParamList>
->;
+

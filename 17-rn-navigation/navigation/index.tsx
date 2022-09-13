@@ -49,8 +49,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       //   overlayColor: 'transparent',
       // }}
       >
-        <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
         <Drawer.Screen name="Stack" component={StackNavigator} />
+        <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
         <Drawer.Group>
           <Stack.Screen name="Modal" component={ModalScreen} />
         </Drawer.Group>

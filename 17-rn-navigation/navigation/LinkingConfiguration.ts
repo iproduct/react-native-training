@@ -16,7 +16,7 @@ const linking: LinkingOptions<RootDrawerParamList> = {
       Stack: {
         screens: {
           Home: 'home',
-          Details: 'details/:itemId',
+          Details: 'details/:itemId/otherParam?',
           TabNavigator: {
             screens: {
               TabOne: {
