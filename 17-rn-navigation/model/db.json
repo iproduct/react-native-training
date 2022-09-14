@@ -1,4 +1,30 @@
 {
+  "todos": [
+    {
+      "text": "react123 ggg",
+      "deadline": "2022-08-17",
+      "status": 1,
+      "id": 9
+    },
+    {
+      "text": "New Todo 111",
+      "deadline": "2022-08-24",
+      "status": 1,
+      "id": 11
+    },
+    {
+      "text": "edit me here ...",
+      "deadline": "2022-08-23",
+      "status": 1,
+      "id": 13
+    },
+    {
+      "text": "ssasasa",
+      "deadline": "2022-08-27",
+      "status": 1,
+      "id": 14
+    }
+  ],
   "posts": [
     {
       "title": "json-server",
@@ -211,19 +237,13 @@
     }
   ],
   "users": [
-      {
-        "firstName": "Ivan",
-        "lastName": "Ivanov",
-        "username": "ivan",
-        "password": "ivan",
-        "gender": "Male",
-        "userRole": "User",
-        "pictureUrl": "https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?cs=srgb&dl=adult-beach-beard-736716.jpg&fm=jpg",
-        "description": "ivan",
-        "status": 1,
-        "registrationTimestamp": "Mon Aug 22 2022",
-        "lastModificationTimestamp": "Mon Aug 22 2022",
-        "id": 2
-      }
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Smith",
+      "username": "john",
+      "password": "john123",
+      "role": "ADMIN"
+    }
   ]
 }

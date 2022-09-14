@@ -22,6 +22,8 @@ export type RootDrawerParamList = {
 }
 
 export type StackParamList = {
+  SignIn: undefined,
+  SignUp: undefined,
   Home: undefined;
   Details: { itemId: number, otherParam?: string };
   TabNavigator: NavigatorScreenParams<RootTabParamList> | undefined;

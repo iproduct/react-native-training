@@ -23,42 +23,65 @@ import AboutScreen from '../screens/AboutScreen';
 import Animated, { Adaptable } from 'react-native-reanimated';
 import { HomeScreen } from '../screens/HomeScreen';
 import { DetailsScreen } from '../screens/DetailsScreen';
+import { Component, useContext } from 'react';
+import { User } from '../model/user';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
+interface MainNavigationProps {
+  colorScheme: ColorSchemeName;
+}
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export interface LoggedUserData {
+  user: User;
+  token: string;
+}
+
+interface MainNavigationState {
+  loggedUser: LoggedUserData | undefined;
+}
+
+export const LoggedUserContext = React.createContext<LoggedUserData | undefined>(undefined)
+
+export default class MainNavigation extends Component<MainNavigationProps, MainNavigationState>{
+  state: Readonly<MainNavigationState> = {
+    loggedUser: undefined,
+  }
   // const dimensions = useWindowDimensions();
   // const isLargeScreen = dimensions.width >= 768;
-  return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
-        screenOptions={{
-          drawerType: 'front',
-          drawerStyle: {
-            // backgroundColor: '#c6cbef',
-            width: 240,
-          },
-        }}
-      // screenOptions={{
-      //   drawerType: isLargeScreen ? 'permanent' : 'back',
-      //   drawerStyle: isLargeScreen ? null : { width: '100%' },
-      //   overlayColor: 'transparent',
-      // }}
-      >
-        <Drawer.Screen name="Stack" component={StackNavigator} />
-        <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
-        <Drawer.Group>
-          <Stack.Screen name="Modal" component={ModalScreen} />
-        </Drawer.Group>
-        <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      </Drawer.Navigator>
-      {/* <RootNavigator /> */}
-    </NavigationContainer>
-  );
+  reder() {
+    return (
+      <LoggedUserContext.Provider value={this.state.loggedUser}>
+        <NavigationContainer
+          linking={LinkingConfiguration}
+          theme={this.props.colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Drawer.Navigator
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            screenOptions={{
+              drawerType: 'front',
+              drawerStyle: {
+                // backgroundColor: '#c6cbef',
+                width: 240,
+              },
+            }}
+          // screenOptions={{
+          //   drawerType: isLargeScreen ? 'permanent' : 'back',
+          //   drawerStyle: isLargeScreen ? null : { width: '100%' },
+          //   overlayColor: 'transparent',
+          // }}
+          >
+            <Drawer.Screen name="Stack" component={StackNavigator} />
+            <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
+            <Drawer.Group>
+              <Stack.Screen name="Modal" component={ModalScreen} />
+            </Drawer.Group>
+            <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          </Drawer.Navigator>
+          {/* <RootNavigator /> */}
+        </NavigationContainer>
+      </LoggedUserContext.Provider>
+    );
+  }
 }
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
@@ -92,14 +115,33 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 const Stack = createNativeStackNavigator<StackParamList>();
 
 function StackNavigator() {
+  const loggedUser = useContext(LoggedUserContext);
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-      <Stack.Screen name="TabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+      {!loggedUser ? (
+        <>
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{
+              title: 'Sign in',
+              // When logging out, a pop animation feels intuitive
+              // You can remove this if you want the default 'push' animation
+              animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="TabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Modal" component={ModalScreen} />
+          </Stack.Group>
+        </>)
+      }
+
     </Stack.Navigator>
   );
 }
