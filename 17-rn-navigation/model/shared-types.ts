@@ -1,6 +1,6 @@
 
 
-export type IdType = number | undefined
+export type IdType = string | undefined
 
 export type Identifiable<K> = { id: K }
 

@@ -11,14 +11,11 @@ export class User {
         public firstName : string,
         public lastName : string,
         public username : string,
+        public email : string,
         public password : string,
-        public gender : string,
-        public userRole: UserRole,
-        public pictureUrl : string,
-        public description : string,
-        public status : UserStatus,
-        public registrationTimestamp : string,
-        public lastModificationTimestamp : string,
+        public role: UserRole,
+        public imageUrl : string,
+        public active : boolean,
         public id:IdType = undefined
     ) {}
 }

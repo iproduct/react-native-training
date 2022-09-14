@@ -4,7 +4,7 @@
   "description": "express demo",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -w ./ ./server.js localhost 5000",
+    "start": "nodemon -w ./ ./server.js localhost 9000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "indicative": "^7.4.4",
     "jsonwebtoken": "^8.5.1",

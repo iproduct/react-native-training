@@ -25,16 +25,12 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { Component, useContext } from 'react';
 import { User } from '../model/user';
+import { LoggedUserData } from '../model/sign-in';
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
 interface MainNavigationProps {
   colorScheme: ColorSchemeName;
-}
-
-export interface LoggedUserData {
-  user: User;
-  token: string;
 }
 
 interface MainNavigationState {
