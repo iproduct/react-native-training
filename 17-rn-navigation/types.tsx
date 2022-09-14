@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-export type RootDrawerParamList = {
+export type DrawerParamList = {
   About: undefined;
   Stack: NavigatorScreenParams<StackParamList> | undefined;
   Modal: undefined;
@@ -30,7 +30,12 @@ export type StackParamList = {
   Modal: undefined;
 };
 
-export type StackScreenProps<Screen extends keyof StackParamList> = NativeStackScreenProps<
+export type MyDrawerScreenProps<Screen extends keyof DrawerParamList> = DrawerScreenProps<
+  DrawerParamList,
+  Screen
+>;
+
+export type MyStackScreenProps<Screen extends keyof StackParamList> = NativeStackScreenProps<
   StackParamList,
   Screen
 >;
@@ -43,7 +48,7 @@ export type RootTabParamList = {
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,
-  DrawerScreenProps<RootDrawerParamList>
+  DrawerScreenProps<DrawerParamList>
 >;
 
 

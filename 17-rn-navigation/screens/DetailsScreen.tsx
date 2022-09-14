@@ -2,11 +2,11 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { RootDrawerParamList, StackParamList } from '../types';
+import { DrawerParamList, StackParamList } from '../types';
 
 type DetailsScreenProps = CompositeScreenProps<
   NativeStackScreenProps<StackParamList, 'Details'>,
-  DrawerScreenProps<RootDrawerParamList>
+  DrawerScreenProps<DrawerParamList>
 >
 
 export function DetailsScreen({ route, navigation }: DetailsScreenProps) {

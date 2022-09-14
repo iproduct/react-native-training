@@ -2,9 +2,9 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { RootDrawerParamList, StackScreenProps } from '../types';
+import { DrawerParamList, MyStackScreenProps } from '../types';
 
-export default function NotFoundScreen({ navigation }: DrawerScreenProps<RootDrawerParamList, 'About'>) {
+export default function NotFoundScreen({ navigation }: DrawerScreenProps<DrawerParamList, 'NotFound'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>This screen doesn't exist.</Text>

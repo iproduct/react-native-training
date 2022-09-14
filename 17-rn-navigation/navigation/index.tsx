@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Button, ColorSchemeName, Linking, Pressable, useWindowDimensions } from 'react-native';
+import { Button, ColorSchemeName, Linking, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -16,18 +16,19 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootDrawerParamList, StackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { DrawerParamList, StackParamList, RootTabParamList, RootTabScreenProps, MyDrawerScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
-import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, useDrawerProgress } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import AboutScreen from '../screens/AboutScreen';
-import Animated, { Adaptable } from 'react-native-reanimated';
 import { HomeScreen } from '../screens/HomeScreen';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { Component, useContext } from 'react';
-import { User } from '../model/user';
 import { LoggedUserData } from '../model/sign-in';
+import { Credentials } from '../components/LoginForm';
+import { SignInService } from '../service/signin-service';
+import SignInScreen from '../screens/SignInScreen';
 
-const Drawer = createDrawerNavigator<RootDrawerParamList>();
+const Drawer = createDrawerNavigator<DrawerParamList>();
 
 interface MainNavigationProps {
   colorScheme: ColorSchemeName;
@@ -43,9 +44,13 @@ export default class MainNavigation extends Component<MainNavigationProps, MainN
   state: Readonly<MainNavigationState> = {
     loggedUser: undefined,
   }
+  handleSignIn = async (credentials: Credentials) => {
+    const loggedUser = await SignInService.signIn(credentials);
+    this.setState({ loggedUser });
+  }
   // const dimensions = useWindowDimensions();
   // const isLargeScreen = dimensions.width >= 768;
-  reder() {
+  render() {
     return (
       <LoggedUserContext.Provider value={this.state.loggedUser}>
         <NavigationContainer
@@ -66,7 +71,9 @@ export default class MainNavigation extends Component<MainNavigationProps, MainN
           //   overlayColor: 'transparent',
           // }}
           >
-            <Drawer.Screen name="Stack" component={StackNavigator} />
+            <Drawer.Screen name="Stack">
+              {(props) => (<StackNavigator {...props} onSignIn={this.handleSignIn} />)}
+            </Drawer.Screen>
             <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
             <Drawer.Group>
               <Stack.Screen name="Modal" component={ModalScreen} />
@@ -110,7 +117,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
  */
 const Stack = createNativeStackNavigator<StackParamList>();
 
-function StackNavigator() {
+export interface SignInCustomProps {
+  onSignIn: (credentials: Credentials) => void
+}
+
+function StackNavigator({ navigation, route, onSignIn }: MyDrawerScreenProps<'Stack'> & SignInCustomProps) {
   const loggedUser = useContext(LoggedUserContext);
   return (
     <Stack.Navigator>
@@ -118,14 +129,15 @@ function StackNavigator() {
         <>
           <Stack.Screen
             name="SignIn"
-            component={SignInScreen}
             options={{
               title: 'Sign in',
               // When logging out, a pop animation feels intuitive
               // You can remove this if you want the default 'push' animation
-              animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+              animationTypeForReplace: loggedUser ? 'push' : 'pop',
             }}
-          />
+          >
+            {(props) => (<SignInScreen {...props} onSignIn={onSignIn} />)}
+          </Stack.Screen>
         </>
       ) : (
         <>

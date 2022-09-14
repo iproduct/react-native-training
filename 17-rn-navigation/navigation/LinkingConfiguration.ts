@@ -7,9 +7,9 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
 
-import { RootDrawerParamList, StackParamList } from '../types';
+import { DrawerParamList, StackParamList } from '../types';
 
-const linking: LinkingOptions<RootDrawerParamList> = {
+const linking: LinkingOptions<DrawerParamList> = {
   prefixes: [Linking.createURL('/')],
   config: {
     screens: {

@@ -69,5 +69,4 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
 }
 
 export const UsersAPI = new ApiClientImpl<IdType, User>('users');
-export const SignInAPI = new ApiClientImpl<IdType, User>('auth/login');
 
