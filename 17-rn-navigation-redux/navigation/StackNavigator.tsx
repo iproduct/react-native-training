@@ -11,10 +11,11 @@ import ModalScreen from '../screens/ModalScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { useContext } from 'react';
-import { Credentials } from '../components/LoginForm';
 import SignInScreen from '../screens/SignInScreen';
-import { MyDrawerScreenProps, StoreStateContext } from '../Main';
 import { RootTabParamList, TabNavigator } from './TabNavigator';
+import SignUpScreen from '../screens/SignUpScreen';
+import { MyDrawerScreenProps } from '../model/drawer-types';
+import { StoreStateContext } from '../model/contexts';
 
 export type StackParamList = {
   SignIn: undefined,
@@ -28,12 +29,19 @@ export type StackParamList = {
 const Stack = createNativeStackNavigator<StackParamList>();
 
 export function StackNavigator({ navigation, route }: MyDrawerScreenProps<'Stack'>) {
-  const loggedUser = useContext(StoreStateContext)?.loggedUser;
+  const { loggedUser, isSignUp } = useContext(StoreStateContext);
   return (
     <Stack.Navigator>
-      {!loggedUser ? (
-        <>
-          <Stack.Screen
+      {!loggedUser ?
+        isSignUp ?
+          < Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{
+              title: 'Sign Up',
+            }}
+          /> :
+          < Stack.Screen
             name="SignIn"
             component={SignInScreen}
             options={{
@@ -41,21 +49,21 @@ export function StackNavigator({ navigation, route }: MyDrawerScreenProps<'Stack
               // When logging out, a pop animation feels intuitive
               // You can remove this if you want the default 'push' animation
               animationTypeForReplace: loggedUser ? 'push' : 'pop',
+              headerShown: false,
             }}
-          />
-        </>
-      ) : (
+          /> :
         <>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{
+            title: `Home ${loggedUser?.auth ? ': Welcome ' + loggedUser.user.firstName + '!': ''}`
+          }}/>
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
           <Stack.Group screenOptions={{ presentation: 'modal' }}>
             <Stack.Screen name="Modal" component={ModalScreen} />
           </Stack.Group>
-        </>)
+        </>
       }
-
-    </Stack.Navigator>
+    </Stack.Navigator >
   );
 }
 

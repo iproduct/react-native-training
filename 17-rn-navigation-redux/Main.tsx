@@ -13,43 +13,16 @@ import NotFoundScreen from './screens/NotFoundScreen';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerScreenProps } from '@react-navigation/drawer';
 import AboutScreen from './screens/AboutScreen';
-import { Component } from 'react';
 import { LoggedUserData } from './model/sign-in';
 import { Credentials } from './components/LoginForm';
-import { StackNavigator, StackParamList } from './navigation/StackNavigator';
+import { StackNavigator } from './navigation/StackNavigator';
 import * as SecureStore from 'expo-secure-store';
 import { User } from './model/user';
 import { AuthAPI } from './service/rest-api-auth-client';
-import { UsersAPI } from './service/rest-api-client';
+import { DrawerParamList } from './model/drawer-types';
+import { AuthAction, AuthContext, INITIAL_AUTH_STORE_STATE, ReduxStoreState, StoreStateContext } from './model/contexts';
 
 
-/* Redux types */
-interface ReduxStoreState {
-  isLoading: boolean;
-  isSignout: boolean;
-  isSignUp: boolean;
-  loggedUser: LoggedUserData | null,
-}
-
-export type AuthActionType = 'RESTORE_TOKEN' | 'SIGN_IN_START' | 'SIGN_IN_SUCCESS' | 'SIGN_OUT' | 'SIGN_UP';
-
-interface AuthAction {
-  type: AuthActionType;
-  loggedUser: LoggedUserData | null;
-}
-interface AuthAction {
-  type: AuthActionType;
-  loggedUser: LoggedUserData | null;
-}
-
-/* LoginService interface */
-export interface LoginService {
-  signInStart: () => void;
-  signInComplete: (credentials: Credentials) => void;
-  signUpStart: () => void;
-  signUpComplete: (user: User) => void;
-  signOut: () => void;
-}
 
 
 /* DrawerNavigator types */
@@ -59,18 +32,6 @@ declare global {
   }
 }
 
-export type DrawerParamList = {
-  About: undefined;
-  Stack: NavigatorScreenParams<StackParamList> | undefined;
-  Modal: undefined;
-  NotFound: undefined;
-}
-
-export type MyDrawerScreenProps<Screen extends keyof DrawerParamList> = DrawerScreenProps<
-  DrawerParamList,
-  Screen
->;
-
 interface MainProps {
   colorScheme: ColorSchemeName;
 }
@@ -79,15 +40,6 @@ interface MainState {
   loggedUser: LoggedUserData | undefined;
 }
 
-/* Create gobal contexts */
-export const AuthContext = React.createContext<LoginService>({
-  signInStart() { },
-  signInComplete(credentials: Credentials) { },
-  signUpStart() { },
-  signUpComplete(user: User) { },
-  signOut() { },
-});
-export const StoreStateContext = React.createContext<ReduxStoreState | null>(null);
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -131,12 +83,7 @@ export default function Main({ colorScheme }: MainProps) {
 
       }
     },
-    {
-      isLoading: true,
-      isSignout: false,
-      isSignUp: false,
-      loggedUser: null,
-    }
+    INITIAL_AUTH_STORE_STATE
   );
 
   // load state from SecureStore
@@ -206,7 +153,9 @@ export default function Main({ colorScheme }: MainProps) {
           //   overlayColor: 'transparent',
           // }}
           >
-            <Drawer.Screen name="Stack" component={StackNavigator} />
+            <Drawer.Screen name="Stack" component={StackNavigator} options={{
+            title: `My Blogs ${state?.loggedUser?.auth ? ': Welcome ' + state?.loggedUser?.user.firstName + '!': ''}`
+          }}/>
             <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
             <Drawer.Group>
               <Drawer.Screen name="Modal" component={ModalScreen} />

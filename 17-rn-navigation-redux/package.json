@@ -20,6 +20,7 @@
     "@react-navigation/drawer": "^6.4.4",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
+    "dotenv": "^16.0.2",
     "expo": "~46.0.9",
     "expo-asset": "~8.6.1",
     "expo-constants": "~13.2.4",

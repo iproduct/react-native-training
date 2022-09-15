@@ -6,25 +6,24 @@ import React, { useContext } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 
 import LoginForm from '../components/LoginForm';
+import RegistrationForm from '../components/RegistrationForm';
 import { Text, View } from '../components/Themed';
-import { AuthContext, DrawerParamList } from '../Main';
+import { AuthContext } from '../model/contexts';
+import { DrawerParamList } from '../model/drawer-types';
 import { StackParamList } from '../navigation/StackNavigator';
 
-export type SignInScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<StackParamList, 'SignIn'>,
+export type SignUpScreenProps = CompositeScreenProps<
+  NativeStackScreenProps<StackParamList, 'SignUp'>,
   DrawerScreenProps<DrawerParamList>
 >;
 
-export default function SignInScreen({navigation, route}: SignInScreenProps ) {
-  const signInComplete = useContext(AuthContext).signInComplete;
+export default function SignInScreen({navigation, route}: SignUpScreenProps ) {
+  const {signUpComplete, signInStart} = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
+      <Text style={styles.title}>Sign Up</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <LoginForm onSignIn={signInComplete} onSignUp={() => { }} />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <RegistrationForm onSignUpComplete={signUpComplete} onSignUpCancel={signInStart}/>
     </View>
   );
 }

@@ -12,7 +12,8 @@ interface RegistrationFormState {
 }
 
 interface RegistrationFormProps {
-    onSignUp: (user: User) => void;
+   onSignUpComplete: (user: User) => void;
+   onSignUpCancel: () => void;
 }
 
 //type LoginFormState = Credentials;
@@ -58,7 +59,7 @@ export default class RegistrationForm extends Component<
             console.log(newUser);
 
             // await SignInAPI.signUp(newUser);
-            this.props.onSignUp(newUser);
+            this.props.onSignUpComplete(newUser);
             this.setState(EMPTY_FORM_STATE);
         } catch (err) {
             console.log("====================================");
@@ -107,6 +108,12 @@ export default class RegistrationForm extends Component<
                         title="Sign Up"
                         color="#542867"
                         accessibilityLabel="SignUp"
+                    />
+                    <Button
+                        onPress={() => this.props.onSignUpCancel()}
+                        title="Cancel"
+                        color="#aaa"
+                        accessibilityLabel="Cancel"
                     />
                 </View>
             </View>

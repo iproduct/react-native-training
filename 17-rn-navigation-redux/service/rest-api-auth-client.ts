@@ -2,8 +2,9 @@ import { LoggedUserData } from '../model/sign-in';
 import { Credentials } from "../components/LoginForm.js";
 import { Identifiable, IdType } from "../model/shared-types.js";
 import { User } from "../model/user.js";
+import Constants from 'expo-constants';
 
-const API_BASE_URL = "http://localhost:9000/api/auth";
+const API_BASE_URL = `http://${Constants.manifest?.extra?.BLOGS_API_URL}/api/auth`;
 
 export interface SignInApiClient {
     signIn(post: Credentials): Promise<LoggedUserData>;

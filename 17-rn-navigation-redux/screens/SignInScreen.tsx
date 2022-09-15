@@ -7,7 +7,8 @@ import { Platform, StyleSheet } from 'react-native';
 
 import LoginForm from '../components/LoginForm';
 import { Text, View } from '../components/Themed';
-import { AuthContext, DrawerParamList } from '../Main';
+import { AuthContext } from '../model/contexts';
+import { DrawerParamList } from '../model/drawer-types';
 import { StackParamList } from '../navigation/StackNavigator';
 
 export type SignInScreenProps = CompositeScreenProps<
@@ -16,15 +17,11 @@ export type SignInScreenProps = CompositeScreenProps<
 >;
 
 export default function SignInScreen({navigation, route}: SignInScreenProps ) {
-  const signInComplete = useContext(AuthContext).signInComplete;
+  const {signInComplete, signUpStart} = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <LoginForm onSignIn={signInComplete} onSignUp={() => { }} />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <LoginForm onSignIn={signInComplete} onSignUp={signUpStart} />
     </View>
   );
 }
@@ -33,15 +30,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    marginTop: 50,
+    marginBottom: 50,
   },
 });

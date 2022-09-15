@@ -6,8 +6,7 @@
 
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-
-import { DrawerParamList, StackParamList } from '../types';
+import { DrawerParamList } from '../Main';
 
 const linking: LinkingOptions<DrawerParamList> = {
   prefixes: [Linking.createURL('/')],
@@ -15,6 +14,8 @@ const linking: LinkingOptions<DrawerParamList> = {
     screens: {
       Stack: {
         screens: {
+          SignIn: 'signin',
+          SignUp: 'signup',
           Home: 'home',
           Details: 'details/:itemId/otherParam?',
           TabNavigator: {

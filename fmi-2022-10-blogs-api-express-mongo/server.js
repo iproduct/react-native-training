@@ -15,7 +15,7 @@ const port = 9000;
 
 
 const corsOpts = {
-    origin: 'http://localhost:19006'
+    origin: true//'http://localhost:19006'
 }
 
 if(!process.env.BLOGS_API_SECRET) {
