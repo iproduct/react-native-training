@@ -108,12 +108,6 @@ export default class RegistrationForm extends Component<
                         color="#542867"
                         accessibilityLabel="SignUp"
                     />
-                    {/* <Button
-            onPress={() => authContext?.signUp({ username, password })}
-            title="Sign Up"
-            color="#841584"
-            accessibilityLabel="SignUp"
-          /> */}
                 </View>
             </View>
         );

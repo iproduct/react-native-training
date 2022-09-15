@@ -19,7 +19,7 @@ import { Credentials } from './components/LoginForm';
 import { StackNavigator, StackParamList } from './navigation/StackNavigator';
 import * as SecureStore from 'expo-secure-store';
 import { User } from './model/user';
-import { AuthAPI, SignInAPI } from './service/rest-api-auth-client';
+import { AuthAPI } from './service/rest-api-auth-client';
 import { UsersAPI } from './service/rest-api-client';
 
 
@@ -167,7 +167,7 @@ export default function Main({ colorScheme }: MainProps) {
         dispatch({ type: 'SIGN_IN_START', loggedUser: null })
       },
       signInComplete: async (credentials: Credentials) => {
-        const loggedUser = await SignInAPI.signIn(credentials);
+        const loggedUser = await AuthAPI.signIn(credentials);
         console.log(loggedUser);
         dispatch({ type: 'SIGN_IN_SUCCESS', loggedUser });
       },

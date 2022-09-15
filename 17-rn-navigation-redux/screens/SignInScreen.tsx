@@ -16,12 +16,12 @@ export type SignInScreenProps = CompositeScreenProps<
 >;
 
 export default function SignInScreen({navigation, route}: SignInScreenProps ) {
-  const signIn = useContext(AuthContext).signIn;
+  const signInComplete = useContext(AuthContext).signInComplete;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <LoginForm onSignIn={signIn} onSignUp={() => { }} />
+      <LoginForm onSignIn={signInComplete} onSignUp={() => { }} />
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
