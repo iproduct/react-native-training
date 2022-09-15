@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Main from './Main';
+import Main from './navigation/Main';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

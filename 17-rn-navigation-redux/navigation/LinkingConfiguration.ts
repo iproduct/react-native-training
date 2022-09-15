@@ -6,7 +6,7 @@
 
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-import { DrawerParamList } from '../Main';
+import { DrawerParamList } from './Main';
 
 const linking: LinkingOptions<DrawerParamList> = {
   prefixes: [Linking.createURL('/')],

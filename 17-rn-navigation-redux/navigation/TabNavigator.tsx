@@ -12,7 +12,7 @@ import { Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { DrawerParamList } from '../Main';
+import { DrawerParamList } from './Main';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 

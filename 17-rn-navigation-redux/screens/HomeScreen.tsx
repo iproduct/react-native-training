@@ -2,7 +2,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Button, Text, View } from "react-native";
-import { DrawerParamList } from "../Main";
+import { DrawerParamList } from "../navigation/Main";
 import { StackParamList } from "../navigation/StackNavigator";
 
 type DetailsScreenProps = CompositeScreenProps<

@@ -6,21 +6,22 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { NavigationContainer, DefaultTheme, DarkTheme, NavigatorScreenParams } from '@react-navigation/native';
 import * as React from 'react';
-import { Button, ColorSchemeName, Linking } from 'react-native';
+import { Button, ColorSchemeName, Linking, Pressable, StyleSheet } from 'react-native';
 
-import ModalScreen from './screens/ModalScreen';
-import NotFoundScreen from './screens/NotFoundScreen';
-import LinkingConfiguration from './navigation/LinkingConfiguration';
+import ModalScreen from '../screens/ModalScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import LinkingConfiguration from './LinkingConfiguration';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerScreenProps } from '@react-navigation/drawer';
-import AboutScreen from './screens/AboutScreen';
-import { LoggedUserData } from './model/sign-in';
-import { Credentials } from './components/LoginForm';
-import { StackNavigator } from './navigation/StackNavigator';
+import AboutScreen from '../screens/AboutScreen';
+import { LoggedUserData } from '../model/sign-in';
+import { Credentials } from '../components/LoginForm';
+import { StackNavigator } from './StackNavigator';
 import * as SecureStore from 'expo-secure-store';
-import { User } from './model/user';
-import { AuthAPI } from './service/rest-api-auth-client';
-import { DrawerParamList } from './model/drawer-types';
-import { AuthAction, AuthContext, INITIAL_AUTH_STORE_STATE, ReduxStoreState, StoreStateContext } from './model/contexts';
+import { User } from '../model/user';
+import { AuthAPI } from '../service/rest-api-auth-client';
+import { DrawerParamList } from '../model/drawer-types';
+import { AuthAction, AuthContext, INITIAL_AUTH_STORE_STATE, ReduxStoreState, StoreStateContext } from '../model/contexts';
+import { Text } from '../components/Themed';
 
 
 
@@ -146,6 +147,11 @@ export default function Main({ colorScheme }: MainProps) {
                 // backgroundColor: '#c6cbef',
                 width: 240,
               },
+              headerRight: () => (state.loggedUser && (
+                <Pressable style={styles.signoutButton} onPress={authContext.signOut}>
+                  <Text style={styles.signoutButtonText}>Sign Out</Text>
+                </Pressable>
+              )),
             }}
           // screenOptions={{
           //   drawerType: isLargeScreen ? 'permanent' : 'back',
@@ -154,8 +160,8 @@ export default function Main({ colorScheme }: MainProps) {
           // }}
           >
             <Drawer.Screen name="Stack" component={StackNavigator} options={{
-            title: `My Blogs ${state?.loggedUser?.auth ? ': Welcome ' + state?.loggedUser?.user.firstName + '!': ''}`
-          }}/>
+              title: `My Blogs ${state?.loggedUser?.auth ? ': Welcome ' + state?.loggedUser?.user.firstName + '!' : ''}`
+            }} />
             <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
             <Drawer.Group>
               <Drawer.Screen name="Modal" component={ModalScreen} />
@@ -192,3 +198,15 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
     </DrawerContentScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  signoutButton: {
+    backgroundColor: "#B2C8DF",
+    borderRadius: 10,
+    padding: 10,
+    marginRight: 10,
+  },
+  signoutButtonText: {
+    fontSize: 20,
+  },
+});
