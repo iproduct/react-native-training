@@ -13,7 +13,7 @@ import { DetailsScreen } from '../screens/DetailsScreen';
 import { useContext } from 'react';
 import { Credentials } from '../components/LoginForm';
 import SignInScreen from '../screens/SignInScreen';
-import { LoggedUserContext, MyDrawerScreenProps } from '../Main';
+import { MyDrawerScreenProps, StoreStateContext } from '../Main';
 import { RootTabParamList, TabNavigator } from './TabNavigator';
 
 export type StackParamList = {
@@ -25,30 +25,24 @@ export type StackParamList = {
   Modal: undefined;
 };
 
-
-export interface SignInCustomProps {
-  onSignIn: (credentials: Credentials) => void
-}
-
 const Stack = createNativeStackNavigator<StackParamList>();
 
-export function StackNavigator({ navigation, route, onSignIn }: MyDrawerScreenProps<'Stack'> & SignInCustomProps) {
-  const loggedUser = useContext(LoggedUserContext);
+export function StackNavigator({ navigation, route }: MyDrawerScreenProps<'Stack'>) {
+  const loggedUser = useContext(StoreStateContext)?.loggedUser;
   return (
     <Stack.Navigator>
       {!loggedUser ? (
         <>
           <Stack.Screen
             name="SignIn"
+            component={SignInScreen}
             options={{
               title: 'Sign in',
               // When logging out, a pop animation feels intuitive
               // You can remove this if you want the default 'push' animation
               animationTypeForReplace: loggedUser ? 'push' : 'pop',
             }}
-          >
-            {(props) => (<SignInScreen {...props} onSignIn={onSignIn} />)}
-          </Stack.Screen>
+          />
         </>
       ) : (
         <>

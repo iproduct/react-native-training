@@ -1,4 +1,4 @@
-import { LoggedUserData } from './../model/sign-in';
+import { LoggedUserData } from '../model/sign-in';
 import { Credentials } from "../components/LoginForm.js";
 import { Identifiable, IdType } from "../model/shared-types.js";
 import { User } from "../model/user.js";
@@ -9,7 +9,7 @@ export interface SignInApiClient {
     signIn(post: Credentials): Promise<LoggedUserData>;
 }
 
-export class SignInApiClientImpl implements SignInApiClient {
+export class AuthApiClientImpl implements SignInApiClient {
 
     async signIn(post: Credentials): Promise<LoggedUserData> {
         return this.handleRequest(`${API_BASE_URL}/login`, {
@@ -18,6 +18,16 @@ export class SignInApiClientImpl implements SignInApiClient {
                 'content-type': 'application/json'
             },
             body: JSON.stringify(post)
+        });
+    }
+
+    async signUp(user: User): Promise<LoggedUserData> {
+        return this.handleRequest(`${API_BASE_URL}/register`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
         });
     }
 
@@ -34,5 +44,5 @@ export class SignInApiClientImpl implements SignInApiClient {
     }
 }
 
-export const SignInAPI = new SignInApiClientImpl();
+export const AuthAPI = new AuthApiClientImpl();
 

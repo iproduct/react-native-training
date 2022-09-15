@@ -1,7 +1,7 @@
 import { Credentials } from "../components/LoginForm";
 import { LoggedUserData } from "../model/sign-in";
 import { UsersAPI } from './rest-api-client';
-import { SignInAPI } from './rest-api-client-signin';
+import { SignInAPI } from './rest-api-auth-client';
 
 // class LonginService {
 //     private loggedUser: LoggedUserData | undefined = undefined;

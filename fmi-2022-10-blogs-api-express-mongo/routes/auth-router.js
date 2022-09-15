@@ -57,11 +57,11 @@ router.post('/register', async (req, res) => {
             username: 'required|string|min:5',
             email: 'required|email',
             password: 'required|string|min:6',
-            role: 'required|string|in:AUTHOR,ADMIN',
+            role: 'required|string|in:User',
             imageUrl: 'url',
             active: 'required:boolean'
         });
-        user.role = 'AUTHOR';
+        user.role = 'User';
         const salt = bcrypt.genSaltSync(10);
         user.password = await bcrypt.hash(user.password, salt);
         try {

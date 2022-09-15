@@ -19,17 +19,19 @@ import { Credentials } from './components/LoginForm';
 import { StackNavigator, StackParamList } from './navigation/StackNavigator';
 import * as SecureStore from 'expo-secure-store';
 import { User } from './model/user';
-import { SignInAPI } from './service/rest-api-client-signin';
+import { AuthAPI, SignInAPI } from './service/rest-api-auth-client';
+import { UsersAPI } from './service/rest-api-client';
 
 
 /* Redux types */
 interface ReduxStoreState {
   isLoading: boolean;
   isSignout: boolean;
+  isSignUp: boolean;
   loggedUser: LoggedUserData | null,
 }
 
-export type AuthActionType = 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
+export type AuthActionType = 'RESTORE_TOKEN' | 'SIGN_IN_START' | 'SIGN_IN_SUCCESS' | 'SIGN_OUT' | 'SIGN_UP';
 
 interface AuthAction {
   type: AuthActionType;
@@ -42,9 +44,11 @@ interface AuthAction {
 
 /* LoginService interface */
 export interface LoginService {
-  signIn: (credentials: Credentials) => void;
+  signInStart: () => void;
+  signInComplete: (credentials: Credentials) => void;
+  signUpStart: () => void;
+  signUpComplete: (user: User) => void;
   signOut: () => void;
-  signUp: (user: User) => void;
 }
 
 
@@ -75,8 +79,17 @@ interface MainState {
   loggedUser: LoggedUserData | undefined;
 }
 
+/* Create gobal contexts */
+export const AuthContext = React.createContext<LoginService>({
+  signInStart() { },
+  signInComplete(credentials: Credentials) { },
+  signUpStart() { },
+  signUpComplete(user: User) { },
+  signOut() { },
+});
+export const StoreStateContext = React.createContext<ReduxStoreState | null>(null);
+
 const Drawer = createDrawerNavigator<DrawerParamList>();
-const AuthContext = React.createContext<LoginService | null>(null);
 
 /* Main app component */
 export default function Main({ colorScheme }: MainProps) {
@@ -90,10 +103,18 @@ export default function Main({ colorScheme }: MainProps) {
             loggedUser: action.loggedUser,
             isLoading: false,
           };
-        case 'SIGN_IN':
+        case 'SIGN_IN_START':
           return {
             ...prevState,
             isSignout: false,
+            isSignUp: false,
+            loggedUser: null,
+          };
+        case 'SIGN_IN_SUCCESS':
+          return {
+            ...prevState,
+            isSignout: false,
+            isSignUp: false,
             loggedUser: action.loggedUser,
           };
         case 'SIGN_OUT':
@@ -102,11 +123,18 @@ export default function Main({ colorScheme }: MainProps) {
             isSignout: true,
             loggedUser: null,
           };
+        case 'SIGN_UP':
+          return {
+            ...prevState,
+            isSignUp: true,
+          };
+
       }
     },
     {
       isLoading: true,
       isSignout: false,
+      isSignUp: false,
       loggedUser: null,
     }
   );
@@ -135,65 +163,59 @@ export default function Main({ colorScheme }: MainProps) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (credentials: Credentials) => {
+      signInStart: () => {
+        dispatch({ type: 'SIGN_IN_START', loggedUser: null })
+      },
+      signInComplete: async (credentials: Credentials) => {
         const loggedUser = await SignInAPI.signIn(credentials);
-        //         console.log(this.loggedUser);
-        dispatch({ type: 'SIGN_IN', loggedUser });
+        console.log(loggedUser);
+        dispatch({ type: 'SIGN_IN_SUCCESS', loggedUser });
+      },
+      signUpStart: () => {
+        dispatch({ type: 'SIGN_UP', loggedUser: null })
+      },
+      signUpComplete: async (user: User) => {
+        await AuthAPI.signUp(user);
+        dispatch({ type: 'SIGN_IN_START', loggedUser: null })
       },
       signOut: () => dispatch({ type: 'SIGN_OUT', loggedUser: null }),
-      signUp: async (user: User) => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-
-        // dispatch({ type: 'SIGN_IN', loggedUser: 'dummy-auth-token' });
-      },
     }),
     []
   );
 
-
-
-  // state: Readonly<MainState> = {
-  //   loggedUser: undefined,
-  // }
-  const handleSignIn = async (credentials: Credentials) => {
-    authContext.signIn(credentials);
-  }
   // const dimensions = useWindowDimensions();
   // const isLargeScreen = dimensions.width >= 768;
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer
-        linking={LinkingConfiguration}
-        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Drawer.Navigator
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          screenOptions={{
-            drawerType: 'front',
-            drawerStyle: {
-              // backgroundColor: '#c6cbef',
-              width: 240,
-            },
-          }}
-        // screenOptions={{
-        //   drawerType: isLargeScreen ? 'permanent' : 'back',
-        //   drawerStyle: isLargeScreen ? null : { width: '100%' },
-        //   overlayColor: 'transparent',
-        // }}
-        >
-          <Drawer.Screen name="Stack">
-            {(props) => (<StackNavigator {...props} onSignIn={handleSignIn} />)}
-          </Drawer.Screen>
-          <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
-          <Drawer.Group>
-            <Drawer.Screen name="Modal" component={ModalScreen} />
-          </Drawer.Group>
-          <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        </Drawer.Navigator>
-        {/* <RootNavigator /> */}
-      </NavigationContainer>
+      <StoreStateContext.Provider value={state}>
+        <NavigationContainer
+          linking={LinkingConfiguration}
+          theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Drawer.Navigator
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            screenOptions={{
+              drawerType: 'front',
+              drawerStyle: {
+                // backgroundColor: '#c6cbef',
+                width: 240,
+              },
+            }}
+          // screenOptions={{
+          //   drawerType: isLargeScreen ? 'permanent' : 'back',
+          //   drawerStyle: isLargeScreen ? null : { width: '100%' },
+          //   overlayColor: 'transparent',
+          // }}
+          >
+            <Drawer.Screen name="Stack" component={StackNavigator} />
+            <Drawer.Screen name="About" component={AboutScreen} options={{ title: 'About' }} />
+            <Drawer.Group>
+              <Drawer.Screen name="Modal" component={ModalScreen} />
+            </Drawer.Group>
+            <Drawer.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          </Drawer.Navigator>
+          {/* <RootNavigator /> */}
+        </NavigationContainer>
+      </StoreStateContext.Provider>
     </AuthContext.Provider>
   );
 }
