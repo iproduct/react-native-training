@@ -103,7 +103,7 @@ export default function Main({ colorScheme }: MainProps) {
       }
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', loggedUser });
+      dispatch({ type: 'SIGN_IN_SUCCESS', loggedUser });
     };
 
     bootstrapAsync();
@@ -116,6 +116,7 @@ export default function Main({ colorScheme }: MainProps) {
       },
       signInComplete: async (credentials: Credentials) => {
         const loggedUser = await AuthAPI.signIn(credentials);
+        await SecureStore.isAvailableAsync() && SecureStore.setItemAsync('loggedUser', JSON.stringify(loggedUser))
         console.log(loggedUser);
         dispatch({ type: 'SIGN_IN_SUCCESS', loggedUser });
       },
@@ -126,7 +127,10 @@ export default function Main({ colorScheme }: MainProps) {
         await AuthAPI.signUp(user);
         dispatch({ type: 'SIGN_IN_START', loggedUser: null })
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT', loggedUser: null }),
+      signOut: async () => {
+        await SecureStore.isAvailableAsync() && SecureStore.deleteItemAsync('loggedUser');
+        dispatch({ type: 'SIGN_OUT', loggedUser: null });
+      },
     }),
     []
   );
