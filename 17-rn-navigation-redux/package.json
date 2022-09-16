@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "shake": "adb shell input keyevent 82"
   },
   "jest": {
     "preset": "jest-expo"

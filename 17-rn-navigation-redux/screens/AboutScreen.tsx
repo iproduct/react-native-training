@@ -2,7 +2,8 @@ import { DrawerScreenProps } from '@react-navigation/drawer';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { DrawerParamList, RootTabParamList } from '../types';
+import { DrawerParamList } from '../model/drawer-types';
+import { RootTabParamList } from '../navigation/TabNavigator';
 
 export type AboutScreenProps<Screen extends keyof RootTabParamList> = 
   DrawerScreenProps<DrawerParamList, 'About'>;

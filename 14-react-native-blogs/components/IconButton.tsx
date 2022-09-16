@@ -46,7 +46,7 @@ interface IButtonProps {
 
 type IButtonPropsType = Partial<IconButtonProps & IconProps> & IButtonProps;
 
-const IconButton = React.forwardRef<Component<IButtonPropsType>, IButtonPropsType>((props, fRef) => {
+const IconButton = React.forwardRef<Component<IButtonPropsType>, React.ComponentProps>((props, fRef) => {
     const { name, textStyle, size, children, color, ...other } = props;
     return (
         <FontAwesome.Button {...props} name={name} ref={fRef}>

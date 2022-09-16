@@ -4,7 +4,7 @@
  *
  */
 import { FontAwesome } from '@expo/vector-icons';
-import { NavigationContainer, DefaultTheme, DarkTheme, NavigatorScreenParams } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, NavigatorScreenParams, useNavigationContainerRef } from '@react-navigation/native';
 import * as React from 'react';
 import { Button, ColorSchemeName, Linking, Pressable, StyleSheet } from 'react-native';
 
@@ -22,8 +22,7 @@ import { AuthAPI } from '../service/rest-api-auth-client';
 import { DrawerParamList } from '../model/drawer-types';
 import { AuthAction, AuthContext, INITIAL_AUTH_STORE_STATE, ReduxStoreState, StoreStateContext } from '../model/contexts';
 import { Text } from '../components/Themed';
-
-
+import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 
 
 /* DrawerNavigator types */
@@ -46,6 +45,10 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 
 /* Main app component */
 export default function Main({ colorScheme }: MainProps) {
+  // Redux-Devtools integration
+  const navigationRef = useNavigationContainerRef();
+  useReduxDevToolsExtension(navigationRef);
+
   // Auth reducers
   const [state, dispatch] = React.useReducer(
     (prevState: ReduxStoreState, action: AuthAction) => {
@@ -141,6 +144,7 @@ export default function Main({ colorScheme }: MainProps) {
     <AuthContext.Provider value={authContext}>
       <StoreStateContext.Provider value={state}>
         <NavigationContainer
+          ref={navigationRef}
           linking={LinkingConfiguration}
           theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <Drawer.Navigator

@@ -1,6 +1,12 @@
+import { DrawerScreenProps } from "@react-navigation/drawer";
+import { CompositeScreenProps, NavigationProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React, { Component } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
+import { DrawerParamList } from "../model/drawer-types";
 import { User, UserRole } from "../model/user";
+import { StackParamList } from "../navigation/StackNavigator";
+import { withNavigation } from "../navigation/utils";
 
 interface RegistrationFormState {
     firstName: string;
@@ -14,6 +20,7 @@ interface RegistrationFormState {
 interface RegistrationFormProps {
    onSignUpComplete: (user: User) => void;
    onSignUpCancel: () => void;
+//    navigation: NativeStackNavigationProp<StackParamList & DrawerParamList>;
 }
 
 //type LoginFormState = Credentials;
@@ -111,6 +118,7 @@ export default class RegistrationForm extends Component<
                     />
                     <Button
                         onPress={() => this.props.onSignUpCancel()}
+                        // onPress={() => this.props.navigation.navigate('About')}
                         title="Cancel"
                         color="#aaa"
                         accessibilityLabel="Cancel"
@@ -146,3 +154,5 @@ const styles = StyleSheet.create({
         gap: 10,
     },
 });
+
+// export default withNavigation(RegistrationForm);
