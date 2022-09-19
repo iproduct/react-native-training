@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import IconButton from '../components/IconButton';
-import { decrementEnthusiasm, EnthusiasmAction, incrementAsync, incrementEnthusiasm, incrementLogged } from "../redux/actions";
+import { decrementEnthusiasm, EnthusiasmAction, incrementEnthusiasm, incrementEnthusiasmAsyncStart } from "../redux/actions";
 import { StoreState } from "../redux/reducers";
 import { RootState } from '../redux/store';
 
@@ -17,8 +17,7 @@ function mapStateToProps({ enthusiasm: { enthusiasmLevel } }: StoreState) {
 function mapDispatchToProps(dispatch :ThunkDispatch<RootState, undefined, EnthusiasmAction>) {
     return {
         onIncrement: () => dispatch(incrementEnthusiasm()),
-        onIncrementLogged: () => dispatch(incrementLogged(10)),
-        onIncrementAsync: () => dispatch(incrementAsync(15, 2000)),
+        onIncrementAsyncStart: (val: number, amount: number) => dispatch(incrementEnthusiasmAsyncStart(val, amount)),
         onDecrement: () => dispatch(decrementEnthusiasm()),
     }
 }
@@ -27,7 +26,7 @@ interface EnthusiasmProps {
     enthusiasmLevel: number;
     onIncrement: () => void;
     onIncrementLogged: () => void;
-    onIncrementAsync: () => void;
+    onIncrementAsyncStart: (val: number, amount: number) => void;
     onDecrement: () => void;
 }
 
@@ -42,12 +41,8 @@ class Enthusiasm extends PureComponent<EnthusiasmProps> {
                         +1
                     </IconButton>
                     <IconButton size={20} backgroundColor="green" color="white"
-                        onPress={this.props.onIncrementLogged} name='level-up' >
-                        +10 Logged
-                    </IconButton>
-                    <IconButton size={20} backgroundColor="green" color="white"
-                        onPress={this.props.onIncrementAsync} name='level-up' >
-                        +15 Async
+                        onPress={() => this.props.onIncrementAsyncStart(this.props.enthusiasmLevel, 10)} name='level-up' >
+                        +10 Async Saga
                     </IconButton>
                     <IconButton size={20} backgroundColor="#ff4466" color="white"
                         onPress={this.props.onDecrement} name='level-down' >
