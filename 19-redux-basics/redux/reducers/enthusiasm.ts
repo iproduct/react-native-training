@@ -1,5 +1,5 @@
 import { EnthusiasmAction } from '../actions';
-import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM } from './../actionTypes';
+import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_BY } from './../actionTypes';
 
 export interface EnthusiasmState {
     enthusiasmLevel: number;
@@ -15,6 +15,12 @@ export default function (state = initialState, action: EnthusiasmAction) {
             return {
                 ...state,
                 enthusiasmLevel: state.enthusiasmLevel + 1,
+            };
+        }
+        case INCREMENT_ENTHUSIASM_BY: {
+            return {
+                ...state,
+                enthusiasmLevel: state.enthusiasmLevel + action.amount,
             };
         }
         case DECREMENT_ENTHUSIASM: {
