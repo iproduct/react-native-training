@@ -1,12 +1,14 @@
 import { EnthusiasmAction } from '../actions';
-import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_BY } from './../actionTypes';
+import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_ASYNC_START, INCREMENT_ENTHUSIASM_ASYNC_SUCCESS, INCREMENT_ENTHUSIASM_BY } from './../actionTypes';
 
 export interface EnthusiasmState {
     enthusiasmLevel: number;
+    isLoading: boolean;
 }
 
 const initialState: EnthusiasmState = {
-    enthusiasmLevel: 0
+    enthusiasmLevel: 0,
+    isLoading: false,
 };
 
 export default function (state = initialState, action: EnthusiasmAction) {
@@ -21,6 +23,19 @@ export default function (state = initialState, action: EnthusiasmAction) {
             return {
                 ...state,
                 enthusiasmLevel: state.enthusiasmLevel + action.amount,
+            };
+        }
+        case INCREMENT_ENTHUSIASM_ASYNC_START: {
+            return {
+                ...state,
+                isLoading: true,
+            };
+        }
+        case INCREMENT_ENTHUSIASM_ASYNC_SUCCESS: {
+            return {
+                ...state,
+                enthusiasmLevel: action.result,
+                isLoading: false,
             };
         }
         case DECREMENT_ENTHUSIASM: {
