@@ -5,12 +5,12 @@ import TodoInput from '../components/TodoInput';
 import TodoList from '../components/TodoList';
 import { Todo } from '../model/todo.model';
 import { AppDispatch, RootState } from '../redux/store';
-import { deleteTodo, editTodo, submitTodo } from '../redux/todos-slice';
+import { deleteTodo, editedTodo, editTodo, filteredTodos, submitTodo, todosFilter } from '../redux/todos-slice';
 
-function mapStateToProps({ todos: {todos, editedTodo} }: RootState) {
+function mapStateToProps(state: RootState) {
     return {
-        todos,
-        editedTodo
+        todos: filteredTodos(state),
+        editedTodo: editedTodo(state),
     }
 }
 
@@ -31,7 +31,9 @@ interface TodosAppProps {
 }
 
 class TodosApp extends PureComponent<TodosAppProps> {
+
     render() {
+        console.log(this.props.todos);
         return (
             <View>
                 <Text style={styles.text}>TODOs Manager</Text>
