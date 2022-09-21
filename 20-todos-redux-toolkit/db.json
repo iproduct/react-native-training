@@ -1,0 +1,119 @@
+{
+  "todos": [
+    {
+      "text": "react123 ggg",
+      "deadline": "2022-08-17",
+      "status": 1,
+      "id": 9
+    },
+    {
+      "text": "New Todo 111",
+      "deadline": "2022-08-24",
+      "status": 1,
+      "id": 11
+    },
+    {
+      "text": "edit me here ...",
+      "deadline": "2022-08-23",
+      "status": 1,
+      "id": 13
+    },
+    {
+      "text": "ssasasa",
+      "deadline": "2022-08-27",
+      "status": 1,
+      "id": 14
+    }
+  ],
+  "posts": [
+    {
+      "title": "json-server",
+      "content": "JSON Server is easy ...",
+      "tags": [
+        "json",
+        "server",
+        "rest",
+        "api"
+      ],
+      "imageUrl": "https://dz2cdn1.dzone.com/storage/temp/8746383-json-server.png",
+      "authorId": 1,
+      "id": 1
+    },
+    {
+      "title": "Classes in ES6+ and TypeScript",
+      "content": "Class syntax in ES6+ is very neat ...",
+      "tags": [
+        "javascript",
+        "es6",
+        "class"
+      ],
+      "imageUrl": "https://res.cloudinary.com/practicaldev/image/fetch/s--Iz3e8EkG--/c_imagga_scale,f_auto,fl_progressive,h_1080,q_auto,w_1080/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/azhvn8vuqrofsidykaas.jpg",
+      "authorId": 1,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "title": "REST Client Super Advanced",
+      "content": "REST Client is relatively easy ...",
+      "tags": [
+        "rest",
+        "rest-client",
+        "http",
+        "easy"
+      ],
+      "imageUrl": "https://humao.gallerycdn.vsassets.io/extensions/humao/rest-client/0.25.0/1655829100763/Microsoft.VisualStudio.Services.Icons.Default",
+      "authorId": 1
+    },
+    {
+      "title": "Coffe Script",
+      "content": "Do you like coffee script ...",
+      "tags": [
+        "coffee",
+        "script"
+      ],
+      "imageUrl": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg",
+      "authorId": 1,
+      "id": 23
+    },
+    {
+      "title": "Blogs API Tutorial in TypeScript and Materialize",
+      "content": "This tutorial demonstrates how to implement SPA using pure TypeScript without any frameworks.\nMore text here ...\nAnd more ...\nSome more text ...\nSome more text ...\nSome more text ...",
+      "tags": [
+        "typescript",
+        "demo"
+      ],
+      "imageUrl": "https://www.publicdomainpictures.net/pictures/40000/velka/robin-bird.jpg",
+      "authorId": 1,
+      "id": 24
+    },
+    {
+      "title": "New Post",
+      "content": "I know TypeScript!",
+      "tags": [
+        "type",
+        "script",
+        "matrix"
+      ],
+      "imageUrl": "https://cdn.mos.cms.futurecdn.net/sfgpCc8Ba2GFWVLcPmBzcM.jpg",
+      "authorId": 1,
+      "id": 25
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Smith",
+      "username": "john",
+      "password": "john123",
+      "role": "ADMIN"
+    }
+  ]
+}

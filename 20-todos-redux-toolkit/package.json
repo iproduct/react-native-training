@@ -1,0 +1,41 @@
+{
+  "name": "19-redux-basics",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "api": "json-server db.json --routes routes.json --host=10.16.138.109 --port=4000",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo/webpack-config": "0.17.0",
+    "@reduxjs/toolkit": "^1.8.5",
+    "expo": "~46.0.9",
+    "expo-status-bar": "~1.4.0",
+    "json-server": "^0.17.0",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-native": "0.69.5",
+    "react-native-paper": "^4.12.4",
+    "react-native-paper-dates": "^0.9.2",
+    "react-native-web": "~0.18.7",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-saga": "^1.2.1",
+    "redux-thunk": "^2.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@types/react": "~18.0.14",
+    "@types/react-native": "~0.69.1",
+    "@types/react-redux": "^7.1.24",
+    "@types/redux": "^3.6.0",
+    "@types/redux-devtools-extension": "^2.13.2",
+    "@types/redux-thunk": "^2.1.0",
+    "typescript": "~4.3.5"
+  },
+  "private": true
+}
