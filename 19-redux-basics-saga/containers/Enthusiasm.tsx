@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'
 import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { Dispatch } from "redux";
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import IconButton from '../components/IconButton';
-import { decrementEnthusiasm, EnthusiasmAction, incrementEnthusiasm, incrementEnthusiasmAsyncStart } from "../redux/actions";
+import { decrementEnthusiasm, EnthusiasmAction, incrementEnthusiasm, incrementEnthusiasmAsyncStart } from "../redux/actions/enthusiasm-actions";
 import { StoreState } from "../redux/reducers";
-import { RootState } from '../redux/store';
+import { AppDispatch, RootState } from '../redux/store';
 
 function mapStateToProps({ enthusiasm: { enthusiasmLevel, isLoading } }: StoreState) {
     return {
@@ -15,7 +13,7 @@ function mapStateToProps({ enthusiasm: { enthusiasmLevel, isLoading } }: StoreSt
     }
 }
 
-function mapDispatchToProps(dispatch: ThunkDispatch<RootState, undefined, EnthusiasmAction>) {
+function mapDispatchToProps(dispatch: AppDispatch) {
     return {
         onIncrement: () => dispatch(incrementEnthusiasm()),
         onIncrementAsyncStart: (val: number, amount: number) => dispatch(incrementEnthusiasmAsyncStart(val, amount)),
@@ -27,7 +25,6 @@ interface EnthusiasmProps {
     enthusiasmLevel: number;
     isLoading: boolean;
     onIncrement: () => void;
-    onIncrementLogged: () => void;
     onIncrementAsyncStart: (val: number, amount: number) => void;
     onDecrement: () => void;
 }
@@ -35,10 +32,10 @@ interface EnthusiasmProps {
 class Enthusiasm extends PureComponent<EnthusiasmProps> {
     render() {
         return (
-            <View>
+            <View style={styles.conatainer}>
                 <Text style={styles.text}>Enthusiasm Level: {this.props.enthusiasmLevel}</Text>
                 <View style={[styles.progressContainer, styles.progressHorizontal]}>
-                    {this.props.isLoading && <ActivityIndicator size="large" color="#00ff00" />}
+                    <ActivityIndicator size="large" color="#00ff00" animating={this.props.isLoading} />
                 </View>
                 <View style={styles.buttons}>
                     <IconButton size={20} backgroundColor="green" color="white"
@@ -62,10 +59,14 @@ class Enthusiasm extends PureComponent<EnthusiasmProps> {
 export default connect(mapStateToProps, mapDispatchToProps)(Enthusiasm);
 
 const styles = StyleSheet.create({
+    conatainer: {
+        width: '80%',
+    },
     buttons: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        gap: 50,
+        justifyContent: 'flex-start'
     },
     text: {
         fontSize: 28,
@@ -79,5 +80,5 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10
-    }
+    },
 })

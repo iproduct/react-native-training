@@ -1,5 +1,5 @@
-import { EnthusiasmAction } from '../actions';
-import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_ASYNC_START, INCREMENT_ENTHUSIASM_ASYNC_SUCCESS, INCREMENT_ENTHUSIASM_BY } from './../actionTypes';
+import { EnthusiasmAction } from '../actions/enthusiasm-actions';
+import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_ASYNC_START, INCREMENT_ENTHUSIASM_ASYNC_SUCCESS, INCREMENT_ENTHUSIASM_BY } from '../actions/enthusiasmActionTypes';
 
 export interface EnthusiasmState {
     enthusiasmLevel: number;

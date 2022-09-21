@@ -21,7 +21,8 @@
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-saga": "^1.2.1",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "socket.io-client": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -31,6 +32,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-devtools-extension": "^2.13.2",
     "@types/redux-thunk": "^2.1.0",
+    "@types/socket.io-client": "^3.0.0",
     "typescript": "~4.3.5"
   },
   "private": true

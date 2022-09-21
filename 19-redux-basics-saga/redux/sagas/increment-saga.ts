@@ -1,12 +1,12 @@
-import { EnthusiasmAction, IncrementEnthusiasmAsyncStart, incrementEnthusiasmAsyncSuccess } from './../actions';
-import { INCREMENT_ENTHUSIASM_ASYNC_START } from './../actionTypes';
-import {takeEvery, call, StrictEffect, put} from 'redux-saga/effects';
+import { EnthusiasmAction, IncrementEnthusiasmAsyncStart, incrementEnthusiasmAsyncSuccess } from '../actions/enthusiasm-actions';
+import { INCREMENT_ENTHUSIASM_ASYNC_START } from '../actions/enthusiasmActionTypes';
+import {takeEvery, call, StrictEffect, put, takeLatest} from 'redux-saga/effects';
 import { Action } from 'redux';
 import { incrementAsyncService } from '../../api/number-genrator-api';
 
 
 export function* watchIncrementAsyncRequestStart(){
-    yield  takeEvery(INCREMENT_ENTHUSIASM_ASYNC_START, requestIncrementAsync);
+    yield  takeLatest(INCREMENT_ENTHUSIASM_ASYNC_START, requestIncrementAsync);
 }
 
 function* requestIncrementAsync(action: IncrementEnthusiasmAsyncStart): Generator<StrictEffect, void, number>  {

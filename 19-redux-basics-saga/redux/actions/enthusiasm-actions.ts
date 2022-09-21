@@ -1,5 +1,5 @@
-import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_ASYNC_START, INCREMENT_ENTHUSIASM_ASYNC_SUCCESS, INCREMENT_ENTHUSIASM_BY } from './actionTypes';
-import { RootState } from './store';
+import { DECREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM, INCREMENT_ENTHUSIASM_ASYNC_START, INCREMENT_ENTHUSIASM_ASYNC_SUCCESS, INCREMENT_ENTHUSIASM_BY } from './enthusiasmActionTypes';
+import { RootState } from '../store';
 import { ThunkAction } from 'redux-thunk';
 
 export interface IncrementEnthusiasm {

@@ -1,0 +1,26 @@
+{
+  "name": "showcase-odata-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "nodemon -w ./ ./main.js localhost 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@stash.intranet.roche.com:7999/cobasgui/showcase-project-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://stash.intranet.roche.com/stash/projects/COBASGUI/repos/showcase-project-server/browse/README.md",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "lodash": "^4.17.3",
+    "nedb": "^1.8.0",
+    "socket.io": "^4.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
