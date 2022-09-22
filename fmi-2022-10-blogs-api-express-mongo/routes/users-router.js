@@ -38,9 +38,11 @@ router.post('/', async (req, res) => {
             firstName: 'required|string|min:2',
             lastName: 'required|string|min:2',
             username: 'required|string|min:5',
+            email: 'required|email',
             password: 'required|string|min:6',
-            role: 'in:Author,Admin',
-            imageUrl: 'url'
+            role: 'required|string|in:User',
+            imageUrl: 'url',
+            active: 'required:boolean'
         });
         if(!user.role) {
             user.role = 'Author';
@@ -83,10 +85,12 @@ router.put('/:id', async (req, res) => {
             id: 'required|regex:^[0-9a-f]{24}$',
             firstName: 'required|string|min:2',
             lastName: 'required|string|min:2',
-            username: 'required|email',
+            username: 'required|string|min:5',
+            email: 'required|email',
             password: 'required|string|min:6',
-            role: 'required|in:Author,Admin',
-            imageUrl: 'url'
+            role: 'required|string|in:User',
+            imageUrl: 'url',
+            active: 'required:boolean'
         });
         try {
             r = await req.app.locals.db.collection('users').updateOne({ _id: new ObjectID(req.params.id) }, { $set: user });
